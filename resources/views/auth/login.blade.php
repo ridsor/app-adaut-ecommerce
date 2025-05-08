@@ -1,47 +1,49 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
-
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-4">
+              <div class="card">
+                <div class="card-header">
+                  <h1 class="card-title">Login</h1>
+                </div>
+                <div class="card-body">
+                  @if (Session::has('error'))
+                    <div class="alert alert-danger" role="alert">
+                      {{ Session::get('error') }}
+                    </div>
+                  @endif
+                  <form action="{{ route('login') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Email address</label>
+                      <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}"
+                        placeholder="name@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
+                    </div>
+                    <div class="mb-3">
+                      <p>
+                        <a href="{{ route("password.request") }}" class="link-offset-2 link-underline link-underline-opacity-0"
+                          style="text-decoration-line: none">Lupa
+                          password</a>
+                      </p>
+                    </div>
+                    <div class="mb-3">
+                      <div class="d-grid">
+                        <button class="btn btn-primary">Login</button>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="d-grid">
+                        <a class="btn btn-primary" href="{{ route('register') }}">Register</a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
 </x-guest-layout>
