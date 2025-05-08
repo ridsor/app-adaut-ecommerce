@@ -1,16 +1,13 @@
-<x-app-layout :title="$title"> 
-    <section>
-        <div class="container py-5">
-            <div class="row">
-                @foreach ($categories as $category)
-                <div class="col-md-3">
-                    <div class="d-flex flex-column align-items-center justify-content-center text-center">
-                        <img src="{{ $category->icon }}" style="width: 100px; aspect-ratio: 1 / 1;" />
-                        <div>{{ $category->name }}</div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-</x-app-layout>
+@extends('layouts.app')
+
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+@endpush
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+@endpush
+
+@section('content')
+    @include('components.pages.home.banner')
+@endsection
