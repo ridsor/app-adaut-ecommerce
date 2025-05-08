@@ -1,0 +1,13 @@
+/* :root { */
+  /* --bs-primary: "#000"; */
+  /* --bs-primary-rgb: 0, 0, 0 !important; */
+  /* --bs-primary-bg-subtle: #d1e7f9;
+  --bs-primary-border-subtle: #a3cff4;
+  --bs-primary-text-emphasis: #0d6efd; */
+  
+  /* Jika perlu ubah juga warna hover/focus */
+  /* --bs-btn-hover-bg: #{darken(#your-custom-color, 7.5%)};
+  --bs-btn-hover-border-color: #{darken(#your-custom-color, 10%)};
+  --bs-btn-active-bg: #{darken(#your-custom-color, 10%)};
+  --bs-btn-active-border-color: #{darken(#your-custom-color, 12.5%)}; */
+/* } */
