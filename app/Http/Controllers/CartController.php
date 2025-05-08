@@ -4,47 +4,63 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
     public function changeQuantity(Request $request, $id)
     {
-        $validator = Validator::make($request->all(),[
-            "quantity" => "required|integer",
-        ]);
-
-        if ($validator->fails()) {
+        try {
+            $validator = Validator::make($request->all(),[
+                "quantity" => "required|integer",
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Validasi gagal',
+                    "errors" => $validator->errors()
+                ], 500);
+            }
+            
+            $cart = Cart::find($id);
+            if (!$cart) {
+                return response()->json([
+                    'status' => "fail",
+                    "message" => "Keranjang tidak ditemukan"
+                ], 404);
+            }
+            if (!Gate::forUser(Auth::user())->allows('owner', $cart)) {
+                return response()->json([
+                    'status' => "fail",
+                    "message" => "Anda tidak berwenang untuk mengakses keranjang ini"
+                ], 403);
+            }
+            
+            $cart->changeQuantity($request->quantity);
+    
+            return response()->json([
+                "status" => "success",
+                "message" => "Berhasil memperbarui kuantitas"
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'fail',
-                'message' => 'Validation failed',
-                "errors" => $validator->errors()
+                'message' => 'Gagal memperbarui kuantitas',
             ], 500);
         }
-
-        $cart = Cart::find($id);
-        if ($cart) {
-            return response()->json([
-                'status' => "fail",
-                "message" => "Cart not found"
-            ], 404);
-        }
-
-        $cart->changeQuantity($request->quantity);
-
-        return response()->json([
-            "status" => "success",
-            "message" => "Berhasil memperbarui kuantitas"
-        ]);
     }
 
     public function store(Request $request)
     {
         try {
-            $validator = Validator::make(
-                $request->all(),
+            $this->authorize('isUser');
+
+            $request->validate(
                 [
                     'product_id' => 'required',
                     'quantity' => 'required|integer|min:1',
@@ -57,20 +73,11 @@ class CartController extends Controller
                 ]
             );
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => 'fail',
-                    'message' => 'Validation failed',
-                    "errors" => $validator->errors()
-                ], 500);
-            }
-
             $product = Product::where("id",$request->product_id)->first();
             if(!$product) {
-            return response()->json([
-                "status" => "error",
-                "message" => "Product not found",
-            ], 404);
+                return Response::denyAsNotFound(
+                    "Produk tidak ditemukan"
+                );
             }
 
             Cart::create([
@@ -79,27 +86,36 @@ class CartController extends Controller
                 "quantity" => $request->quantity
             ]);
 
-            return response()->json([ 
+            return back()->with([
                 "status" => "success",
-                "message" => "Berhasil ditambahkan ke keranjang",
+                "message" => "Berhasil menambahkan produk ke keranjang"
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                "status" => "error",
-                "message" => "Something went wrong",
-            ], 500);
+            return back()->with([
+                "status" => "fail",
+                "message" => "Gagal menambahkan produk ke keranjang",
+            ]);
         }
     }
 
     public function destroy(array $id)
     {
-        foreach($id as $item) {
-            Cart::destroy($item);
+        try {
+            foreach($id as $item) {
+                $cart = Cart::find($item);
+                $this->authorize('owner', $cart);
+                $cart->delete();
+            }
+    
+            return back()->with([
+                "status" => "success",
+                "message" => "Berhasil menghapus item keranjang"
+            ]);
+        } catch (\Exception $e) {
+            return back()->with([
+                "status" => "fail",
+                "message" => "Gagal menghapus item keranjang",
+            ]);
         }
-
-        return response()->json([ 
-            "status" => "success",
-            "message" => "Berhasil menghapus item keranjang",
-        ]);
     }
 }
