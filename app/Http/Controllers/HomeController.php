@@ -10,41 +10,29 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $bestsellers = Product::select("image","price", "id")
+        $bestsellers = Product::select("id","image","price","name")
                 ->withSum([
                     'order_items as total_sold'
                 ], 'quantity')
                 ->withCount('reviews')->withAvg('reviews', 'rating')
                 ->orderByDesc('total_sold')
-                ->limit(6)->get();
-        $foods = Product::select("image","price", "id")
+                ->limit(10)->get();
+        $products = Product::select("id","image","price", "name")
                 ->withSum([
                     'order_items as total_sold'
                 ], 'quantity')
                 ->withCount('reviews')->withAvg('reviews', 'rating')
-                ->orderByDesc('total_sold')
-                ->whereHas("category", function ($query) {
-                    $query->where('name', 'Makanan');
-                })
-                ->limit(8)->get();
-        $crafts = Product::select("image","price", "id")
-                ->withSum([
-                    'order_items as total_sold'
-                ], 'quantity')
-                ->withCount('reviews')->withAvg('reviews', 'rating')
-                ->whereHas("category", function ($query) {
-                    $query->where('name', 'Kerajinan');
-                })
-                ->limit(8)->get();
+                ->latest()
+                ->limit(10)->get();
         $categories = Category::select('name','icon','id')->get();
         
 
         return view('home', [
             'bestsellers' => $bestsellers,
-            'foods' => $foods,
-            'crafts' => $crafts,
+            'products' => $products,
             'categories' => $categories,
             'title' => 'Home',
+            'banners' => [],
         ]);
     }
 }
