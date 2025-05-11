@@ -1,6 +1,6 @@
-<section>
+<section class="bg-primary-subtle">
     <div class="container py-5">
-        <div class="swiper mySwiper">
+        <div class="swiper" id="banner_swiper">
             <div class="swiper-wrapper w-100 h-100">
                 <div class="swiper-slide">
                     <div class="row">
@@ -49,16 +49,17 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper-pagination"></div>
+            <div class="swiper-pagination" id="banner_swiper_pagination"></div>
         </div>
     </div>
 </section>
 @push('scripts')
     <script>
-        var swiper = new Swiper('.mySwiper', {
+        var swiper = new Swiper('#banner_swiper', {
             pagination: {
-                el: '.swiper-pagination',
+                el: "#banner_swiper_pagination",
                 clickable: true,
+                dynamicBullets: true,
             },
             autoplay: {
                 delay: 2500,

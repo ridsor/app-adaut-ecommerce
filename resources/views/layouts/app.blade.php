@@ -15,13 +15,14 @@
     <!-- Scripts -->
     @vite(['resources/js/app.js', 'resources/css/app.css', 'resources/css/bootstrap.css'])
 
-    {{-- CSS --}}
+    <!-- CSS -->
     @stack('styles')
 </head>
 
 <body>
     @include('layouts.header')
     @yield('content')
+    @include('layouts.footer')
 
     {{-- JS --}}
     @stack('scripts')
