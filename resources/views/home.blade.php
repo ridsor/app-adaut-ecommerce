@@ -9,5 +9,10 @@
 @endpush
 
 @section('content')
-    @include('components.pages.home.banner')
+    <main>
+        <x-pages.home.banner :banners="$banners" />
+        <x-pages.home.category :categories="$categories" />
+        <x-pages.home.product :products="$products" type="slider" name="Produk terlaris" />
+        <x-pages.home.product :products="$products" name="Produk terbaru" />
+    </main>
 @endsection

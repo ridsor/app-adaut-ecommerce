@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/produk', [ProductController::class, 'index']);
 Route::get('/produk/{id}', [ProductController::class, 'show']);
 Route::post("/payment/notification-handler", [PaymentController::class, 'notificationHandler']);
