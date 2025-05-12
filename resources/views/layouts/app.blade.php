@@ -16,7 +16,7 @@
     @vite(['resources/js/app.js', 'resources/css/app.css', 'resources/css/bootstrap.css'])
 
     <!-- CSS -->
-    @stack('styles')
+    @stack('head')
 </head>
 
 <body>
@@ -25,6 +25,19 @@
     @include('layouts.footer')
 
     {{-- JS --}}
+    <div id="preloader" class="position-fixed top-0 bg-light bottom-0 end-0 start-0 z-2 d-flex justify-content-center align-items-center">
+        <div style="width: 200px; height: 200px">
+            <x-loading/>
+        </div>
+    </div>
+    <script>
+        const preloader = document.getElementById("preloader")
+        if(preloader) {
+            window.addEventListener('load', () => {
+                preloader.remove();
+            })
+        }
+    </script> 
     @stack('scripts')
 </body>
 

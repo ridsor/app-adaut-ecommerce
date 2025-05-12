@@ -1,6 +1,4 @@
-@push('styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-@endpush
+
 
 <header x-ref="header" x-data="header()" :style="`height: ${height}px`" class="w-100">
     <div class="position-fixed z-3 w-100  bg-white" style="transition: all .3s ease-in-out"
@@ -85,7 +83,7 @@
                     aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <p>Cart</p>
+                <x-cart/>
             </div>
         </div>
         <div class="offcanvas offcanvas-top" data-bs-scroll="true" tabindex="-1" id="offcanvas_search"

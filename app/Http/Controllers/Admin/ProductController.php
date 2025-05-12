@@ -81,7 +81,7 @@ class ProductController extends Controller
           'category_id.exists' => 'Kategori yang dipilih tidak valid'
       ]);
   
-      $image = FileHelper::uploadFile($request->image, 'images/product');
+      $image = FileHelper::uploadFile($request->image, 'gambar/produk');
   
       Product::create([
         "name" => $request->name,
