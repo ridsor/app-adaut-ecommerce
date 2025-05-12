@@ -33,7 +33,7 @@
                 <div class="swiper-wrapper w-100 h-100">
                     @foreach ($products as $product)
                         <div class="swiper-slide">
-                            <x-product-items :product="$product" />
+                            <x-product-item :product="$product" />
                         </div>
                     @endforeach
                 </div>
@@ -54,7 +54,7 @@
             <div class="row py-5">
                 @foreach ($products as $product)
                     <div class="col-sm-12 pb-3 col-md-4 col-lg-3">
-                        <x-product-items :product="$product" />
+                        <x-product-item :product="$product" />
                     </div>
                 @endforeach
             </div>

@@ -28,11 +28,11 @@ class DatabaseSeeder extends Seeder
         ]);
         Category::create([
             'name' => 'Makanan',
-            'icon' => asset("storage/icon/cutlery.png")
+            'icon' => asset("storage/icon/kategori/cutlery.png")
         ]);
         Category::create([
             'name' => 'Kerajinan',
-            'icon' => asset("storage/icon/craft.png")
+            'icon' => asset("storage/icon/kategori/craft.png")
         ]);
         Product::factory(10)->create([
             'category_id' => Category::all()->random()->id,

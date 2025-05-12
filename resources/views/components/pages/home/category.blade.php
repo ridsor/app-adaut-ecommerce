@@ -20,19 +20,6 @@
     </div>
 </section>
 
-@push('styles')
-    <style>
-        .category-item {
-            transition: all 500ms;
-            box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04)
-        }
-
-        .category-item:hover {
-            transform: translateY(-1rem)
-        }
-    </style>
-@endpush
-
 @push('scripts')
     <script>
         var swiper = new Swiper("#category_swiper", {

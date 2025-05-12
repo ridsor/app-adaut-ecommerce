@@ -111,7 +111,7 @@ class CategoryController extends Controller
       $image = $request->image;
 
       if ($request->hasFile('image')) {
-        $image = FileHelper::uploadFile($request->image, 'icons/category');
+        $image = FileHelper::uploadFile($request->image, 'icon/kategori');
       }
 
       $category->update([
