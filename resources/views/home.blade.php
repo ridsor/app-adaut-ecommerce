@@ -7,15 +7,27 @@
             background: #f8f8f8;
             border: .5px solid #e2e3e5
         }
-        .cart-input .plus, .cart-input .minus {
+
+        .cart-input input[type="number"] {
+            appearance: none;
+            -moz-appearance: textfield;
+            -webkit-appearance: none;
+        }
+
+        .cart-input .plus,
+        .cart-input .minus {
             background: #e2e3e5;
         }
-        .cart-input .plus:hover, .cart-input .minus:hover {
+
+        .cart-input .plus:hover,
+        .cart-input .minus:hover {
             background: #f2f3f5;
         }
+
         .cart-input input {
             outline: none
         }
+
         .category-item {
             transition: all 500ms;
             box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04)

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/produk', [ProductController::class, 'index']);
-Route::get('/produk/{id}', [ProductController::class, 'show']);
+Route::get('/produk/{id}', [ProductController::class, 'show'])->name("product.detail");
 Route::post("/payment/notification-handler", [PaymentController::class, 'notificationHandler']);
 Route::group(['middleware' => ['verified', 'auth']], function () {
     Route::get('/checkout', [ProductController::class, 'checkout']);

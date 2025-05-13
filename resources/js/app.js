@@ -12,20 +12,33 @@ Alpine.store("globalState", {
 });
 
 Alpine.store("cart", {
-    select: Alpine.$persist([]),
     items: Alpine.$persist([
         {
+            id: 1,
             product_id: 1,
             quantity: 1,
             image: "https://themewagon.github.io/FoodMart/images/product-thumb-1.png",
             price: 15000,
             name: "Produk",
         },
+        {
+            id: 2,
+            product_id: 2,
+            quantity: 2,
+            image: "https://themewagon.github.io/FoodMart/images/product-thumb-1.png",
+            price: 15000,
+            name: "Produk",
+        },
     ]),
-    total: Alpine.$persist(0),
     update(newitem, quantity) {
         if (quantity > 0) {
             this.items = this.items.map((item) => {
+                if (item.id === newitem.id) {
+                    item.quantity = quantity;
+                }
+                return item;
+            });
+            this.selected = this.selected.map((item) => {
                 if (item.id === newitem.id) {
                     item.quantity = quantity;
                 }
@@ -36,23 +49,32 @@ Alpine.store("cart", {
     add(newItem) {
         this.items.push({ ...newItem });
     },
-    total(item) {
-        const result = this.items.reduce((acc, cur) => {
-            acc + cur.price * cur.quantity;
+    total(items) {
+        const result = items.reduce((acc, cur) => {
+            return acc + cur.price * cur.quantity;
         }, 0);
         return result;
     },
-    remove(id) {
-        const cartItem = this.items.find((item) => item.id === newItem.id);
-        if (cartItem) {
-            this.items = this.items.filter((item) => {
-                if (item.id !== id) {
-                    this.total -= item.price * item.quantity;
-                    return false;
-                }
-                return true;
-            });
+    remove(items) {
+        this.items = this.items.filter(
+            (item) => !items.some((x) => x.id === item.id)
+        );
+        this.selected = [];
+    },
+    selected: [],
+    isSelectedAll: false,
+    selectOne(newItem) {
+        const isExists = this.selected.some((item) => item.id === newItem.id);
+        if (isExists) {
+            this.selected = this.selected.filter(
+                (item) => item.id !== newItem.id
+            );
+        } else {
+            this.selected.push({ ...newItem });
         }
+    },
+    selectMany(newItems) {
+        this.selected = newItems;
     },
 });
 
