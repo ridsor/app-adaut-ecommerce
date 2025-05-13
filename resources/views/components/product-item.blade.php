@@ -1,6 +1,6 @@
-@props(['product' => []])
+@props(['product'])
 
-<div class="product-item">
+<a class="product-item text-decoration-none" href="{{ route("product.detail",["slug" => $product->slug]) }}">
     <div class="d-flex flex-column justify-content-center rounded-3 p-4">
         <div
             class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
@@ -21,4 +21,4 @@
         <div x-data class="product-price fw-semibold" x-text="$store.globalState.formattedPrice(15000)">
         </div>
     </div>
-</div>
+</a>

@@ -1,6 +1,47 @@
-<div id="cart" x-data>
+<div id="cart" x-data class="relative">
+    <div x-show="$store.cart.selected.length" x-transition x-transition.duration.300ms x-transition.opacity>
+        <div class="d-flex justify-content-between mb-1 align-items-center" style="flex:1">
+            <div style="font-size: 14px" class="text-secondary">
+                <span x-text="$store.cart.selected.length"></span> produk terpilih
+            </div>
+            <div>
+                <button @click="$store.cart.remove($store.cart.selected)" class="btn text-primary"
+                    style="font-size: 14px">Hapus</button>
+            </div>
+        </div>
+    </div>
+    <div class="position-absolute bottom-0 end-0 start-0 border-top">
+        <div class="d-flex">
+            <div class="d-flex align-items-center pe-2">
+                <div class="p-2">
+                    <div class="form-check d-flex justify-content-center align-content-center">
+                        <input class="form-check-input"
+                            x-bind:checked="$store.cart.items.length !== 0 && $store.cart.items.length === $store.cart.selected.length"
+                            type="checkbox" :disabled="!($store.cart.items.length > 0)"
+                            @change="$event.target.checked ? $store.cart.selectMany($store.cart.items) : $store.cart.selectMany([])">
+                    </div>
+                </div>
+                <div style="font-size: 13px">Semua</div>
+            </div>
+            <div class="d-flex justify-content-end" style="flex: 1">
+                <div class="d-flex align-items-center gap-1 px-2">
+                    <div>
+                        <div class="total-price fw-medium" style="font-size: 14px"
+                            x-text="$store.globalState.formattedPrice($store.cart.total($store.cart.selected))"></div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" :disabled="$store.cart.selected.length < 1">
+                            <span style="font-size: 14px">
+                                Checkout (<span x-text="$store.cart.selected.length">0</span>)
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <template x-if="($store.cart.items.length > 0)">
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column gap-2">
             <template x-for="(item, index) in $store.cart.items" :key="index">
                 <div class="cart-item">
                     <div class="d-flex gap-2">
@@ -31,7 +72,9 @@
                         </div>
                         <div class="cart-select d-flex align-items-center">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox"
+                                    x-bind:checked="$store.cart.selected.some(x => x.id === item.id)"
+                                    @change="$store.cart.selectOne(item)">
                             </div>
                         </div>
                     </div>

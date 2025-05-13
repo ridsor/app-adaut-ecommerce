@@ -1,5 +1,3 @@
-
-
 <header x-ref="header" x-data="header()" :style="`height: ${height}px`" class="w-100">
     <div class="position-fixed z-3 w-100  bg-white" style="transition: all .3s ease-in-out"
         @scroll.window = "scrolled = (window.pageYOffset > 5)" id="header-content" x-ref="source"
@@ -75,15 +73,16 @@
             </div>
         </div>
 
-        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvas_cart"
+        <div class="offcanvas offcanvas-end show" data-bs-scroll="true" tabindex="-1" id="offcanvas_cart"
             aria-labelledby="offcanvasWithBothOptionsLabel">
             <div class="offcanvas-header">
-                {{-- <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop with scrolling</h5> --}}
+                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Keranjang
+                </h5>
                 <button type="button" class="btn btn-close shadow-none" data-bs-dismiss="offcanvas"
                     aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <x-cart/>
+                <x-cart />
             </div>
         </div>
         <div class="offcanvas offcanvas-top" data-bs-scroll="true" tabindex="-1" id="offcanvas_search"
