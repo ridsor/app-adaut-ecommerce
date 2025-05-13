@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="position-absolute bottom-0 end-0 start-0 border-top">
+    <div class="position-absolute bottom-0 end-0 start-0 border-top z-3 bg-light">
         <div class="d-flex">
             <div class="d-flex align-items-center pe-2">
                 <div class="p-2">
@@ -53,16 +53,20 @@
                             <div class="cart-title" x-text="item.name"></div>
                             <div class="cart-title fw-semibold text-primary mb-2"
                                 x-text="$store.globalState.formattedPrice(item.price)"></div>
-                            <div class="cart-input d-flex rounded-2 overflow-hidden" style="width:fit-content">
-                                <button class="p-0 minus border-0" @click="$store.cart.update(item, item.quantity - 1)">
+                            <div class="cart-input d-flex border rounded-2 overflow-hidden" style="width:fit-content">
+                                <button class="p-0 minus border-0"
+                                    @click="$store.cart.update(item, Number(item.quantity - 1))"
+                                    :disabled="item.quantity < 2">
                                     <div class="d-flex justify-content-center align-items-center"
                                         style="width: 30px; height: 30px">
                                         <i class="fa-solid fa-minus"></i>
                                     </div>
                                 </button>
-                                <input type="number" class="rounded-1 border-0 px-2 text-center cart-input"
-                                    style="width: 50px; font-size: 14px" :value="item.quantity" />
-                                <button class="p-0 plus border-0" @click="$store.cart.update(item, item.quantity + 1)">
+                                <input type="number" class="rounded-1 border-0 px-2 text-center"
+                                    style="width: 50px; font-size: 14px; outline: none" :value="item.quantity"
+                                    @change="$store.cart.update(item, Number($event.target.value))" />
+                                <button class="p-0 plus border-0"
+                                    @click="$store.cart.update(item, Number(item.quantity + 1))">
                                     <div class="d-flex justify-content-center align-items-center"
                                         style="width: 30px; height: 30px">
                                         <i class="fa-solid fa-plus"></i>

@@ -10,14 +10,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $bestsellers = Product::select("id","image","price","name")
+        $bestsellers = Product::select("id","image","price","name", "slug")
                 ->withSum([
                     'order_items as total_sold'
                 ], 'quantity')
                 ->withCount('reviews')->withAvg('reviews', 'rating')
                 ->orderByDesc('total_sold')
                 ->limit(10)->get();
-        $products = Product::select("id","image","price", "name")
+        $products = Product::select("id","image","price", "name", "slug")
                 ->withSum([
                     'order_items as total_sold'
                 ], 'quantity')

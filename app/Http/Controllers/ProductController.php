@@ -24,15 +24,20 @@ class ProductController extends Controller
     ]);
   }
 
-  public function show($id)
+  public function show($slug)
   {
     $product = Product::with([
       "reviews" => function($query) {
-        $query->select(["rating", "item_id", "comment", "user_id"]);
+        $query->select(["rating", "product_id", "comment", "user_id"]);
       },
-      'reviews.user'])->withCount('reviews')->withAvg('reviews', 'rating')->find($id);
+      'reviews.user'])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
+
+    if(!$product) {
+
+    }
 
     return view('product.show', [
+      "title" => $product->name,
       "product" => $product
     ]);
   }

@@ -1,4 +1,6 @@
-<x-app-layout :title="$title">
+@extends('layouts.app')
+
+@section('content')
     <div class="container">
         <div class="row">
             @foreach ($products as $product)
@@ -18,4 +20,4 @@
             @endforeach
         </div>
     </div>
-</x-app-layout>
+@endsection
