@@ -43,10 +43,11 @@
                                     <i class="fa-solid fa-cart-shopping fs-4"></i>
                                 </x-icon>
                             </button>
-                            <span style="top: 1rem; left: 80%"
+                            <div x-show="$store.cart.items.length > 0" style="top: 1rem; left: 80%"
                                 class="position-absolute pe-none translate-middle badge rounded-pill bg-danger">
-                                99+
-                            </span>
+                                <span
+                                    x-text="$store.cart.items.length > 100 ? '99+':$store.cart.items.length">99+</span>
+                            </div>
                         </div>
 
                         <div class="user">
@@ -73,10 +74,10 @@
             </div>
         </div>
 
-        <div class="offcanvas offcanvas-end show" data-bs-scroll="true" tabindex="-1" id="offcanvas_cart"
-            aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvas_cart"
+            aria-labelledby="offcanvasCartLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Keranjang
+                <h5 class="offcanvas-title" id="offcanvasCartLabel">Keranjang
                 </h5>
                 <button type="button" class="btn btn-close shadow-none" data-bs-dismiss="offcanvas"
                     aria-label="Close"></button>
@@ -86,7 +87,7 @@
             </div>
         </div>
         <div class="offcanvas offcanvas-top" data-bs-scroll="true" tabindex="-1" id="offcanvas_search"
-            aria-labelledby="offcanvasWithBothOptionsLabel">
+            aria-labelledby="offcanvasSearchLabel">
             <div class="offcanvas-body">
                 <form method="GET" action="{{ route('search') }}">
                     <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">

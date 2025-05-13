@@ -9,27 +9,11 @@ window.Alpine = Alpine;
 
 Alpine.store("globalState", {
     formattedPrice,
+    formatNumberShort,
 });
 
 Alpine.store("cart", {
-    items: Alpine.$persist([
-        {
-            id: 1,
-            product_id: 1,
-            quantity: 1,
-            image: "https://themewagon.github.io/FoodMart/images/product-thumb-1.png",
-            price: 15000,
-            name: "Produk",
-        },
-        {
-            id: 2,
-            product_id: 2,
-            quantity: 2,
-            image: "https://themewagon.github.io/FoodMart/images/product-thumb-1.png",
-            price: 15000,
-            name: "Produk",
-        },
-    ]),
+    items: Alpine.$persist([]),
     update(newitem, quantity) {
         if (quantity > 0) {
             this.items = this.items.map((item) => {
@@ -40,14 +24,47 @@ Alpine.store("cart", {
             });
             this.selected = this.selected.map((item) => {
                 if (item.id === newitem.id) {
-                    item.quantity = quantity;
+                    item.quantity = Number(quantity);
+                }
+                return item;
+            });
+        } else {
+            this.items = this.items.map((item) => {
+                if (item.id === newitem.id) {
+                    item.quantity = 1;
+                }
+                return item;
+            });
+            this.selected = this.selected.map((item) => {
+                if (item.id === newitem.id) {
+                    item.quantity = 1;
                 }
                 return item;
             });
         }
     },
     add(newItem) {
-        this.items.push({ ...newItem });
+        const isExists = this.items.find(
+            (x) => x.product_id == newItem.product_id
+        );
+        if (!isExists) {
+            const id = crypto.randomUUID();
+            this.items.push({
+                id,
+                quantity: newItem.quantity,
+                product_id: newItem.product_id,
+                image: newItem.image,
+                name: newItem.name,
+                price: newItem.price,
+            });
+        } else {
+            this.items = this.items.map((item) => {
+                if (item.id === isExists.id) {
+                    item.quantity += newItem.quantity;
+                }
+                return item;
+            });
+        }
     },
     total(items) {
         const result = items.reduce((acc, cur) => {
@@ -87,4 +104,31 @@ function formattedPrice(value) {
     })
         .format(value)
         .replace(",00", "");
+}
+
+function formatNumberShort(num) {
+    if (num < 1000) return num.toString(); // Angka di bawah 1rb tidak diformat
+
+    const units = ["", "rb", "jt", "m", "t"];
+    const digitCount = Math.floor(Math.log10(num)) + 1;
+    const unitIndex = Math.min(
+        Math.floor((digitCount - 1) / 3),
+        units.length - 1
+    );
+    const divisor = Math.pow(1000, unitIndex);
+    const formattedNum = num / divisor;
+
+    // Cek apakah ada sisa (untuk menambahkan '+')
+    const hasRemainder = num % divisor !== 0;
+    const symbol = hasRemainder && unitIndex > 0 ? "+" : "";
+
+    // Format angka: bulatkan 1 desimal jika perlu (misal: 1.2rb)
+    let result;
+    if (formattedNum % 1 !== 0 && formattedNum < 10) {
+        result = formattedNum.toFixed(1) + units[unitIndex] + symbol;
+    } else {
+        result = Math.floor(formattedNum) + units[unitIndex] + symbol;
+    }
+
+    return result;
 }

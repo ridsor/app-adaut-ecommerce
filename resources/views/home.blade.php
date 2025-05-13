@@ -8,12 +8,6 @@
             border: .5px solid #e2e3e5
         }
 
-        .cart-input input[type="number"] {
-            appearance: none;
-            -moz-appearance: textfield;
-            -webkit-appearance: none;
-        }
-
         .cart-input .plus,
         .cart-input .minus {
             background: #e2e3e5;

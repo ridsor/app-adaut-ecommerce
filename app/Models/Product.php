@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Exception;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
@@ -20,6 +21,36 @@ class Product extends Model
         'stock',
         'category_id'
     ];
+
+    protected static function boot()
+{
+    parent::boot();
+
+    static::creating(function ($produk) {
+        $produk->slug = Str::slug($produk->name);
+        
+        // Jika slug sudah ada, tambahkan ID atau angka acak
+        $originalSlug = $produk->slug;
+        $count = 1;
+        
+        while (static::where('slug', $produk->slug)->exists()) {
+            $produk->slug = $originalSlug . '-' . $count++;
+        }
+    });
+
+    static::updating(function ($produk) {
+        if ($produk->isDirty('name')) { // Cek jika `name` berubah
+            $produk->slug = Str::slug($produk->name);
+            
+            $originalSlug = $produk->slug;
+            $count = 1;
+            
+            while (static::where('slug', $produk->slug)->where('id', '!=', $produk->id)->exists()) {
+                $produk->slug = $originalSlug . '-' . $count++;
+            }
+        }
+    });
+}
 
     public function order_items()
     {
@@ -48,7 +79,7 @@ class Product extends Model
 
     static public function filters($query, array $filters)
     {
-        $query->select(['id', 'name', 'image'])->withCount('reviews')->withAvg('reviews', 'rating');
+        $query->select(['id', 'name', 'image', 'slug'])->withCount('reviews')->withAvg('reviews', 'rating');
 
         // sort "latest, oldest, bestsellers, highest_price, lowest_price"
         // dd($query->first());
