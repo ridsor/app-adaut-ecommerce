@@ -36,7 +36,7 @@
         </div>
         <div>
             <p>
-                © 2023 Toko Online. All rights reserved.
+                © 2023 Adaut. All rights reserved.
             </p>
         </div>
     </div>
