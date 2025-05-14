@@ -25,7 +25,7 @@
         @include('layouts.header')
     @endunless
     @yield('content')
-    @unless (in_array(Route::currentRouteName(), ['login', 'register', 'product.detail', 'errors.404']))
+    @unless (in_array(Route::currentRouteName(), ['login', 'register', 'product.detail']))
         @include('layouts.footer')
     @endunless
 
