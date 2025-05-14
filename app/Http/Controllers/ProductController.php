@@ -28,9 +28,11 @@ class ProductController extends Controller
   {
     $product = Product::with([
       "reviews" => function($query) {
-        $query->select(["rating", "product_id", "comment", "user_id"]);
+        $query->select(["rating", "product_id", "comment", "user_id", "created_at"]);
       },
-      'reviews.user'])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
+      'reviews.user' => function($query) {
+        $query->select(['id','name']);
+      }])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
 
     if(!$product) {
 

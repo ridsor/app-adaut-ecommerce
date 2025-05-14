@@ -37,9 +37,6 @@ class DatabaseSeeder extends Seeder
         Product::factory(10)->create([
             'category_id' => Category::all()->random()->id,
         ]);
-        Review::factory(10)->create([
-            'product_id' => Product::all()->random()->id,
-            'user_id' => $user->id
-        ]);
+        Review::factory(20)->create();
     }
 }

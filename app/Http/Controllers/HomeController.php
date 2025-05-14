@@ -25,7 +25,6 @@ class HomeController extends Controller
                 ->latest()
                 ->limit(10)->get();
         $categories = Category::select('name','icon','id')->get();
-        
 
         return view('home', [
             'bestsellers' => $bestsellers,
