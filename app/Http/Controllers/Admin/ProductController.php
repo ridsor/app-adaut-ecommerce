@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use App\Helpers\FileHelper;
+use App\Http\Controllers\Controller;
 
 class ProductController extends Controller
 {
@@ -61,11 +62,6 @@ class ProductController extends Controller
         "image" => "required|image|mimes:jpeg,png,jpg|max:2048",
       ],
         [
-          'product_id.required' => 'ID produk wajib diisi',
-          'quantity.required' => 'Jumlah produk wajib diisi',
-          'quantity.integer' => 'Jumlah produk harus berupa angka bulat',
-          'quantity.min' => 'Jumlah produk minimal harus 1',
-          
           'name.required' => 'Nama produk wajib diisi',
           'description.required' => 'Deskripsi produk wajib diisi',
           'price.required' => 'Harga produk wajib diisi',
@@ -83,7 +79,7 @@ class ProductController extends Controller
       ]);
   
       $image = FileHelper::uploadFile($request->image, 'gambar/produk');
-  
+      
       Product::create([
         "name" => $request->name,
         "price" => $request->price,

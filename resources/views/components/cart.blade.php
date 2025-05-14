@@ -45,7 +45,7 @@
             <template x-for="(item, index) in $store.cart.items" :key="index">
                 <div class="cart-item">
                     <div class="d-flex gap-2">
-                        <div class="cart-image ratio ratio-1x1" style="width: 80px">
+                        <div class="product-image ratio ratio-1x1" style="width: 80px">
                             <img :src="item.image" style="background-position: center"
                                 class="h-100 object-fit-contain" />
                         </div>

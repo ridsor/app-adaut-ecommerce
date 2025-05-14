@@ -38,7 +38,7 @@ class FileHelper
                 return Storage::url($imageStorage);
             } else {
                 $imageName = time() . '.' . $file->extension();
-                $imageStorage = Storage::disk('public')->putFile($directory, $file, $imageName);
+                $imageStorage = Storage::disk('public')->putFileAs($directory, $file, $imageName);
                 return Storage::url($imageStorage); 
             }
         } catch (\Exception $e) {
