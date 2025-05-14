@@ -4,8 +4,7 @@
     <div class="d-flex flex-column justify-content-center rounded-3 p-4">
         <div
             class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-            <img src="https://themewagon.github.io/FoodMart/images/product-thumb-1.png"
-                style="background-position: center" class="h-100 object-fit-contain" />
+            <img src="{{ $product->image }}" style="background-position: center" class="h-100 object-fit-contain" />
         </div>
         <div class="product-title fw-semibold mb-2">{{ $product->name }}</div>
         <div class="d-flex align-items-center mb-2" style="gap: 8px">

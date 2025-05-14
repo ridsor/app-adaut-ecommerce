@@ -7,8 +7,8 @@
                 <div class="col-12 col-md-6 col-lg-4">
                     <div
                         class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-                        <img src="https://themewagon.github.io/FoodMart/images/product-thumb-1.png"
-                            style="background-position: center" class="h-100 object-fit-contain" />
+                        <img src="{{ $product->image }}" style="background-position: center"
+                            class="h-100 object-fit-contain" />
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-8">
@@ -127,14 +127,6 @@
     </main>
 @endsection
 
-@push('head')
-    <style>
-        .product-image {
-            background-color: #f9f9f9 !important;
-        }
-    </style>
-@endpush
-
 @push('scripts')
     <script src='https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js'></script>
     <script>
@@ -155,7 +147,7 @@
                         name: '{{ $product->name }}',
                         product_id: {{ $product->id }},
                         price: {{ $product->price }},
-                        image: 'https://themewagon.github.io/FoodMart/images/product-thumb-1.png',
+                        image: '{{ $product->image }}',
                     })
 
                     this.showAnimationAddCart = true;
