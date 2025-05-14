@@ -16,7 +16,7 @@ class ProductController extends Controller
     $this->authorize('isAdmin');
   }
 
-  public function index(Request $request)
+  public function search(Request $request)
   {
     $products = Product::search($request->query('search'))->query(fn($query) => Product::filters($query, request(['sort', 'category', 'max_price', 'min_price', 'stock'])))->get();
 
