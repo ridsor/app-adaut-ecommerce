@@ -15,7 +15,8 @@ class HomeController extends Controller
                     'order_items as total_sold'
                 ], 'quantity')
                 ->withCount('reviews')->withAvg('reviews', 'rating')
-                ->orderByDesc('total_sold')
+                ->orderBy('total_sold', 'desc')
+                ->orderBy('reviews_avg_rating', 'desc')
                 ->limit(10)->get();
         $products = Product::select("id","image","price", "name", "slug")
                 ->withSum([

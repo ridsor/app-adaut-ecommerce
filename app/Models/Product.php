@@ -82,19 +82,19 @@ class Product extends Model
         $query->select(['id', 'name', 'image', 'slug'])->withCount('reviews')->withAvg('reviews', 'rating');
 
         // sort "latest, oldest, bestsellers, highest_price, lowest_price"
-        // dd($query->first());
         $query->when($filters['sort'] ?? false, function ($query, $sort) {
             if ($sort === 'oldest') {
                 $query->oldest();
             } elseif ($sort === 'bestsellers') {
                 $query->withSum([
-                    'orders as total_sold'
+                    'order_items as total_sold'
                 ], 'quantity')
-                    ->orderByDesc('total_sold');
+                ->orderBy('total_sold', 'desc')
+                ->orderBy('reviews_avg_rating', 'desc');
             } elseif ($sort === 'highest_price') {
-                $query->orderByDesc('price');
+                $query->orderBy('price', 'desc');
             } elseif ($sort === 'lowest_price') {
-                $query->orderBy('price');
+                $query->orderBy('price', 'asc');
             } else {
                 $query->latest();
             }
