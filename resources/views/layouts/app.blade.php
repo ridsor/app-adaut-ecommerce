@@ -13,7 +13,7 @@
     <script src="https://kit.fontawesome.com/0c8762722d.js" crossorigin="anonymous"></script>
 
     <!-- Scripts -->
-    @vite(['resources/js/app.js', 'resources/css/app.css', 'resources/css/bootstrap.css'])
+    @vite(['resources/js/app.js', 'resources/css/app.css', 'resources/scss/app.scss'])
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- CSS -->
