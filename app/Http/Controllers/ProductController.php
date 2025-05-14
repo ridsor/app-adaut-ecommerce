@@ -15,11 +15,11 @@ use Midtrans\Snap;
 
 class ProductController extends Controller
 {
-  public function index(Request $request)
+  public function search(Request $request)
   {
     $products = Product::search($request->query('search'))->query(fn($query) => Product::filters($query, request(['sort', 'category', 'max_price', 'min_price', 'stock'])))->get();
 
-    return view('product.index', [
+    return view('search', [
       'title' => "Produk",
       "products" => $products
     ]);

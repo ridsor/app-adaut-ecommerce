@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Helpers\FileHelper;
 
 class ProductController extends Controller
@@ -16,7 +15,7 @@ class ProductController extends Controller
     $this->authorize('isAdmin');
   }
 
-  public function search(Request $request)
+  public function index(Request $request)
   {
     $products = Product::search($request->query('search'))->query(fn($query) => Product::filters($query, request(['sort', 'category', 'max_price', 'min_price', 'stock'])))->get();
 
@@ -26,13 +25,15 @@ class ProductController extends Controller
     ]);
   }
 
-  public function show($id)
+  public function show($slug)
   {
     $product = Product::with([
       "reviews" => function($query) {
-        $query->select(["rating", "item_id", "comment", "user_id"]);
+        $query->select(["rating", "product_id", "comment", "user_id", "created_at"]);
       },
-      'reviews.user'])->withCount('reviews')->withAvg('reviews', 'rating')->find($id);
+      'reviews.user' => function($query) {
+        $query->select(['id','name']);
+      }])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
 
     return view('product.show', [
       "product" => $product
