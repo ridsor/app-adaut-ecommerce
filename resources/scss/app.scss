@@ -1,0 +1,23 @@
+// 1. Override variabel warna Bootstrap
+$primary: #012970;
+$secondary: #6c757d;
+$success: #198754;
+$info: #0dcaf0;
+$warning: #ffc107;
+$danger: #dc3545;
+$light: #f8f9fa;
+$dark: #212529;
+
+// 2. Override font default
+$font-family-sans-serif: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+// 3. Import Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+// 4. Custom CSS tambahan (opsional)
+:root {
+    --swiper-theme-color: #0d6efd;
+    --swiper-pagination-bullet-size: 15px;
+}
+
