@@ -13,7 +13,7 @@ class Product extends Model
 {
     use HasFactory, Searchable;
 
-    protected $filltable = [
+    protected $fillable = [
         'name',
         'image',
         'price',
@@ -26,27 +26,27 @@ class Product extends Model
 {
     parent::boot();
 
-    static::creating(function ($produk) {
-        $produk->slug = Str::slug($produk->name);
+    static::creating(function ($product) {
+        $product->slug = Str::slug($product->name);
         
         // Jika slug sudah ada, tambahkan ID atau angka acak
-        $originalSlug = $produk->slug;
+        $originalSlug = $product->slug;
         $count = 1;
         
-        while (static::where('slug', $produk->slug)->exists()) {
-            $produk->slug = $originalSlug . '-' . $count++;
+        while (static::where('slug', $product->slug)->exists()) {
+            $product->slug = $originalSlug . '-' . $count++;
         }
     });
 
-    static::updating(function ($produk) {
-        if ($produk->isDirty('name')) { // Cek jika `name` berubah
-            $produk->slug = Str::slug($produk->name);
+    static::updating(function ($product) {
+        if ($product->isDirty('name')) { // Cek jika `name` berubah
+            $product->slug = Str::slug($product->name);
             
-            $originalSlug = $produk->slug;
+            $originalSlug = $product->slug;
             $count = 1;
             
-            while (static::where('slug', $produk->slug)->where('id', '!=', $produk->id)->exists()) {
-                $produk->slug = $originalSlug . '-' . $count++;
+            while (static::where('slug', $product->slug)->where('id', '!=', $product->id)->exists()) {
+                $product->slug = $originalSlug . '-' . $count++;
             }
         }
     });

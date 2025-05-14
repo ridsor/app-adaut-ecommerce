@@ -45,17 +45,17 @@ class ProductController extends Controller
     ]);
   }
   
-  public function checkout()
-  {
-    $this->authorize('isUser');
+  // public function checkout()
+  // {
+  //   $this->authorize('isUser');
     
-    return view('checkout', [
-      "title" => "Checkout",
-      "midtrans_client_key" => env("MIDTRANS_CLIENT_KEY")
-    ]);
-  }
+  //   return view('checkout', [
+  //     "title" => "Checkout",
+  //     "midtrans_client_key" => env("MIDTRANS_CLIENT_KEY")
+  //   ]);
+  // }
   
-  public function checkoutPost(Request $request)
+  public function checkout(Request $request)
   {
     try {
       $this->authorize('isUser');
