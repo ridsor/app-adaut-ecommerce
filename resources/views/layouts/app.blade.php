@@ -12,21 +12,16 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <script src="https://kit.fontawesome.com/0c8762722d.js" crossorigin="anonymous"></script>
 
-    <!-- Scripts -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
-
     <!-- CSS -->
     @stack('head')
 
-    @vite(['resources/js/app.js', 'resources/css/app.css', 'resources/scss/app.scss'])
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
 <body>
-    @unless (in_array(Route::currentRouteName(), ['login', 'register']))
-        @include('layouts.header')
-    @endunless
+    @include('layouts.header')
     @yield('content')
-    @unless (in_array(Route::currentRouteName(), ['login', 'register', 'product.detail', 'search']))
+    @unless (in_array(Route::currentRouteName(), ['product.detail', 'search']))
         @include('layouts.footer')
     @endunless
 

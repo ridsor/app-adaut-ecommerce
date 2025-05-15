@@ -1,56 +1,143 @@
-<x-guest-layout>
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-lg-4">
-              <div class="card">
-                <div class="card-header">
-                  <h1 class="card-title">Register</h1>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>{{ $title ?? config('app.name') }}</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+    <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" crossorigin="anonymous">
+    </script>
+    <link href="/assets/css/styles.css" rel="stylesheet" />
+    @vite(['resources/css/app.css'])
+</head>
+
+<body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container-xl px-4">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-8 col-lg-9">
+                            <!-- Social registration form-->
+                            <div class="card my-5">
+                                <div class="card-body p-5 text-center">
+                                    <div class="h3 fw-light mb-3">Buat Akun</div>
+                                    <div class="small text-muted mb-2">Masuk dengan...</div>
+                                    <!-- Social registration links-->
+                                    <a class="btn btn-icon btn-google mx-1" href="#!"><i
+                                            class="fab fa-google fa-fw fa-sm"></i></a>
+                                </div>
+                                <hr class="my-0" />
+                                <div class="card-body p-5">
+                                    <div class="text-center small text-muted mb-4">
+                                        ... atau masukkan informasi Anda di bawah ini.
+                                    </div>
+                                    <!-- Login form-->
+                                    <form>
+                                        <!-- Form Row-->
+                                        <div class="row gx-3">
+                                            <div class="col-md-6">
+                                                <!-- Form Group (first name)-->
+                                                <div class="mb-3">
+                                                    <label class="text-gray-600 small" for="firstNameExample">First
+                                                        name</label>
+                                                    <input class="form-control form-control-solid" type="text"
+                                                        placeholder="" aria-label="First Name"
+                                                        aria-describedby="firstNameExample" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Form Group (last name)-->
+                                                <div class="mb-3">
+                                                    <label class="text-gray-600 small" for="lastNameExample">Last
+                                                        name</label>
+                                                    <input class="form-control form-control-solid" type="text"
+                                                        placeholder="" aria-label="Last Name"
+                                                        aria-describedby="lastNameExample" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Form Group (email address)-->
+                                        <div class="mb-3">
+                                            <label class="text-gray-600 small" for="emailExample">Email address</label>
+                                            <input class="form-control form-control-solid" type="text" placeholder=""
+                                                aria-label="Email Address" aria-describedby="emailExample" />
+                                        </div>
+                                        <!-- Form Row-->
+                                        <div class="row gx-3">
+                                            <div class="col-md-6">
+                                                <!-- Form Group (choose password)-->
+                                                <div class="mb-3">
+                                                    <label class="text-gray-600 small"
+                                                        for="passwordExample">Password</label>
+                                                    <input class="form-control form-control-solid" type="password"
+                                                        placeholder="" aria-label="Password"
+                                                        aria-describedby="passwordExample" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Form Group (confirm password)-->
+                                                <div class="mb-3">
+                                                    <label class="text-gray-600 small"
+                                                        for="confirmPasswordExample">Confirm Password</label>
+                                                    <input class="form-control form-control-solid" type="password"
+                                                        placeholder="" aria-label="Confirm Password"
+                                                        aria-describedby="confirmPasswordExample" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Form Group (form submission)-->
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="form-check">
+                                                <input class="form-check-input" id="checkTerms" type="checkbox"
+                                                    value="" />
+                                                <label class="form-check-label" for="checkTerms">
+                                                    I accept the
+                                                    <a href="#!">terms &amp; conditions</a>
+                                                    .
+                                                </label>
+                                            </div>
+                                            <a class="btn btn-primary" href="auth-login-social.html">Create Account</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                <hr class="my-0" />
+                                <div class="card-body px-5 py-4">
+                                    <div class="small text-center">
+                                        Have an account?
+                                        <a href="auth-login-social.html">Sign in!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                  @if ($errors->any())
-                    <div class="alert alert-danger" role="alert">
-                      @foreach ($errors->all() as $error)
-                        {{ $error }}
-                        <br />
-                      @endforeach
+            </main>
+        </div>
+        <div id="layoutAuthentication_footer">
+            <footer class="footer-admin mt-auto footer-dark">
+                <div class="container-xl px-4">
+                    <div class="row">
+                        <div class="col-md-6 small">Copyright &copy; Your Website 2021</div>
+                        <div class="col-md-6 text-md-end small">
+                            <a href="#!">Privacy Policy</a>
+                            &middot;
+                            <a href="#!">Terms &amp; Conditions</a>
+                        </div>
                     </div>
-                  @endif
-                  <form action="{{ route('register') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                      <label for="first_name" class="form-label">Nama Depan</label>
-                      <input type="text" name="first_name" class="form-control" id="first_name"
-                        value="{{ old('first_name') }}" required>
-                    </div>
-                    <div class="mb-3">
-                      <label for="last_name" class="form-label">Nama Belakang</label>
-                      <input type="text" name="last_name" class="form-control" id="last_name" value="{{ old('last_name') }}"
-                        required>
-                    </div>
-                    <div class="mb-3">
-                      <label for="email" class="form-label">Email address</label>
-                      <input type="email" name="email" class="form-control" id="email" value="{{ old('email') }}"
-                        placeholder="name@example.com" required>
-                    </div>
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      <input type="password" value="{{ old('password') }}" name="password" class="form-control" id="password"
-                        required>
-                    </div>
-                    <div class="mb-3">
-                      <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                      <input type="password" value="{{ old('password_confirmation') }}" name="password_confirmation"
-                        class="form-control" id="password_confirmation" required>
-                    </div>
-                    <div class="mb-3">
-                      <div class="d-grid">
-                        <button class="btn btn-primary">Register</button>
-                      </div>
-                    </div>
-                  </form>
                 </div>
-              </div>
-            </div>
-          </div>
+            </footer>
+        </div>
     </div>
-</x-guest-layout>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    </script>
+    <script src="/assets/js/scripts.js"></script>
+</body>
+
+</html>
