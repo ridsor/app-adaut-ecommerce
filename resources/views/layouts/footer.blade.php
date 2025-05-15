@@ -79,7 +79,7 @@
             </div>
         </div>
         <p class="text-center">
-            © 2023 Adaut. All rights reserved.
+            © 2025 Adaut. All rights reserved.
         </p>
     </div>
 </footer>
