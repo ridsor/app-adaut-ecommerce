@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -56,6 +57,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Order::class);
     }
 
+    public function profile() {
+        return $this->hasOne(Profile::class);
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';
@@ -65,4 +70,32 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'user';
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->username = Str::slug($user->name, "_");
+            
+            $originalusername = $user->username;
+            $count = 1;
+            
+            while (static::where('username', $user->username)->where('id', '!=', $user->id)->exists()) {
+                $user->username = $originalusername . '_' . $count++;
+            }
+        });
+
+        static::updating(function ($user) {
+            if ($user->isDirty('name')) { 
+                $user->username = Str::slug($user->name, "_");
+                
+                $originalusername = $user->username;
+                $count = 1;
+                
+                while (static::where('username', $user->username)->where('id', '!=', $user->id)->exists()) {
+                    $user->username = $originalusername . '_' . $count++;
+                }
+            }
+        });
+    }
 }

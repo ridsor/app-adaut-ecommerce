@@ -23,34 +23,34 @@ class Product extends Model
     ];
 
     protected static function boot()
-{
-    parent::boot();
+    {
+        parent::boot();
 
-    static::creating(function ($product) {
-        $product->slug = Str::slug($product->name);
-        
-        // Jika slug sudah ada, tambahkan ID atau angka acak
-        $originalSlug = $product->slug;
-        $count = 1;
-        
-        while (static::where('slug', $product->slug)->exists()) {
-            $product->slug = $originalSlug . '-' . $count++;
-        }
-    });
-
-    static::updating(function ($product) {
-        if ($product->isDirty('name')) { // Cek jika `name` berubah
+        static::creating(function ($product) {
             $product->slug = Str::slug($product->name);
             
+            // Jika slug sudah ada, tambahkan ID atau angka acak
             $originalSlug = $product->slug;
             $count = 1;
             
-            while (static::where('slug', $product->slug)->where('id', '!=', $product->id)->exists()) {
+            while (static::where('slug', $product->slug)->exists()) {
                 $product->slug = $originalSlug . '-' . $count++;
             }
-        }
-    });
-}
+        });
+
+        static::updating(function ($product) {
+            if ($product->isDirty('name')) { // Cek jika `name` berubah
+                $product->slug = Str::slug($product->name);
+                
+                $originalSlug = $product->slug;
+                $count = 1;
+                
+                while (static::where('slug', $product->slug)->where('id', '!=', $product->id)->exists()) {
+                    $product->slug = $originalSlug . '-' . $count++;
+                }
+            }
+        });
+    }
 
     public function order_items()
     {
@@ -64,7 +64,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     public function decreaseStock($quantity)
