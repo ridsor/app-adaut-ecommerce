@@ -4,9 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <meta name="author" content="Ryan Syukur" />
     <title>{{ $title ?? config('app.name') }}</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
