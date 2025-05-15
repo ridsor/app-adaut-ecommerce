@@ -5,8 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <meta name="author" content="Ryan Syukur" />
     <title>{{ $title ?? config('app.name') }}</title>
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
     <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
@@ -38,80 +37,93 @@
                                     <div class="text-center small text-muted mb-4">
                                         ... atau masukkan informasi Anda di bawah ini.
                                     </div>
+                                    @if (session()->has('error'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ session()->get('error') }}
+                                        </div>
+                                    @endif
                                     <!-- Login form-->
-                                    <form>
+                                    <form method="POST" action="{{ route('register.post') }}">
+                                        @csrf
                                         <!-- Form Row-->
                                         <div class="row gx-3">
-                                            <div class="col-md-6">
-                                                <!-- Form Group (first name)-->
-                                                <div class="mb-3">
-                                                    <label class="text-gray-600 small" for="firstNameExample">First
-                                                        name</label>
-                                                    <input class="form-control form-control-solid" type="text"
-                                                        placeholder="" aria-label="First Name"
-                                                        aria-describedby="firstNameExample" />
+                                            <!-- Form Group (name)-->
+                                            <div class="mb-3">
+                                                <label class="text-gray-600 small" for="emailExample">Nama</label>
+                                                <input
+                                                    class="form-control form-control-solid @error('name') is-invalid @enderror"
+                                                    type="text" placeholder="" name="name"
+                                                    value="{{ old('name') }}" aria-label="Email Address"
+                                                    aria-describedby="emailExample" />
+                                                <div class="invalid-feedback">
+                                                    @error('name')
+                                                        {{ $message }}
+                                                    @enderror
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <!-- Form Group (last name)-->
-                                                <div class="mb-3">
-                                                    <label class="text-gray-600 small" for="lastNameExample">Last
-                                                        name</label>
-                                                    <input class="form-control form-control-solid" type="text"
-                                                        placeholder="" aria-label="Last Name"
-                                                        aria-describedby="lastNameExample" />
+                                            <!-- Form Group (email address)-->
+                                            <div class="mb-3">
+                                                <label class="text-gray-600 small" for="emailExample">Email
+                                                    address</label>
+                                                <input
+                                                    class="form-control form-control-solid @error('email') is-invalid @enderror"
+                                                    type="text" placeholder="" name="email"
+                                                    value="{{ old('email') }}" aria-label="Email Address"
+                                                    aria-describedby="emailExample" />
+                                                <div class="invalid-feedback">
+                                                    @error('email')
+                                                        {{ $message }}
+                                                    @enderror
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!-- Form Group (email address)-->
-                                        <div class="mb-3">
-                                            <label class="text-gray-600 small" for="emailExample">Email address</label>
-                                            <input class="form-control form-control-solid" type="text" placeholder=""
-                                                aria-label="Email Address" aria-describedby="emailExample" />
-                                        </div>
-                                        <!-- Form Row-->
-                                        <div class="row gx-3">
-                                            <div class="col-md-6">
-                                                <!-- Form Group (choose password)-->
-                                                <div class="mb-3">
-                                                    <label class="text-gray-600 small"
-                                                        for="passwordExample">Password</label>
-                                                    <input class="form-control form-control-solid" type="password"
-                                                        placeholder="" aria-label="Password"
-                                                        aria-describedby="passwordExample" />
+                                            <!-- Form Row-->
+                                            <div class="row gx-3">
+                                                <div class="col-md-6">
+                                                    <!-- Form Group (choose password)-->
+                                                    <div class="mb-3">
+                                                        <label class="text-gray-600 small"
+                                                            for="passwordExample">Password</label>
+                                                        <input
+                                                            class="form-control form-control-solid @error('password') is-invalid @enderror"
+                                                            type="password" name="password" placeholder=""
+                                                            value="{{ old('password') }}" aria-label="Password"
+                                                            aria-describedby="passwordExample" />
+                                                        <div class="invalid-feedback">
+                                                            @error('password')
+                                                                {{ $message }}
+                                                            @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Form Group (confirm password)-->
+                                                    <div class="mb-3">
+                                                        <label class="text-gray-600 small"
+                                                            for="confirmPasswordExample">Konfirmasi Password</label>
+                                                        <input
+                                                            class="form-control form-control-solid @error('password_confirmation') is-invalid @enderror"
+                                                            type="password" name="password_confirmation" placeholder=""
+                                                            aria-label="Confirm Password"
+                                                            aria-describedby="confirmPasswordExample" />
+                                                        <div class="invalid-feedback">
+                                                            @error('password_confirmation ')
+                                                                {{ $message }}
+                                                            @enderror
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <!-- Form Group (confirm password)-->
-                                                <div class="mb-3">
-                                                    <label class="text-gray-600 small"
-                                                        for="confirmPasswordExample">Confirm Password</label>
-                                                    <input class="form-control form-control-solid" type="password"
-                                                        placeholder="" aria-label="Confirm Password"
-                                                        aria-describedby="confirmPasswordExample" />
-                                                </div>
+                                            <!-- Form Group (form submission)-->
+                                            <div class="d-flex align-items-center justify-content-center">
+                                                <button class="btn btn-primary w-100">Buat Akun</button>
                                             </div>
-                                        </div>
-                                        <!-- Form Group (form submission)-->
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div class="form-check">
-                                                <input class="form-check-input" id="checkTerms" type="checkbox"
-                                                    value="" />
-                                                <label class="form-check-label" for="checkTerms">
-                                                    I accept the
-                                                    <a href="#!">terms &amp; conditions</a>
-                                                    .
-                                                </label>
-                                            </div>
-                                            <a class="btn btn-primary" href="auth-login-social.html">Create Account</a>
-                                        </div>
                                     </form>
                                 </div>
                                 <hr class="my-0" />
                                 <div class="card-body px-5 py-4">
                                     <div class="small text-center">
-                                        Have an account?
-                                        <a href="auth-login-social.html">Sign in!</a>
+                                        Punya akun?
+                                        <a href="{{ route('login') }}">Masuk!</a>
                                     </div>
                                 </div>
                             </div>
@@ -124,18 +136,13 @@
             <footer class="footer-admin mt-auto footer-dark">
                 <div class="container-xl px-4">
                     <div class="row">
-                        <div class="col-md-6 small">Copyright &copy; Your Website 2021</div>
-                        <div class="col-md-6 text-md-end small">
-                            <a href="#!">Privacy Policy</a>
-                            &middot;
-                            <a href="#!">Terms &amp; Conditions</a>
-                        </div>
+                        <div class="col-md-6 small">© 2025 Adaut. All rights reserved.</div>
                     </div>
                 </div>
             </footer>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
+    <script src="/assets/js/bootsrap.bundle.min.js">
     </script>
     <script src="/assets/js/scripts.js"></script>
 </body>
