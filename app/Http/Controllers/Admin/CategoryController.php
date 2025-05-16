@@ -47,7 +47,7 @@ class CategoryController extends Controller
       $request->validate(
         [
           "name" => "required",
-          "image" => "required|image|mimes:jpeg,png,jpg,svg,webp|max:1048",
+          "image" => "required|image|mimes:jpeg,png,jpg,svg,webp|max:500",
         ],
         [
 
@@ -55,7 +55,7 @@ class CategoryController extends Controller
           'image.required' => 'Gambar produk wajib diunggah',
           'image.image' => 'File harus berupa gambar',
           'image.mimes' => 'Format gambar harus webp, svg, jpeg, png, atau jpg',
-          'image.max' => 'Ukuran gambar maksimal 1MB',
+          'image.max' => 'Ukuran gambar maksimal 500KB',
         ]
       );
 
@@ -95,7 +95,7 @@ class CategoryController extends Controller
       ];
 
       if ($request->hasFile('image')) {
-        $rules['image'] = "required|image|mimes:jpeg,png,jpg,svg,webp|max:1048";
+        $rules['image'] = "required|image|mimes:jpeg,png,jpg,svg,webp|max:500";
       }
 
       $request->validate($rules, [
@@ -103,7 +103,7 @@ class CategoryController extends Controller
         'image.required' => 'Gambar produk wajib diunggah',
         'image.image' => 'File harus berupa gambar',
         'image.mimes' => 'Format gambar harus svg, webp, jpeg, png, atau jpg',
-        'image.max' => 'Ukuran gambar maksimal 1MB',
+        'image.max' => 'Ukuran gambar maksimal 500KB',
       ]);
 
       $category = Category::find($id);
