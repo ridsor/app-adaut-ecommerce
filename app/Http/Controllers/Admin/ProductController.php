@@ -72,7 +72,7 @@ class ProductController extends Controller
           'image.required' => 'Gambar produk wajib diunggah',
           'image.image' => 'File harus berupa gambar',
           'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
-          'image.max' => 'Ukuran gambar maksimal 2MB',
+          'image.max' => 'Ukuran gambar maksimal 1MB',
   
           'category_id.required' => 'Kategori wajib dipilih',
           'category_id.exists' => 'Kategori yang dipilih tidak valid'
@@ -136,7 +136,7 @@ class ProductController extends Controller
         'image.required' => 'Gambar produk wajib diunggah',
         'image.image' => 'File harus berupa gambar',
         'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
-        'image.max' => 'Ukuran gambar maksimal 2MB',
+        'image.max' => 'Ukuran gambar maksimal 1MB',
   
         'category_id.required' => 'Kategori wajib dipilih',
         'category_id.exists' => 'Kategori yang dipilih tidak valid'
