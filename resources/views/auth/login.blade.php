@@ -10,7 +10,7 @@
                         <div class="card-body p-5 text-center">
                             <div class="h3 fw-light mb-3">Masuk</div>
                             <!-- Social login links-->
-                            <a class="btn btn-icon btn-google mx-1" href="#!"><i
+                            <a class="btn btn-icon btn-google mx-1" href="{{ route('auth.google.redirect') }}"><i
                                     class="fab fa-google fa-fw fa-sm"></i></a>
                         </div>
                         <hr class="my-0" />

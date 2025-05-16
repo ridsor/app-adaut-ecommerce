@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <main>
+    <main x-data>
         <div id="layoutError_content">
             <div class="container-xl px-4 py-5">
                 <div class="row justify-content-center">
@@ -9,8 +9,8 @@
                         <div class="text-center mt-4">
                             <img class="img-fluid p-4" src="/assets/img/illustrations/404-error.svg" alt="" />
                             <p class="lead">URL yang diminta ini tidak ditemukan di server ini.</p>
-                            <a class="text-arrow-icon small text-decoration-none d-flex align-items-center justify-content-center"
-                                href="/">
+                            <a class="text-arrow-icon small text-decoration-none d-flex align-items-center justify-content-center" style="cursor: pointer;"
+                                @click.prevent="window.history.back()">
                                 <i class="fa-solid fa-arrow-left me-1"
                                     style="font-size: 14px; transform:translateY(-.5px)"></i>
                                 Kembali
