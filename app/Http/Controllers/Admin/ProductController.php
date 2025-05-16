@@ -59,7 +59,7 @@ class ProductController extends Controller
         "price" => "required|numeric",
         "stock" => "required|integer",
         "category_id" => 'required|exists:categories,id',
-        "image" => "required|image|mimes:jpeg,png,jpg|max:1048",
+        "image" => "required|image|mimes:jpeg,png,jpga,webp|max:1048",
       ],
         [
           'name.required' => 'Nama produk wajib diisi',
