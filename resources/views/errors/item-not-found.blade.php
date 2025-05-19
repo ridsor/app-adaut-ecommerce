@@ -10,7 +10,7 @@
                             <img class="img-fluid p-4" src="/assets/img/illustrations/404-error.svg" alt="" />
                             <p class="lead">Oops, {{ $name ?? 'produk' }} nggak ditemukan</p>
                             <a class="text-arrow-icon small text-decoration-none d-flex align-items-center justify-content-center"
-                                @click.prevent="window.history.back()">
+                                style="cursor: pointer;" @click.prevent="window.history.back()">
                                 <i class="fa-solid fa-arrow-left me-1"
                                     style="font-size: 14px; transform:translateY(-.5px)"></i>
                                 Kembali
