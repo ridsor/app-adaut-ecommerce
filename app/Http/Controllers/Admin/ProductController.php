@@ -52,32 +52,32 @@ class ProductController extends Controller
 
   public function store(Request $request)
   {
+    $request->validate([
+      "name" => "required",
+      "description" => "required",
+      "price" => "required|numeric",
+      "stock" => "required|integer",
+      "category_id" => 'required|exists:categories,id',
+      "image" => "required|image|mimes:jpeg,png,jpga,webp|max:1048",
+    ],
+      [
+        'name.required' => 'Nama produk wajib diisi',
+        'description.required' => 'Deskripsi produk wajib diisi',
+        'price.required' => 'Harga produk wajib diisi',
+        'price.numeric' => 'Harga harus berupa angka',
+        'stock.required' => 'Stok produk wajib diisi',
+        'stock.integer' => 'Stok harus berupa angka bulat',
+        'category_id.required' => 'Kategori produk wajib dipilih',
+        'image.required' => 'Gambar produk wajib diunggah',
+        'image.image' => 'File harus berupa gambar',
+        'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
+        'image.max' => 'Ukuran gambar maksimal 1MB',
+  
+        'category_id.required' => 'Kategori wajib dipilih',
+        'category_id.exists' => 'Kategori yang dipilih tidak valid'
+    ]);
+
     try {
-      $request->validate([
-        "name" => "required",
-        "description" => "required",
-        "price" => "required|numeric",
-        "stock" => "required|integer",
-        "category_id" => 'required|exists:categories,id',
-        "image" => "required|image|mimes:jpeg,png,jpga,webp|max:1048",
-      ],
-        [
-          'name.required' => 'Nama produk wajib diisi',
-          'description.required' => 'Deskripsi produk wajib diisi',
-          'price.required' => 'Harga produk wajib diisi',
-          'price.numeric' => 'Harga harus berupa angka',
-          'stock.required' => 'Stok produk wajib diisi',
-          'stock.integer' => 'Stok harus berupa angka bulat',
-          'category_id.required' => 'Kategori produk wajib dipilih',
-          'image.required' => 'Gambar produk wajib diunggah',
-          'image.image' => 'File harus berupa gambar',
-          'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
-          'image.max' => 'Ukuran gambar maksimal 1MB',
-  
-          'category_id.required' => 'Kategori wajib dipilih',
-          'category_id.exists' => 'Kategori yang dipilih tidak valid'
-      ]);
-  
       $image = FileHelper::uploadFile($request->image, 'gambar/produk');
       
       Product::create([
@@ -107,42 +107,42 @@ class ProductController extends Controller
   }
   public function update($id, Request $request)
   {
+    $rules = [
+      "name" => "required",
+      "description" => "required",
+      "price" => "required|integer",
+      "stock" => "required|integer",
+      "category_id" => 'required|exists:categories,id',
+    ];
+  
+    if ($request->hasFile('image')) {
+      $rules['image'] = "required|image|mimes:jpeg,png,jpg|max:1048";
+    }
+  
+    $request->validate($rules,[
+      'product_id.required' => 'ID produk wajib diisi',
+      'quantity.required' => 'Jumlah produk wajib diisi',
+      'quantity.integer' => 'Jumlah produk harus berupa angka bulat',
+      'quantity.min' => 'Jumlah produk minimal harus 1',
+      
+      'name.required' => 'Nama produk wajib diisi',
+      'description.required' => 'Deskripsi produk wajib diisi',
+      'price.required' => 'Harga produk wajib diisi',
+      'price.numeric' => 'Harga harus berupa angka',
+      'stock.required' => 'Stok produk wajib diisi',
+      'stock.integer' => 'Stok harus berupa angka bulat',
+      'category_id.required' => 'Kategori produk wajib dipilih',
+      'image.required' => 'Gambar produk wajib diunggah',
+      'image.image' => 'File harus berupa gambar',
+      'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
+      'image.max' => 'Ukuran gambar maksimal 1MB',
+  
+      'category_id.required' => 'Kategori wajib dipilih',
+      'category_id.exists' => 'Kategori yang dipilih tidak valid'
+    ]);
+
     try {
-      $rules = [
-        "name" => "required",
-        "description" => "required",
-        "price" => "required|integer",
-        "stock" => "required|integer",
-        "category_id" => 'required|exists:categories,id',
-      ];
-  
-      if ($request->hasFile('image')) {
-        $rules['image'] = "required|image|mimes:jpeg,png,jpg|max:1048";
-      }
-  
-      $request->validate($rules,[
-        'product_id.required' => 'ID produk wajib diisi',
-        'quantity.required' => 'Jumlah produk wajib diisi',
-        'quantity.integer' => 'Jumlah produk harus berupa angka bulat',
-        'quantity.min' => 'Jumlah produk minimal harus 1',
-        
-        'name.required' => 'Nama produk wajib diisi',
-        'description.required' => 'Deskripsi produk wajib diisi',
-        'price.required' => 'Harga produk wajib diisi',
-        'price.numeric' => 'Harga harus berupa angka',
-        'stock.required' => 'Stok produk wajib diisi',
-        'stock.integer' => 'Stok harus berupa angka bulat',
-        'category_id.required' => 'Kategori produk wajib dipilih',
-        'image.required' => 'Gambar produk wajib diunggah',
-        'image.image' => 'File harus berupa gambar',
-        'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
-        'image.max' => 'Ukuran gambar maksimal 1MB',
-  
-        'category_id.required' => 'Kategori wajib dipilih',
-        'category_id.exists' => 'Kategori yang dipilih tidak valid'
-      ]);
-  
-      $product = Product::find($id);
+      $product = Product::findOrFail($id);
   
       $image = $request->image;
   

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("button_text")->nullable();
             $table->string("button_link")->nullable();
             $table->timestamps();
+            $table->fullText(['title']);
         });
     }
 

@@ -27,7 +27,7 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nama</label>
                                 <input type="text" name="name" class="form-control" id="name"
-                                    value="{{ old('name') }}" required>
+                                    value="{{ old('name') }}">
                             </div>
                             <div class="mb-3">
                                 <label for="price" class="form-label">Harga</label>
