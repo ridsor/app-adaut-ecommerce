@@ -17,7 +17,7 @@
     <!-- CSS -->
     @stack('head')
 
-    @vite(['resources/js/app.js', 'resources/css/app.css'])
+    @vite(['resources/js/app.js', 'resources/css/app.css', "resources/js/alpine.js"])
 </head>
 
 <body>

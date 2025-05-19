@@ -16,13 +16,15 @@ class BannerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $banners = Banner::latest()->get();
+        $total_banner = Banner::count();
+        $banners = Banner::search($request->query('search'))->query(fn($query) => $query->select(['id','image','title','description'])->latest())->get();
 
         return view('admin.banner.index',[
             'title' => 'Spanduk',
-            'banners' => $banners
+            'banners' => $banners,
+            'total_banner' => $total_banner
         ]);
     }
 
@@ -39,34 +41,33 @@ class BannerController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => "required|image|mimes:jpeg,png,jpg,webp|max:1048",
+            'button_text' => 'nullable',
+            'button_link' => 'nullable',
+        ],[
+            'image.required' => 'Gambar produk wajib diunggah',
+            'image.image' => 'File harus berupa gambar',
+            'image.mimes' => 'Format gambar harus web, jpeg, png, atau jpg',
+            'image.max' => 'Ukuran gambar maksimal 1MB',
+
+            'title.required' => 'Title spanduk wajib diisi',
+            'description.required' => 'Deskripsi produk wajib diisi',
+        ]);
         try {
-            $request->validate([
-                'title' => 'required',
-                'description' => 'required',
-                'image' => "required|image|mimes:jpeg,png,jpg,webp|max:1048",
-                'button_text' => 'nullable',
-                'button_link' => 'nullable',
-            ],[
-                'image.required' => 'Gambar produk wajib diunggah',
-                'image.image' => 'File harus berupa gambar',
-                'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
-                'image.max' => 'Ukuran gambar maksimal 1MB',
-
-                'title.required' => 'Title spanduk wajib diisi',
-                'description.required' => 'Deskripsi produk wajib diisi',
-            ]);
-
             $image = FileHelper::uploadFile($request->image, 'gambar/spanduk');
 
             Banner::create([
-            "title" => $request->name,
+            "title" => $request->title,
             "image" => $image,
             "description" => $request->description,
             "button_text" => $request->button_text,
             "button_link" => $request->button_link,
             ]);
         
-            return back()->with('success', 'Spanduk berhasil dibuat');
+            return redirect(route('banner.index'))->with('success', 'Spanduk berhasil dibuat');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal membuat spanduk');
         }
@@ -87,24 +88,24 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'image' => "required|image|mimes:jpeg,png,jpg,webp|max:1048",
+            'button_text' => 'nullable',
+            'button_link' => 'nullable',
+        ],[
+            'image.required' => 'Gambar produk wajib diunggah',
+            'image.image' => 'File harus berupa gambar',
+            'image.mimes' => 'Format gambar harus web, jpeg, png, atau jpg',
+            'image.max' => 'Ukuran gambar maksimal 1MB',
+
+            'title.required' => 'Title spanduk wajib diisi',
+            'description.required' => 'Deskripsi produk wajib diisi',
+        ]);
+
         try {
             $banner = $banner = Banner::findOrFail($id);
-
-            $request->validate([
-                'title' => 'required',
-                'description' => 'required',
-                'image' => "required|image|mimes:jpeg,png,jpg,webp|max:1048",
-                'button_text' => 'nullable',
-                'button_link' => 'nullable',
-            ],[
-                'image.required' => 'Gambar produk wajib diunggah',
-                'image.image' => 'File harus berupa gambar',
-                'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
-                'image.max' => 'Ukuran gambar maksimal 1MB',
-
-                'title.required' => 'Title spanduk wajib diisi',
-                'description.required' => 'Deskripsi produk wajib diisi',
-            ]);
 
             $image = FileHelper::uploadFile($request->image, 'images/product');
 

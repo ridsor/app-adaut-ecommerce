@@ -56,3 +56,7 @@ footer * {
 .product-image {
     background-color: #f9f9f9 !important;
 }
+
+.nav-link.active svg {
+    fill: #0061f2 !important;
+}
