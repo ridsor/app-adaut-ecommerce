@@ -11,7 +11,7 @@
                             <div class="h3 fw-light mb-3">Buat Akun</div>
                             <div class="small text-muted mb-2">Masuk dengan...</div>
                             <!-- Social registration links-->
-                            <a class="btn btn-icon btn-google mx-1" href="#!"><i
+                            <a class="btn btn-icon btn-google mx-1" href="{{ route('auth.google.redirect') }}"><i
                                     class="fab fa-google fa-fw fa-sm"></i></a>
                         </div>
                         <hr class="my-0" />

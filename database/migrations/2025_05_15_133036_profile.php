@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profile', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->references('id')->on('users')->onDelete('cascade');
-            $table->string('image');
-            $table->string('phone_number',20);
+            $table->string('image')->nullable();
+            $table->string('phone_number',20)->nullable();
             $table->enum('gender', ['Laki-laki', 'Perempuan'])->default('Laki-laki');
-            $table->date('date_of_birth');
+            $table->date('date_of_birth')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profile');
+        Schema::dropIfExists('profiles');
     }
 };
