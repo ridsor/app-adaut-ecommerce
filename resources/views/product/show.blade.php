@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-8">
-                    <h2 class="product-name fs-5 fw-bold">{{ $product->name }}</h2>
+                    <h2 class="product-name h2 fw-bold">{{ $product->name }}</h2>
                     <div class="d-flex gap-4 mb-2">
                         <div>
                             <span>Terjual <span
@@ -63,23 +63,17 @@
                         <button class="btn
                             btn-outline-primary">Beli Sekarang</button>
                     </div>
-                    <div class="product-description d-none d-lg-block mt-4">
-                        <div class="fw-semibold fs-5 mb-1">Deskripsi</div>
-                        <div>
-                            {!! $product->description !!}
-                        </div>
-                    </div>
                 </div>
             </div>
             <div>
-                <div class="product-description d-lg-none mb-4">
-                    <div class="fw-semibold fs-5 mb-2">Deskripsi</div>
+                <div class="product-description mb-5    ">
+                    <div class="fw-semibold mb-2 h4">Deskripsi</div>
                     <div>
                         {!! $product->description !!}
                     </div>
                 </div>
                 <div class="product-review" style="max-width: 800px">
-                    <div class="fw-semibold fs-5 mb-3">Ulasan</div>
+                    <div class="fw-semibold mb-3 h4">Ulasan</div>
                     <div class="review-list d-flex flex-column">
                         @foreach ($product->reviews as $review)
                             <div class="review-item">
