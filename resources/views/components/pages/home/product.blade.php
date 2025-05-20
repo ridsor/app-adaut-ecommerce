@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="swiper py-5" id="{{ $id }}_product_swiper">
+            <div class="swiper py-5 px-3 px-md-0" id="{{ $id }}_product_swiper">
                 <div class="swiper-wrapper w-100 h-100">
                     @foreach ($products as $product)
                         <div class="swiper-slide">
@@ -51,9 +51,9 @@
                         semua <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
-            <div class="row py-5">
+            <div class="row py-5 px-3 g-4 px-md-0">
                 @foreach ($products as $product)
-                    <div class="col-sm-12 pb-3 col-md-4 col-lg-3">
+                    <div class="col-sm-12 col-md-4 col-lg-3">
                         <x-product-item :product="$product" />
                     </div>
                 @endforeach
@@ -63,24 +63,30 @@
 @endif
 
 @push('scripts')
-    <script>
-        var swiper = new Swiper("#{{ $id }}_product_swiper", {
-            navigation: {
-                nextEl: "#{{ $id }}_product_button_next",
-                prevEl: "#{{ $id }}_product_button_prev",
-            },
-            spaceBetween: 12,
-            slidesPerView: 1,
-            breakpoints: {
-                // Ketika lebar layar >= 768px
-                768: {
-                    slidesPerView: 3,
+    @if ($type === 'slider')
+        <script>
+            var swiper = new Swiper("#{{ $id }}_product_swiper", {
+                navigation: {
+                    nextEl: "#{{ $id }}_product_button_next",
+                    prevEl: "#{{ $id }}_product_button_prev",
                 },
-                // Ketika lebar layar >= 1024px
-                1024: {
-                    slidesPerView: 4,
+                spaceBetween: 24,
+                slidesPerView: 1,
+                breakpoints: {
+                    // Ketika lebar layar >= 0px
+                    0: {
+                        spaceBetween: 28,
+                    },
+                    // Ketika lebar layar >= 768px
+                    768: {
+                        slidesPerView: 3,
+                    },
+                    // Ketika lebar layar >= 1024px
+                    1024: {
+                        slidesPerView: 4,
+                    },
                 },
-            },
-        });
-    </script>
+            });
+        </script>
+    @endif
 @endpush
