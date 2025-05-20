@@ -6,7 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('redirect.role')->group(function () {
+Route::middleware('admin.redirect')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/search', [ProductController::class, 'search'])->name('search');
     Route::get('/produk/{slug}', [ProductController::class, 'show'])->name("product.detail");

@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Kerajinan',
             'icon' => asset("storage/icon/kategori/craft.png")
         ]);
-        Product::factory(10)->create([
+        Product::factory(1000)->create([
             'category_id' => Category::all()->random()->id,
             'image' => "https://themewagon.github.io/FoodMart/images/product-thumb-1.png"
         ]);
