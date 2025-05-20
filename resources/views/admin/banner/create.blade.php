@@ -24,10 +24,11 @@
         </header>
         <!-- Main page content-->
         <div class="container-fluid px-4">
-            @if (Session::has('error'))
-                <div class="alert alert-danger">
-                    {{ Session::get('error') }}
-                </div>
+            @if (Session::has("error"))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get("error") }}
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
             <form action="{{ route('banner.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -55,11 +56,6 @@
                                 </label>
                                 <div class="preview-container" :class="{ 'd-flex': imageUrl }">
                                     <img id="preview-image" :src="imageUrl" alt="Preview gambar">
-                                </div>
-                                <div class="invalid-feedback">
-                                    @error('title')
-                                        {{ $message }}
-                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -94,18 +90,28 @@
                                 <i class="text-muted" data-feather="info" data-bs-toggle="tooltip" data-bs-placement="left"
                                     title="Tidak wajib"></i>
                             </div>
-                            <div class="card-body"><input class="form-control" name="button_text" id="button_text"
+                            <div class="card-body"><input class="form-control @error('button_text') is-invalid @enderror" name="button_text" id="button_text"
                                     value="{{ old('button_text') }}" type="text"
-                                    placeholder="Masukkan tombol teks spanduk Anda..." /></div>
+                                    placeholder="Masukkan tombol teks spanduk Anda..." />
+                                <div class="invalid-feedback">
+                                    @error('button_text')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                                </div>
                         </div>
                         <div class="card mb-4 card-header-actions">
-                            <div class="card-header">Tautan Tombol
-                                <i class="text-muted" data-feather="info" data-bs-toggle="tooltip" data-bs-placement="left"
-                                    title="Tidak wajib"></i>
+                            <div class="card-header">Tautan Tombol <i class="text-muted" data-feather="info" data-bs-toggle="tooltip" data-bs-placement="left"
+                                    title="Tidak wajib"></i></div>
+                            <div class="card-body"><input class="form-control @error('button_link') is-invalid @enderror" name="button_link" id="button_link"
+                                    value="{{ old('button_link') }}" type="text" 
+                                    placeholder="Masukkan tautan tombol spanduk Anda..." />
+                                <div class="invalid-feedback">
+                                    @error('button_link')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
                             </div>
-                            <div class="card-body"><input class="form-control" name="button_link" id="button_link"
-                                    value="{{ old('button_link') }}" type="text"
-                                    placeholder="Masukkan tautan tombol spanduk Anda..." /></div>
                         </div>
                         <div class="card card-header-actions">
                             <div class="card-body">
@@ -117,7 +123,7 @@
                 </div>
             </form>
         </div>
-    </main>
+</main>
 @endsection
 
 @push('head')
@@ -142,15 +148,7 @@
 @endpush
 
 @push('scripts')
-    <script src="https://unpkg.com/easymde/dist/easymde.min.js" crossorigin="anonymous"></script>
     <script>
-        var easyMDE = new EasyMDE({
-            element: document.getElementById('description'),
-            toolbar: ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list', '|', 'link',
-                'image', '|', 'preview', 'guide'
-            ]
-        });
-
         function imagePreview(defaultImageUrl = '') {
             return {
                 imageUrl: defaultImageUrl,

@@ -8,4 +8,5 @@ Route::prefix('admin')->middleware(['verified', 'auth'])->group(function () {
 });
 
 require __DIR__.'/product.php';
+require __DIR__ . '/category.php';
 require __DIR__.'/banner.php';

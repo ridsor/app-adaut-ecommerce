@@ -9,7 +9,7 @@
                         <div class="category-item">
                             <div
                                 class="d-flex flex-column align-items-center justify-content-center text-center p-4 rounded-3">
-                                <img src="{{ $category->icon }}" style="width: 100px; aspect-ratio: 1 / 1;" />
+                                <img src="{{ $category->icon }}" style="width: 100px; aspect-ratio: 1 / 1;" class="object-fit-cover" />
                                 <div class="lead fs-6 fw-medium">{{ $category->name }}</div>
                             </div>
                         </div>

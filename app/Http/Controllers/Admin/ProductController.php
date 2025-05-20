@@ -146,8 +146,8 @@ class ProductController extends Controller
   
       $image = $request->image;
   
-      if ($request->hasFile('image')) { 
-        $image = FileHelper::uploadFile($request->image, 'images/product');
+      if ($request->hasFile('image')) {
+        $image = FileHelper::uploadFile($request->image, 'gambar/produk');
       }
   
       $product->update([

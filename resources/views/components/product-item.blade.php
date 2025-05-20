@@ -3,8 +3,10 @@
 <a class="product-item text-decoration-none" href="{{ route('product.detail', ['slug' => $product->slug]) }}">
     <div class="d-flex flex-column justify-content-center rounded-3 p-4">
         <div
-            class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-            <img src="{{ $product->image }}" style="background-position: center" class="h-100 object-fit-contain" />
+            class="product-image mb-3 image  ratio ratio-1x1  bg-card rounded-3 overflow-hidden">
+            <div class="wrapper align-items-center d-flex justify-content-center">
+                <img src="{{ $product->image }}" style="background-position: center" class="h-100 object-fit-contain" />
+            </div>
         </div>
         <div class="product-title fw-semibold mb-2">{{ $product->name }}</div>
         <div class="d-flex align-items-center mb-2" style="gap: 8px">
