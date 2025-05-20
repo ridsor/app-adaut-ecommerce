@@ -14,6 +14,7 @@
                     </div>
                 </div>
                 <div class="center" style="flex: 1; max-width: 600px">
+                    @unless (in_array(Route::currentRouteName(), ['search']))
                     <div class="search-responsive d-sm-none d-flex justify-content-end">
                         <button class="btn p-0" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvas_search" aria-controls="offcanvas_search">
@@ -25,7 +26,7 @@
                     <div class="d-none d-sm-block">
                         <form method="GET" action="{{ route('search') }}">
                             <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">
-                                <input type="text" class="form-control border-0 bg-transparent" placeholder="Cari..."
+                                <input type="search" class="form-control border-0 bg-transparent" name="search" placeholder="Cari..."
                                     aria-label="Cari..." aria-describedby="btn-search">
                                 <button class="py-2 px-3 border-0 bg-transparent" id="btn-search">
                                     <i class="fa-solid fa-magnifying-glass fs-5 "></i>
@@ -33,6 +34,7 @@
                             </div>
                         </form>
                     </div>
+                    @endunless
                 </div>
                 <div class="left">
                     <div class="d-flex">
@@ -91,7 +93,7 @@
             <div class="offcanvas-body">
                 <form method="GET" action="{{ route('search') }}">
                     <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">
-                        <input type="text" class="form-control border-0 bg-transparent" placeholder="Cari..."
+                        <input type="search" class="form-control border-0 bg-transparent" placeholder="Cari..." name="search"
                             aria-label="Cari..." aria-describedby="btn-search">
                         <button style="transform: translateY(2px)" class="py-2 px-3 border-0 bg-transparent"
                             id="btn-search">

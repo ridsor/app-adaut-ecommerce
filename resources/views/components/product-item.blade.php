@@ -1,7 +1,7 @@
 @props(['product'])
 
 <a class="product-item text-decoration-none" href="{{ route('product.detail', ['slug' => $product->slug]) }}">
-    <div class="d-flex flex-column justify-content-center rounded-3 p-4">
+    <div class="d-flex flex-column justify-content-center rounded-3">
         <div
             class="product-image mb-3 image  ratio ratio-1x1  bg-card rounded-3 overflow-hidden">
             <div class="wrapper align-items-center d-flex justify-content-center">

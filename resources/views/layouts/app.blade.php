@@ -23,9 +23,7 @@
 <body>
     @include('layouts.header')
     @yield('content')
-    @unless (in_array(Route::currentRouteName(), ['product.detail', 'search']))
-        @include('layouts.footer')
-    @endunless
+    @include('layouts.footer')
 
     <div id="preloader"
         class="pe-none position-fixed top-0 bg-light bottom-0 end-0 start-0 z-2 d-flex justify-content-center align-items-center">

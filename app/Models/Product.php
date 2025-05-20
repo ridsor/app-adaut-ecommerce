@@ -79,7 +79,7 @@ class Product extends Model
 
     static public function filters($query, array $filters)
     {
-        $query->select(['id', 'name', 'image', 'slug'])->withCount('reviews')->withAvg('reviews', 'rating');
+        $query->select(['id', 'name', 'image', 'slug', 'price'])->withCount('reviews')->withAvg('reviews', 'rating');
 
         // sort "latest, oldest, bestsellers, highest_price, lowest_price"
         $query->when($filters['sort'] ?? false, function ($query, $sort) {
