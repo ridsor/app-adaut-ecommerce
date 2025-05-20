@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ItemNotFoundException;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Exception;
@@ -17,11 +18,13 @@ class ProductController extends Controller
 {
   public function search(Request $request)
   {
-    $products = Product::search($request->query('search'))->query(fn($query) => Product::filters($query, request(['sort', 'category', 'max_price', 'min_price', 'stock'])))->get();
+    $products = Product::search($request->query('value'))->query(fn($query) => Product::filters($query, request(['availability', 'sort', 'categories', 'max_price', 'min_price', 'stock', 'rating'])))->paginate(10);
+    $categories = Category::select(['name', 'id', 'slug'])->withCount('products')->get();
 
-    return view('search', [
-      'title' => "Produk",
-      "products" => $products
+    return view('search ', [
+      ' title ' => "Produk " . $request->query(' value '),
+      "products" => $products,
+      "categories" => $categories
     ]);
   }
 

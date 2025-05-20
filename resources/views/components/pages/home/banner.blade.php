@@ -38,7 +38,7 @@
                                     <p class="fs-6 text-secondary lh-lg">
                                         Produk berkualitas dengan pelayanan terbaik
                                     </p>
-                                    <a class="btn btn-outline-dark py-3 px-3 mt-4" href="#product_list">Mulai Belanja</a>
+                                    <a class="btn btn-outline-dark py-3 px-3 mt-4" href="#daftar_produk">Mulai Belanja</a>
                                 </div>
                             </div>
                         </div>

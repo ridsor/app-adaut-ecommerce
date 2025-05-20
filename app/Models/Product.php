@@ -89,21 +89,33 @@ class Product extends Model
                 $query->withSum([
                     'order_items as total_sold'
                 ], 'quantity')
-                ->orderBy('total_sold', 'desc')
-                ->orderBy('reviews_avg_rating', 'desc');
+                    ->orderBy('total_sold', 'desc');
+            } elseif ($sort === 'asc') {
+                $query->orderBy('name', 'asc');
+            } elseif ($sort === 'desc') {
+                $query->orderBy('name', 'desc');
             } elseif ($sort === 'highest_price') {
                 $query->orderBy('price', 'desc');
             } elseif ($sort === 'lowest_price') {
                 $query->orderBy('price', 'asc');
+            } elseif ($sort === 'review') {
+                $query->orderBy('reviews_avg_rating', 'desc');
             } else {
                 $query->latest();
             }
         });
 
-        // category
-        $query->when($filters['category'] ?? false, function ($query, $category) {
-            $query->whereHas("category", function ($query) use ($category) {
-                $query->where('name', $category);
+        // categories
+        $query->when($filters['categories'] ?? false, function ($query, $categories) {
+            $query->whereHas("category", function ($query) use ($categories) {
+                $query->whereIn('slug', $categories);
+            });
+        });
+
+        // rating
+        $query->when($filters['rating'] ?? false, function ($query, $rating) {
+            $query->whereHas('reviews', function ($query) use ($rating) {
+                $query->selectRaw('AVG(rating) as avg_rating')->groupBy('product_id')->havingRaw('FLOOR(avg_rating) IN (' . implode(',', $rating) . ')');
             });
         });
 
@@ -111,8 +123,12 @@ class Product extends Model
         $query->when($filters['max_price'] ?? false, fn($query, $price) => $query->where('price', '<=', $price));
         $query->when($filters['min_price'] ?? false, fn($query, $price) => $query->where('price', '>=', $price));
 
-        // min age
-        $query->when($filters['stock'] ?? false, fn($query, $stock) => $query->where('stock', '>=', (int)$stock));
+        // availability
+        $query->when($filters['availability'] ?? false, function ($query, $availability) {
+            if ($availability === 'stock') {
+                $query->where('stock', '>', 0);
+            }
+        });
 
         return $query;
     }

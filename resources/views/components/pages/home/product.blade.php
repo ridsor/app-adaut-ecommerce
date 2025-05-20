@@ -4,7 +4,7 @@
 @endphp
 
 @if ($type === 'slider')
-    <section id="product_list">
+    <section id="daftar_produk">
         <div class="container py-5">
             <div class="d-flex justify-content-between flex-column flex-md-row gap-2">
                 <h2 class="section-title mb-0">{{ $name }}</h2>
