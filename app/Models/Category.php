@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+use Laravel\Scout\Attributes\SearchUsingFullText;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
-    protected $filltable = [
+    protected $fillable = [
         'name',
         'icon',
     ];
@@ -17,5 +19,13 @@ class Category extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    #[SearchUsingFullText(['name'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+        ];
     }
 }

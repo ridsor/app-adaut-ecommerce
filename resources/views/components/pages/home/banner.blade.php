@@ -1,62 +1,44 @@
 <section class="bg-primary-subtle">
-    <div class="container py-5">
-        <div class="swiper" id="banner_swiper">
-            <div class="swiper-wrapper w-100 h-100">
-                <div class="swiper-slide">
-                    <div class="row">
+    <div class="container py-5" x-data="banner()" >
+        <div class="swiper" id="banner_swiper" x-ref="source">
+            <div class="swiper-wrapper w-100" >
+                @if(count($banners) > 0)
+                @foreach ($banners as $banner)
+                <div class="swiper-slide"  :style="`height: ${height}px`">
+                    <div class="row w-100 h-100">
                         <div class="col-md-8 order-2 order-md-1">
-                            <div class="d-flex h-100 w-100 align-items-center">
-                                <div class="p-5 mb-5">
-                                    <h1 class="display-2 fw-medium mb-2">Lorem ipsum dolor sit amet</h1>
-                                    <p class="fs-6 text-secondary lh-lg mb-4">Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit.
-                                        Ullam a
-                                        accusamus temporibus
+                            <div class="d-flex h-100 align-items-center">
+                                <div class="p-md-5 pb-5 p-2">
+                                    <h1 class="display-2 fw-medium mb-2">{{ $banner->title }}</h1>
+                                    <p class="fs-6 text-secondary lh-lg">
+                                        {{ $banner->description }}
                                     </p>
-
+                                    @if ($banner->button_text)
+                                    <a class="btn btn-outline-dark py-3 px-3 mt-4" href="{{ $banner->button_link }}">{{ $banner->button_text }}</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 pe-none order-1 order-md-2 justify-center">
-                            <div class="d-flex h-100 w-100 align-items-center p-2 p-md-0">
-                                <img src="https://themewagon.github.io/FoodMart/images/product-thumb-1.png"
-                                    alt="" class="w-100 object-fit-cover" />
+                            <div class="d-flex h-100 w-100 align-items-center p-2 p-md-0 ratio ratio-1x1">
+                                <img src="{{ $banner->image }}"
+                                    alt="" class="h-100 object-fit-contain" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="swiper-slide">
-                    <div class="row">
+                @endforeach
+                @else
+                <div class="swiper-slide"  :style="`height: ${height}px`">
+                    <div class="row w-100 h-100">
                         <div class="col-md-8 order-2 order-md-1">
-                            <div class="d-flex h-100 w-100 align-items-center">
-                                <div class="p-5 mb-5">
-                                    <h1 class="display-2 fw-medium mb-2">Lorem ipsum dolor sit amet</h1>
-                                    <p class="fs-6 text-secondary lh-lg mb-4">Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit.
-                                        Ullam a
-                                        accusamus temporibus
+                            <div class="d-flex h-100 align-items-center">
+                                <div class="p-md-5 pb-5 p-2">
+                                    <h1 class="display-2 fw-medium mb-2">TEMUKAN KEBAHAGIAAN BELANJA</h1>
+                                    <p class="fs-6 text-secondary lh-lg">
+                                        Produk berkualitas dengan pelayanan terbaik
                                     </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 pe-none order-1 order-md-2 justify-center">
-                            <div class="d-flex h-100 w-100 align-items-center p-2 p-md-0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="row">
-                        <div class="col-md-8 order-2 order-md-1">
-                            <div class="d-flex h-100 w-100 align-items-center">
-                                <div class="p-5 mb-5">
-                                    <h1 class="display-2 fw-medium mb-2">Lorem ipsum dolor sit amet</h1>
-                                    <p class="fs-6 text-secondary lh-lg mb-4">Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit.
-                                        Ullam a
-                                        accusamus temporibus
-                                    </p>
-                                    <button class="btn btn-outline-dark py-3 px-3">BELI SEKARANG</button>
+                                    <a class="btn btn-outline-dark py-3 px-3 mt-4" href="#product_list">Mulai Belanja</a>
                                 </div>
                             </div>
                         </div>
@@ -68,6 +50,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
             <div class="swiper-pagination" id="banner_swiper_pagination"></div>
         </div>
@@ -82,10 +65,22 @@
                 dynamicBullets: true,
             },
             autoplay: {
-                delay: 3000,
+                // delay: 3000,
                 disableOnInteraction: false,
             },
-            loop: true,
+            // loop: true,
         });
+
+        const banner = function() {
+            return {
+                height: "auto",
+                init() {
+                    const observer = new ResizeObserver(entries => {
+                        this.height = entries[0].contentRect.height;
+                    });
+                    observer.observe(this.$refs.source);
+                }
+            }
+        }
     </script>
 @endpush

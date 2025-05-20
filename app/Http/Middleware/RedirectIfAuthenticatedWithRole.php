@@ -20,9 +20,9 @@ class RedirectIfAuthenticatedWithRole
 
         if ($user) {
             if ($user->role === 'admin') {
-                return redirect('/dashboard');
+                return redirect(route('dashboard'));
             } elseif ($user->role === 'user') {
-                return redirect('/');
+                return redirect(route("home"));
             }
         }
 

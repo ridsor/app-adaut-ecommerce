@@ -24,12 +24,14 @@
         </header>
         <!-- Main page content-->
         <div class="container-fluid px-4">
-            @if (Session::has('error'))
-                <div class="alert alert-danger">
-                    {{ Session::get('error') }}
-                </div>
+            @if (Session::has("error"))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get("error") }}
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             @endif
-            <form action="{{ route('banner.update') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('banner.update', ['spanduk' => $banner->id]) }}" method="POST" enctype="multipart/form-data">
+                @method('PUT')
                 @csrf
                 <div class="row gx-4">
                     <div class="col">

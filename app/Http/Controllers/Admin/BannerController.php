@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\ItemNotFoundException;
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
@@ -9,7 +10,8 @@ use Illuminate\Http\Request;
 
 class BannerController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->authorize('isAdmin');
     }
 
@@ -19,9 +21,9 @@ class BannerController extends Controller
     public function index(Request $request)
     {
         $total_banner = Banner::count();
-        $banners = Banner::search($request->query('search'))->query(fn($query) => $query->select(['id','image','title','description'])->latest())->get();
+        $banners = Banner::search($request->query('search'))->query(fn($query) => $query->select(['id', 'image', 'title', 'description'])->latest())->get();
 
-        return view('admin.banner.index',[
+        return view('admin.banner.index', [
             'title' => 'Spanduk',
             'banners' => $banners,
             'total_banner' => $total_banner
@@ -31,6 +33,17 @@ class BannerController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function show($id)
+    {
+        $banner = Banner::find($id);
+        if (!$banner) {
+            throw new ItemNotFoundException($id);
+        }
+        return view('admin.banner.show', [
+            'banner' => $banner
+        ]);
+    }
+
     public function create()
     {
         return view('admin.banner.create');
@@ -46,8 +59,19 @@ class BannerController extends Controller
             'description' => 'required',
             'image' => "required|image|mimes:jpeg,png,jpg,webp|max:1048",
             'button_text' => 'nullable',
-            'button_link' => 'nullable',
-        ],[
+            'button_link' => [
+                'nullable',
+                'required_with:button_text',
+                'url',
+                'max:255',
+                function ($attribute, $value, $fail) use ($request) {
+                    // Jika button_text kosong tapi button_link diisi
+                    if (empty($request->input('button_text')) && !empty($value)) {
+                        $fail('Button link tidak boleh diisi jika tombol teks kosong');
+                    }
+                }
+            ]
+        ], [
             'image.required' => 'Gambar produk wajib diunggah',
             'image.image' => 'File harus berupa gambar',
             'image.mimes' => 'Format gambar harus web, jpeg, png, atau jpg',
@@ -55,18 +79,20 @@ class BannerController extends Controller
 
             'title.required' => 'Title spanduk wajib diisi',
             'description.required' => 'Deskripsi produk wajib diisi',
+
+            'button_link.required_with' => 'Button link wajib diisi jika button text ada isinya',
         ]);
         try {
             $image = FileHelper::uploadFile($request->image, 'gambar/spanduk');
 
             Banner::create([
-            "title" => $request->title,
-            "image" => $image,
-            "description" => $request->description,
-            "button_text" => $request->button_text,
-            "button_link" => $request->button_link,
+                "title" => $request->title,
+                "image" => $image,
+                "description" => $request->description,
+                "button_text" => $request->button_text,
+                "button_link" => $request->button_link,
             ]);
-        
+
             return redirect(route('banner.index'))->with('success', 'Spanduk berhasil dibuat');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal membuat spanduk');
@@ -76,10 +102,14 @@ class BannerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Banner $banner)
+    public function edit($id)
     {
+        $banner = Banner::find($id);
+        if (!$banner) {
+            throw new ItemNotFoundException($id);
+        }
         return view('admin.banner.edit', [
-            $banner
+            "banner" => $banner
         ]);
     }
 
@@ -88,13 +118,18 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $rules = [
             'title' => 'required',
             'description' => 'required',
-            'image' => "required|image|mimes:jpeg,png,jpg,webp|max:1048",
             'button_text' => 'nullable',
             'button_link' => 'nullable',
-        ],[
+        ];
+
+        if ($request->hasFile('image')) {
+            $rules['image'] = "required|image|mimes:webp,jpeg,png,jpg|max:1048";
+        }
+
+        $request->validate($rules, [
             'image.required' => 'Gambar produk wajib diunggah',
             'image.image' => 'File harus berupa gambar',
             'image.mimes' => 'Format gambar harus web, jpeg, png, atau jpg',
@@ -107,18 +142,21 @@ class BannerController extends Controller
         try {
             $banner = $banner = Banner::findOrFail($id);
 
-            $image = FileHelper::uploadFile($request->image, 'images/product');
+            $image = $banner->image;
+            if ($request->hasFile('image')) {
+                $image = FileHelper::uploadFile($request->image, 'gambar/spanduk');
+            }
 
             $banner->update([
-                "title" => $request->name,
+                "title" => $request->title,
                 "image" => $image,
                 "description" => $request->description,
                 "button_text" => $request->button_text,
                 "button_link" => $request->button_link,
             ]);
 
-            return back()->with('success', 'Spanduk berhasil diedit');
-            } catch (\Exception $e) {
+            return redirect(route('banner.index'))->with('success', 'Spanduk berhasil diedit');
+        } catch (\Exception $e) {
             return back()->with('error', 'Gagal mengedit spanduk');
         }
     }
@@ -134,7 +172,7 @@ class BannerController extends Controller
                 FileHelper::deleteFileByUrl($banner->image);
             }
             $banner->delete();
-            
+
             return back()->with('success', 'Spanduk berhasil dihapus');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menghapus spanduk');

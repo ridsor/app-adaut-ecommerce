@@ -6,7 +6,6 @@ use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -19,12 +18,15 @@ class CategoryController extends Controller
     $this->authorize('isAdmin');
   }
 
-  public function index()
+  public function index(Request $request)
   {
-    $categories = Category::select('name', 'icon', 'id')->get();
+    $categories = Category::search($request->query('search'))->query(fn($query) => $query->select(['name', 'icon', 'id'])->withCount('products')->latest())->get();
+    $total_categories = Category::count();
+
     return view('admin.category.index', [
-      'title' => "Kagtegori",
-      "categories" => $categories
+      'title' => "Kategori",
+      "categories" => $categories,
+      'total_categories' => $total_categories
     ]);
   }
 
@@ -43,30 +45,28 @@ class CategoryController extends Controller
    */
   public function store(Request $request)
   {
+    $request->validate(
+      [
+        "name" => "required",
+        "icon" => "required|mimes:jpeg,png,jpg,svg,webp|max:500",
+      ],
+      [
+
+        'name.required' => 'Nama produk wajib diisi',
+        'icon.required' => 'Gambar produk wajib diunggah',
+        'icon.mimes' => 'Format gambar harus webp, svg, jpeg, png, atau jpg',
+        'icon.max' => 'Ukuran gambar maksimal 500KB',
+      ]
+    );
     try {
-      $request->validate(
-        [
-          "name" => "required",
-          "image" => "required|image|mimes:jpeg,png,jpg,svg,webp|max:500",
-        ],
-        [
-
-          'name.required' => 'Nama produk wajib diisi',
-          'image.required' => 'Gambar produk wajib diunggah',
-          'image.image' => 'File harus berupa gambar',
-          'image.mimes' => 'Format gambar harus webp, svg, jpeg, png, atau jpg',
-          'image.max' => 'Ukuran gambar maksimal 500KB',
-        ]
-      );
-
-      $image = FileHelper::uploadFile($request->image, 'icons/category');
+      $icon = FileHelper::uploadFile($request->icon, 'ikon/kategori');
 
       Category::create([
         "name" => $request->name,
-        "icon" => $image,
+        "icon" => $icon,
       ]);
 
-      return back()->with('success', 'Kategori berhasil dibuat');
+      return redirect(route('category.index'))->with('success', 'Kategori berhasil dibuat');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal membuat kategori');
     }
@@ -94,33 +94,33 @@ class CategoryController extends Controller
         "name" => "required",
       ];
 
-      if ($request->hasFile('image')) {
-        $rules['image'] = "required|image|mimes:jpeg,png,jpg,svg,webp|max:500";
+      if ($request->hasFile('icon')) {
+        $rules['icon'] = "required|mimes:jpeg,png,jpg,svg,webp|max:500";
       }
 
       $request->validate($rules, [
         'name.required' => 'Nama produk wajib diisi',
-        'image.required' => 'Gambar produk wajib diunggah',
-        'image.image' => 'File harus berupa gambar',
-        'image.mimes' => 'Format gambar harus svg, webp, jpeg, png, atau jpg',
-        'image.max' => 'Ukuran gambar maksimal 500KB',
+        'icon.required' => 'Gambar produk wajib diunggah',
+        'icon.mimes' => 'Format gambar harus svg, webp, jpeg, png, atau jpg',
+        'icon.max' => 'Ukuran gambar maksimal 500KB',
       ]);
 
       $category = Category::find($id);
 
-      $image = $request->image;
+      $icon = $category->icon;
 
-      if ($request->hasFile('image')) {
-        $image = FileHelper::uploadFile($request->image, 'icon/kategori');
+      if ($request->hasFile('icon')) {
+        $icon = FileHelper::uploadFile($request->icon, 'icon/kategori');
       }
 
       $category->update([
         "name" => $request->name,
-        "image" => $image,
+        "icon" => $icon,
       ]);
 
-      return back()->with('success', 'Kategori berhasil diperbarui');
+      return redirect(route('category.index'))->with('success', 'Kategori berhasil diperbarui');
     } catch (\Exception $e) {
+      dd($e);
       return back()->with('error', 'Gagal memperbarui kategori');
     }
   }

@@ -15,8 +15,14 @@ class ItemNotFoundException extends Exception
 
     public function render($request)
     {
-        return response()->view('errors.item-not-found', [
-            'name'=> $this->name 
-        ], 404);
+        if ($request->user()->isAdmin()) {
+            return response()->view('errors.admin.item-not-found', [
+                'name' => $this->name
+            ], 404);
+        } else {
+            return response()->view('errors.item-not-found', [
+                'name' => $this->name
+            ], 404);
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -26,13 +27,14 @@ class HomeController extends Controller
                 ->latest()
                 ->limit(10)->get();
         $categories = Category::select('name','icon','id')->get();
+        $banners = Banner::select('title', 'description', 'button_text', 'button_link', 'image')->latest()->get();
 
         return view('home', [
             'bestsellers' => $bestsellers,
             'products' => $products,
             'categories' => $categories,
             'title' => 'Home',
-            'banners' => [],
+            'banners' => $banners,
         ]);
     }
 }
