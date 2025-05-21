@@ -23,12 +23,12 @@
             </div>
         </header>
         <!-- Main page content-->
-        <div class="container-fluid px-4">
-            @if (Session::has("error"))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ Session::get("error") }}
-                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+        <div class="container-fluid">
+            @if (Session::has('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ Session::get('error') }}
+                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             @endif
             <form action="{{ route('banner.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -90,21 +90,21 @@
                                 <i class="text-muted" data-feather="info" data-bs-toggle="tooltip" data-bs-placement="left"
                                     title="Tidak wajib"></i>
                             </div>
-                            <div class="card-body"><input class="form-control @error('button_text') is-invalid @enderror" name="button_text" id="button_text"
-                                    value="{{ old('button_text') }}" type="text"
+                            <div class="card-body"><input class="form-control @error('button_text') is-invalid @enderror"
+                                    name="button_text" id="button_text" value="{{ old('button_text') }}" type="text"
                                     placeholder="Masukkan tombol teks spanduk Anda..." />
                                 <div class="invalid-feedback">
                                     @error('button_text')
                                         {{ $message }}
                                     @enderror
                                 </div>
-                                </div>
+                            </div>
                         </div>
                         <div class="card mb-4 card-header-actions">
-                            <div class="card-header">Tautan Tombol <i class="text-muted" data-feather="info" data-bs-toggle="tooltip" data-bs-placement="left"
-                                    title="Tidak wajib"></i></div>
-                            <div class="card-body"><input class="form-control @error('button_link') is-invalid @enderror" name="button_link" id="button_link"
-                                    value="{{ old('button_link') }}" type="text" 
+                            <div class="card-header">Tautan Tombol <i class="text-muted" data-feather="info"
+                                    data-bs-toggle="tooltip" data-bs-placement="left" title="Tidak wajib"></i></div>
+                            <div class="card-body"><input class="form-control @error('button_link') is-invalid @enderror"
+                                    name="button_link" id="button_link" value="{{ old('button_link') }}" type="text"
                                     placeholder="Masukkan tautan tombol spanduk Anda..." />
                                 <div class="invalid-feedback">
                                     @error('button_link')
@@ -123,11 +123,10 @@
                 </div>
             </form>
         </div>
-</main>
+    </main>
 @endsection
 
 @push('head')
-    <link href="https://unpkg.com/easymde/dist/easymde.min.css" rel="stylesheet" />
     <style>
         .list-item .item .dropdown button::after {
             display: none !important
@@ -159,10 +158,10 @@
                     const file = event.target.files[0];
                     if (!file || !file.type.includes('image')) {
                         this.imageUrl = '';
-                        this.fileName = 'Tidak ada file dipilih';
+                        this.fileName = 'Tidak ada file dipilih'; //
+                        console.log(this.fileName)
                         return;
                     }
-
                     // Buat FileReader untuk membaca file
                     const reader = new FileReader();
 

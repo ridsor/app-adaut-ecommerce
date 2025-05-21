@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\ItemNotFoundException;
 use App\Models\Category;
 use App\Models\Product;
 use Exception;
@@ -18,28 +19,61 @@ class ProductController extends Controller
 
   public function index(Request $request)
   {
-    $products = Product::search($request->query('search'))->query(fn($query) => Product::filters($query, request(['sort', 'category', 'max_price', 'min_price', 'stock'])))->get();
+    $products = Product::search($request->query('search'))->query(fn($query) => Product::filters($query, request(['availability', 'sort', 'categories', 'max_price', 'min_price', 'stock', 'rating']))->select(['category_id', 'id', 'name', 'image', 'slug', 'price'])->with(['category']))->paginate(10);
+    $categories = Category::select(['name', 'id', 'slug'])->withCount('products')->get();
+    $sort = [
+      [
+        "value" => "asc",
+        "text" => "A-Z",
+      ],
+      [
+        "value" => "desc",
+        "text" => "Z-A",
+      ],
+      [
+        "value" => "latest",
+        "text" => "Terbaru",
+      ],
+      [
+        "value" => "oldest",
+        "text" => "Terlama",
+      ],
+      [
+        "value" => "lowest_price",
+        "text" => "Termurah",
+      ],
+      [
+        "value" => "highest_price",
+        "text" => "Termahal",
+      ],
+      [
+        "value" => "review",
+        "text" => "Ulasan",
+      ],
+      [
+        "value" => "bestsellers",
+        "text" => "Terlaris",
+      ],
+    ];
     $total_items = Product::count();
-
     return view('admin.product.index', [
       'title' => "Produk",
       "products" => $products,
+      'categories' => $categories,
+      'sort' => $sort,
       "total_items" => $total_items
     ]);
   }
 
   public function show($slug)
   {
-    $product = Product::with([
-      "reviews" => function ($query) {
-        $query->select(["rating", "product_id", "comment", "user_id", "created_at"]);
-      },
-      'reviews.user' => function ($query) {
-        $query->select(['id', 'name']);
-      }
-    ])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
+    $product = Product::withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
 
-    return view('product.show', [
+    if (!$product) {
+      throw new ItemNotFoundException($slug);
+    }
+
+    return view('admin.product.show', [
       "product" => $product
     ]);
   }
@@ -94,23 +128,29 @@ class ProductController extends Controller
         "category_id" => $request->category_id,
       ]);
 
-      return back()->with('success', 'Produk berhasil dibuat');
+      return redirect(route('product.index'))->with('success', 'Produk berhasil dibuat');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal membuat produk');
     }
   }
 
-  public function edit($id)
+  public function edit($slug)
   {
-    $product = Product::find($id);
-    $categories = Category::all();
+    $product = Product::where('slug', $slug)->first();
+
+    if (!$product) {
+      throw new ItemNotFoundException($slug);
+    }
+
+    $categories = Category::select(['id', 'name'])->get();
 
     return view('admin.product.edit', [
+      'title' => 'Produk ' . $product->name,
       "product" => $product,
       "categories" => $categories
     ]);
   }
-  public function update($id, Request $request)
+  public function update(Request $request, $slug)
   {
     $rules = [
       "name" => "required",
@@ -147,9 +187,9 @@ class ProductController extends Controller
     ]);
 
     try {
-      $product = Product::findOrFail($id);
+      $product = Product::where('slug', $slug)->firstOrFail();
 
-      $image = $request->image;
+      $image = $product->image;
 
       if ($request->hasFile('image')) {
         $image = FileHelper::uploadFile($request->image, 'gambar/produk');
@@ -164,16 +204,16 @@ class ProductController extends Controller
         "image" => $image,
       ]);
 
-      return back()->with('success', 'Produk berhasil diperbarui');
+      return redirect(route('product.index'))->with('success', 'Produk berhasil diperbarui');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal menghapus memperbarui produk');
     }
   }
 
-  public function destroy($id)
+  public function destroy($slug)
   {
     try {
-      $product = Product::findOrFail($id);
+      $product = Product::where('slug', $slug)->firstOrFail();
       if ($product->image) {
         FileHelper::deleteFileByUrl($product->image);
       }

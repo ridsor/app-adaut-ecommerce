@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <main>
+    <main x-data>
         <header class="page-header page-header-dark bg-gradient-primary-to-secondary mb-4">
             <div class="container-xl px-4">
                 <div class="page-header-content pt-4">
@@ -60,10 +60,14 @@
             @endif
             <h4 class="mb-0 mt-5">Spanduk</h4>
             <hr class="mt-2 mb-4">
+
             @if (count($banners) > 0)
                 @foreach ($banners as $banner)
                     <div class="item card card-icon lift lift-sm mb-3 position-static overflow-hidden"
-                        style="cursor: pointer" role="link" tabindex="0" aria-label="banner item">
+                        style="cursor: pointer" role="link" tabindex="0" aria-label="banner item"
+                        @click="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'"
+                        @keydown.enter="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'"
+                        @keydown.space.prevent="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'">
                         <div class="row g-2 flex-column flex-md-row">
                             <div class="col-auto card-icon-aside p-0" style="background: #f9f9f9">
                                 <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
@@ -75,10 +79,19 @@
                             </div>
 
                             <div class="col w-100 d-flex align-items-center">
-                                <div class="row p-1 p-md-3 flex-column flex-md-row flex-grow-1">
+                                <div class="row p-1 flex-column flex-md-row flex-grow-1">
                                     <div class="col">
                                         <div class="text-primary fw-semibold">
-                                            {{ $banner->title }}
+                                            <span
+                                                style="-webkit-line-clamp: 1;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden; max-height: 25px">
+                                                {{ $banner->title }}
+                                            </span>
+                                        </div>
+                                        <div class="text-dark">
+                                            <span
+                                                style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden; max-height: 50px">
+                                                {{ $banner->description }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

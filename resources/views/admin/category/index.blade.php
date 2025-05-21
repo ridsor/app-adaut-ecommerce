@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <main>
+    <main x-data="{ itemId: null, deleteRoute: '' }">
         <header class="page-header page-header-dark bg-gradient-primary-to-secondary mb-4">
             <div class="container-xl px-4">
                 <div class="page-header-content pt-4">
@@ -45,7 +45,7 @@
             </div>
         </header>
         <!-- Main page content-->
-        <div class="container-xl px-4 list-item" x-data="{ itemId: null, deleteRoute: '' }">
+        <div class="container-xl px-4 list-item">
             @if (Session::has('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ Session::get('error') }}
@@ -68,8 +68,7 @@
                         style="cursor: pointer" role="link" tabindex="0" aria-label="category item">
                         <div class="row g-2 flex-column flex-md-row">
                             <div class="col-auto card-icon-aside p-0" style="background: #f9f9f9">
-                                <div class="ratio ratio-1x1  overflow-hidden"
-                                    style="width: 112px">
+                                <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
                                     <div class="wrapper align-items-center d-flex justify-content-center">
                                         <img src="{{ $category->icon }}" style="background-position: center"
                                             class="h-100 object-fit-contain" />
@@ -78,36 +77,34 @@
                             </div>
 
                             <div class="col w-100 d-flex align-items-center">
-                                <div class="row p-2 p-md-3 flex-column flex-md-row flex-grow-1">
+                                <div class="row p-2 p-md-3 flex-column flex-md-row flex-grow-1 g-1">
                                     <div class="col">
                                         <div class="text-primary fw-semibold">
                                             {{ $category->name }}
                                         </div>
                                     </div>
-                                    <div class="col d-flex align-items-center">
-                                        <div class="text-dark fw-semibold">
-                                            <span>
-                                                <i data-feather="shopping-bag" style="transform: translateY(.2rem)"></i>
-                                            </span>
-                                            <span>
-                                                {{ $category->products_count }}
-                                            </span>
-                                            <span>
-                                                Produk
-                                            </span>
-                                        </div>
+                                    <div class="col text-dark fw-semibold d-flex align-items-center gap-1">
+                                        <span>
+                                            <i data-feather="shopping-bag" style="transform: translateY(.2rem)"></i>
+                                        </span>
+                                        <span>
+                                            {{ $category->products_count }}
+                                        </span>
+                                        <span>
+                                            Produk
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                             <div
                                 class="col-12 col-md-auto d-flex align-items-center justify-content-end justify-content-md-center gap-1 flex-md-column p-2">
-                                <a href="{{ route('category.edit', ['kategori' => $category->id]) }}"
+                                <a href="{{ route('category.edit', ['kategori' => $category->slug]) }}"
                                     class="btn btn-warning btn-icon" @click.stop>
                                     <i data-feather="edit"></i>
                                 </a>
                                 <button class="btn btn-danger btn-icon" data-bs-toggle="modal"
                                     data-bs-target="#confirmModal"
-                                    @click.stop="deleteRoute = '{{ route('category.destroy', ['kategori' => $category->id]) }}'"
+                                    @click.stop="deleteRoute = '{{ route('category.destroy', ['kategori' => $category->slug]) }}'"
                                     type="button">
                                     <i data-feather="trash"></i>
                                 </button>
@@ -122,34 +119,33 @@
                     </div>
                 </div>
             @endif
-
-            <!-- Modal -->
-            <form :action="deleteRoute" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                    aria-labelledby="confirmModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="confirmModalLabel">Hapus</h5>
-                                <button class="btn-close" type="button" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Produk yang memiliki kategori ini akan terhapus.
-                                    <br />Apakah anda yakin menghapusnya?
-                                </p>
-                            </div>
-                            <div class="modal-footer"><button class="btn btn-danger" type="button"
-                                    data-bs-dismiss="modal">Batal</button><button class="btn btn-success"
-                                    type="submit">OK</button>
-                            </div>
+        </div>
+        <!-- Modal -->
+        <form :action="deleteRoute" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel">Hapus</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Produk yang memiliki kategori ini akan terhapus.
+                                <br />Apakah anda yakin menghapusnya?
+                            </p>
+                        </div>
+                        <div class="modal-footer"><button class="btn btn-danger" type="button"
+                                data-bs-dismiss="modal">Batal</button><button class="btn btn-success"
+                                type="submit">OK</button>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </main>
 @endsection
 

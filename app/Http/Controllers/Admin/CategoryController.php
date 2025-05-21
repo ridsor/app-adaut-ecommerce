@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\ItemNotFoundException;
 use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -75,9 +76,12 @@ class CategoryController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(string $id)
+  public function edit($slug)
   {
-    $category = Category::find($id);
+    $category = Category::where('slug', $slug)->first();
+    if ($category) {
+      throw new ItemNotFoundException($slug);
+    }
 
     return view('admin.category.edit', [
       "category" => $category,
@@ -87,7 +91,7 @@ class CategoryController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, string $slug)
   {
     try {
       $rules = [
@@ -105,7 +109,7 @@ class CategoryController extends Controller
         'icon.max' => 'Ukuran gambar maksimal 500KB',
       ]);
 
-      $category = Category::find($id);
+      $category = Category::where('slug', $slug)->firstOrFail();
 
       $icon = $category->icon;
 
@@ -128,15 +132,15 @@ class CategoryController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(string $slug)
   {
     try {
-      $category = Category::find($id);
+      $category = Category::where('slug', $slug)->firstOrFail();
       if ($category->image) {
         FileHelper::deleteFileByUrl($category->image);
       }
       $category->delete();
-  
+
       return back()->with('success', 'Kategori berhasil dihapus');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal menghapus kategori');

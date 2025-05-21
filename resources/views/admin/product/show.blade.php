@@ -1,21 +1,78 @@
-<x-layout title="Paket Wisata - {{ $product->name }}">
-  <div class="container">
-    <div class="row">
-      {{ dd($product) }}
-      <div class="col-4">
-        <div class="w-full">
-          {{-- <image src="{{ $product->image }}" style="width: 100%; aspect-ratio: 1 / 1;" /> --}}
-            <div class="name fs-5 fw-bold mb-3">
-              {{ $product->name }}</div>
-              <div class="duration" x-text="formatDuration({{ $product->duration }})"></div>
-              <div class="reviews">
-                <span>
-                  {{-- {{ $product->reviews }} --}}
-                  {{ round($product->reviews_avg_rating, 1) ?? 0 }} - {{ $product->reviews_count }}
-                </span>
-          </div>
+@extends('layouts.admin.app')
+
+@section('content')
+    <main x-data>
+        <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+            <div class="container-fluid px-4">
+                <div class="page-header-content">
+                    <div class="row align-items-center justify-content-between pt-3">
+                        <div class="col-auto mb-3">
+                            <h1 class="page-header-title">
+                                <div class="page-header-icon"><i data-feather="file-plus"></i></div>
+                                Produk
+                            </h1>
+                        </div>
+                        <div class="col-12 col-xl-auto mb-3">
+                            <a class="btn btn-sm btn-light text-primary" href="{{ route('product.index') }}">
+                                <i class="me-1" data-feather="arrow-left"></i>
+                                Kembali ke Semua Produk
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container py-5">
+            <div class="d-flex row mb-5">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div
+                        class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
+                        <div class="ratio ratio-1x1  overflow-hidden">
+                            <div class="wrapper align-items-center d-flex justify-content-center">
+                                <img src="{{ $product->image }}" style="background-position: center"
+                                    class="h-100 object-fit-contain" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-8">
+                    <h2 class="product-name h2 fw-bold">{{ $product->name }}</h2>
+                    <div class="product-price fw-bold fs-3 mb-2 text-primary"
+                        x-text="$store.globalState.formattedPrice({{ $product->price }})">Rp 0</div>
+                    <div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent">Kategori : {{ $product->category->name }}</li>
+                            <li class="list-group-item bg-transparent">Terjual : <span
+                                    x-text="$store.globalState.formatNumberShort({{ $product->total_sold ?? 0 }})">0</span>
+                            </li>
+                            <li class="list-group-item bg-transparent">Peringkat :
+                                {{ round($product->reviews_avg_rating, 1) ?? 0 }} <img src="/icons/rate.svg" alt=""
+                                    style="width: 20px; height: 20px; transform: translateY(-2px)"></li>
+                            <li class="list-group-item bg-transparent">Penilaian : <span
+                                    x-text="$store.globalState.formatNumberShort({{ $product->review_count ?? 0 }})">0</span>
+                            </li>
+                            <li class="list-group-item bg-transparent">Stok : {{ $product->stock }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="product-description mb-5">
+                    <div class="fw-semibold h4">Deskripsi</div>
+                    <div>
+                        {!! Str::markdown($product->description) !!}
+                    </div>
+                </div>
+            </div>
+            <div x-show="showAnimationAddCart">
+                <div
+                    class="position-fixed top-0 bg-light bottom-0 end-0 start-0 z-2 d-flex
+                    justify-content-center align-items-center pe-none">
+                    <div style="width: 200px; height: 200px">
+                        <div id="addcart_animation"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</x-layout>
+    </main>
+@endsection

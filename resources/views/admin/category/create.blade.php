@@ -23,7 +23,7 @@
       </div>
     </header>
     <!-- Main page content-->
-    <div class="container-fluid px-4">
+    <div class="container-fluid">
       @if (Session::has("error"))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
           {{ Session::get("error") }}
