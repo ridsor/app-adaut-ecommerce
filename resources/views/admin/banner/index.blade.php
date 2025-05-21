@@ -46,17 +46,17 @@
         </header>
         <!-- Main page content-->
         <div class="container-xl px-4 list-item" x-data="{ itemId: null, deleteRoute: '' }">
-            @if (Session::has("error"))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ Session::get("error") }}
-                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            @if (Session::has('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ Session::get('error') }}
+                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             @endif
-            @if (Session::has("success"))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ Session::get("success") }}
-                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            @if (Session::has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ Session::get('success') }}
+                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             @endif
             <h4 class="mb-0 mt-5">Spanduk</h4>
             <hr class="mt-2 mb-4">
@@ -65,13 +65,18 @@
                 @foreach ($banners as $banner)
                     <div class="item card card-icon lift lift-sm mb-3 position-static overflow-hidden"
                         style="cursor: pointer" role="link" tabindex="0" aria-label="spanduk item"
-                        @click="window.location.href='{{ route('banner.show',['spanduk'=>$banner->id]) }}'"
-                        @keydown.enter="window.location.href='{{ route('banner.show',['spanduk'=>$banner->id]) }}'"
-                        @keydown.space.prevent="window.location.href='{{ route('banner.show',['spanduk'=>$banner->id]) }}'">
+                        @click="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'"
+                        @keydown.enter="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'"
+                        @keydown.space.prevent="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'">
                         <div class="row g-0">
                             <div class="col-auto card-icon-aside p-0" style="background: #f9f9f9">
-                                <img class="img-fluid ratio ratio-1x1 object-fit-contain" src="{{ $banner->image }}"
-                                    style="width: 112px" alt="">
+                                <div class="ratio ratio-1x1  overflow-hidden"
+                                    style="width: 112px">
+                                    <div class="wrapper align-items-center d-flex justify-content-center">
+                                        <img src="{{ $banner->image }}" style="background-position: center"
+                                            class="h-100 object-fit-contain" />
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col d-flex align-items-center">
@@ -97,9 +102,10 @@
                                     class="btn btn-warning btn-icon" @click.stop>
                                     <i data-feather="edit"></i>
                                 </a>
-                                <button class="btn btn-danger btn-icon"  data-bs-toggle="modal" data-bs-target="#confirmModal" 
-                                @click.stop="deleteRoute = '{{ route('banner.destroy', ['spanduk' => $banner->id]) }}'"
-                                type="button">
+                                <button class="btn btn-danger btn-icon" data-bs-toggle="modal"
+                                    data-bs-target="#confirmModal"
+                                    @click.stop="deleteRoute = '{{ route('banner.destroy', ['spanduk' => $banner->id]) }}'"
+                                    type="button">
                                     <i data-feather="trash"></i>
                                 </button>
                             </div>
@@ -116,19 +122,23 @@
 
             <!-- Modal -->
             <form :action="deleteRoute" method="POST">
-            @csrf
-            @method('DELETE')
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+                @csrf
+                @method('DELETE')
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                    aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="confirmModalLabel">Hapus</h5>
-                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <p>Apakah anda yakin menghapusnya?</p>
                             </div>
-                            <div class="modal-footer"><button class="btn btn-danger" type="button" data-bs-dismiss="modal">Batal</button><button class="btn btn-success" type="submit">OK</button></div>
+                            <div class="modal-footer"><button class="btn btn-danger" type="button"
+                                    data-bs-dismiss="modal">Batal</button><button class="btn btn-success"
+                                    type="submit">OK</button></div>
                         </div>
                     </div>
                 </div>
