@@ -74,7 +74,8 @@ class ProductController extends Controller
     }
 
     return view('admin.product.show', [
-      "product" => $product
+      'title' => 'Produk ' . $product->name,
+      "product" => $product,
     ]);
   }
 
@@ -83,6 +84,7 @@ class ProductController extends Controller
     $categories = Category::all();
 
     return view('admin.product.create', [
+      'title' => 'Tambah Produk',
       "categories" => $categories
     ]);
   }
@@ -145,11 +147,12 @@ class ProductController extends Controller
     $categories = Category::select(['id', 'name'])->get();
 
     return view('admin.product.edit', [
-      'title' => 'Produk ' . $product->name,
+      'title' => 'Edit Produk ' . $product->name,
       "product" => $product,
       "categories" => $categories
     ]);
   }
+
   public function update(Request $request, $slug)
   {
     $rules = [

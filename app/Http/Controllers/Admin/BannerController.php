@@ -40,13 +40,16 @@ class BannerController extends Controller
             throw new ItemNotFoundException($id);
         }
         return view('admin.banner.show', [
+            'title' => 'Spanduk '.$banner->id,
             'banner' => $banner
         ]);
     }
 
     public function create()
     {
-        return view('admin.banner.create');
+        return view('admin.banner.create', [
+            'title' => 'Tambah Spanduk'
+        ]);
     }
 
     /**
@@ -109,6 +112,7 @@ class BannerController extends Controller
             throw new ItemNotFoundException($id);
         }
         return view('admin.banner.edit', [
+            'title' => 'Edit Spanduk '.$banner->id,
             "banner" => $banner
         ]);
     }
