@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
   public function index(Request $request)
   {
-    $categories = Category::search($request->query('search'))->query(fn($query) => $query->select(['name', 'icon', 'id'])->withCount('products')->latest())->get();
+    $categories = Category::search($request->query('search'))->query(fn($query) => $query->select(['name', 'icon', 'slug', 'id'])->withCount('products')->latest())->get();
     $total_categories = Category::count();
 
     return view('admin.category.index', [
