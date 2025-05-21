@@ -79,11 +79,12 @@ class CategoryController extends Controller
   public function edit($slug)
   {
     $category = Category::where('slug', $slug)->first();
-    if ($category) {
+    if (!$category) {
       throw new ItemNotFoundException($slug);
     }
 
     return view('admin.category.edit', [
+      'title' => 'Edit Kategori ' . $category->name,
       "category" => $category,
     ]);
   }

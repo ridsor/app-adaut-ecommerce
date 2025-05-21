@@ -15,25 +15,25 @@
                 </div>
                 <div class="center" style="flex: 1; max-width: 600px">
                     @unless (in_array(Route::currentRouteName(), ['search']))
-                    <div class="search-responsive d-sm-none d-flex justify-content-end">
-                        <button class="btn p-0" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvas_search" aria-controls="offcanvas_search">
-                            <x-icon>
-                                <i class="fa-solid fa-magnifying-glass fs-4"></i>
-                            </x-icon>
-                        </button>
-                    </div>
-                    <div class="d-none d-sm-block">
-                        <form method="GET" action="{{ route('search') }}">
-                            <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">
-                                <input type="search" class="form-control border-0 bg-transparent" name="value" placeholder="Cari..."
-                                    aria-label="Cari..." aria-describedby="btn-search">
-                                <button class="py-2 px-3 border-0 bg-transparent" id="btn-search">
-                                    <i class="fa-solid fa-magnifying-glass fs-5 "></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="search-responsive d-sm-none d-flex justify-content-end">
+                            <button class="btn p-0" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvas_search" aria-controls="offcanvas_search">
+                                <x-icon>
+                                    <i class="fa-solid fa-magnifying-glass fs-4"></i>
+                                </x-icon>
+                            </button>
+                        </div>
+                        <div class="d-none d-sm-block">
+                            <form method="GET" action="{{ route('search') }}">
+                                <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">
+                                    <input type="search" class="form-control border-0 bg-transparent" name="value"
+                                        placeholder="Cari..." aria-label="Cari..." aria-describedby="btn-search">
+                                    <button class="py-2 px-3 border-0 bg-transparent" id="btn-search">
+                                        <i class="fa-solid fa-magnifying-glass fs-5 "></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     @endunless
                 </div>
                 <div class="left">
@@ -53,7 +53,34 @@
                         </div>
 
                         <div class="user">
-                            <div class="dropdown">
+                            @auth
+                                <div class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
+                                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle"
+                                        id="navbarDropdownUserImage" href="javascript:void(0);" role="button"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
+                                            class="img-fluid" src="/assets/img/illustrations/profiles/profile-2.png" /></a>
+                                    <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
+                                        aria-labelledby="navbarDropdownUserImage">
+                                        <h6 class="dropdown-header d-flex align-items-center">
+                                            <img class="dropdown-user-img"
+                                                src="/assets/img/illustrations/profiles/profile-2.png" />
+                                            <div class="dropdown-user-details">
+                                                <div class="dropdown-user-details-name">{{ Auth::user()->name }}</div>
+                                                <div class="dropdown-user-details-email">{{ Auth::user()->email }}</div>
+                                            </div>
+                                        </h6>
+                                        <div class="dropdown-divider"></div>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button class="dropdown-item">
+                                                <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
+                                                Logout
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endauth
+                            {{-- <div class="dropdown">
                                 <button class="btn p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     <x-icon>
@@ -69,7 +96,7 @@
                                         <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
                                     @endauth
                                 </ul>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -93,8 +120,8 @@
             <div class="offcanvas-body">
                 <form method="GET" action="{{ route('search') }}">
                     <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">
-                        <input type="search" class="form-control border-0 bg-transparent" placeholder="Cari..." name="value"
-                            aria-label="Cari..." aria-describedby="btn-search">
+                        <input type="search" class="form-control border-0 bg-transparent" placeholder="Cari..."
+                            name="value" aria-label="Cari..." aria-describedby="btn-search">
                         <button style="transform: translateY(2px)" class="py-2 px-3 border-0 bg-transparent"
                             id="btn-search">
                             <i class="fa-solid fa-magnifying-glass fs-5 "></i>
