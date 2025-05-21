@@ -174,7 +174,7 @@
                             </div>
                             <div class="col-md-6 col-lg-3 d-grid d-xl-none">
                                 <!-- Filter offcanvas button -->
-                                <button class="btn btn-dark mb-0" type="button" data-bs-toggle="offcanvas"
+                                <button class="btn btn-primary mb-0" type="button" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
                                     <i class="fas fa-sliders-h me-1"></i> Filter
                                 </button>
@@ -228,6 +228,7 @@
             display: flex !important;
             justify-content: center !important;
             flex-wrap: wrap !important
+            column-gap: .5rem
         }
 
         .pagination nav>div:last-of-type ul {

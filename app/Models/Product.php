@@ -79,7 +79,7 @@ class Product extends Model
 
     static public function filters($query, array $filters)
     {
-        $query->select(['id', 'name', 'image', 'slug', 'price'])->withCount('reviews')->withAvg('reviews', 'rating');
+        $query->select(['id', 'name', 'image', 'slug', 'price'])->withCount('reviews')->withAvg('reviews', 'rating')->latest();
 
         // sort "latest, oldest, bestsellers, highest_price, lowest_price"
         $query->when($filters['sort'] ?? false, function ($query, $sort) {
@@ -100,8 +100,6 @@ class Product extends Model
                 $query->orderBy('price', 'asc');
             } elseif ($sort === 'review') {
                 $query->orderBy('reviews_avg_rating', 'desc');
-            } else {
-                $query->latest();
             }
         });
 

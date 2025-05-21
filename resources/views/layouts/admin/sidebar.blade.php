@@ -12,6 +12,11 @@
                 <div class="nav-link-icon"><i data-feather="list"></i></div>
                 Kategori
             </a>
+            <a class="nav-link {{ Request::routeIs('product.index') ? 'active' : '' }}"
+                href="{{ route('product.index') }}">
+                <div class="nav-link-icon"><i data-feather="package"></i></div>
+                Produk
+            </a>
             <a class="nav-link  {{ Request::routeIs('banner.index') ? 'active' : '' }}"
                 href="{{ route('banner.index') }}">
                 <div class="nav-link-icon">

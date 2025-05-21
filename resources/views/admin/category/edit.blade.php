@@ -23,14 +23,14 @@
       </div>
     </header>
     <!-- Main page content-->
-    <div class="container-fluid px-4">
+    <div class="container-fluid">
       @if (Session::has("error"))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
           {{ Session::get("error") }}
           <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
       @endif
-      <form action="{{ route("category.update", ["kategori" => $category->id]) }}" method="POST"
+      <form action="{{ route("category.update", ["kategori" => $category->slug]) }}" method="POST"
         enctype="multipart/form-data">
         @method("PUT")
         @csrf
