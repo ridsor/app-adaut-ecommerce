@@ -66,8 +66,8 @@
                 </div>
             </div>
             <div>
-                <div class="product-description mb-5    ">
-                    <div class="fw-semibold mb-2 h4">Deskripsi</div>
+                <div class="product-description mb-5">
+                    <div class="fw-semibold mb-3 h4">Deskripsi</div>
                     <div>
                         {!! $product->description !!}
                     </div>
@@ -75,6 +75,7 @@
                 <div class="product-review" style="max-width: 800px">
                     <div class="fw-semibold mb-3 h4">Ulasan</div>
                     <div class="review-list d-flex flex-column">
+                        @if(count($product->reviews) > 0)
                         @foreach ($product->reviews as $review)
                             <div class="review-item">
                                 <div class="d-flex gap-2 mb-1">
@@ -105,6 +106,12 @@
                                 </div>
                             </div>
                         @endforeach
+                        @else
+                        <div>
+                            <div class="lead">Belum ada ulasan untuk produk ini</div>
+                            <p>Beli produk ini dan jadilah yang pertama memberikan ulasan</p>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

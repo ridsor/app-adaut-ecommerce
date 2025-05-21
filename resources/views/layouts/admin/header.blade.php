@@ -57,7 +57,7 @@
                         @csrf
                         <button class="dropdown-item">
                             <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
-                            Logout
+                            Keluar
                         </button>
                     </form>
                 </div>
