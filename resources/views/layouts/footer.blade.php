@@ -24,7 +24,12 @@
                         <div>
                             <a class="text-decoration-none text-secondary"
                                 href="{{ route('search') }}?sort=bestsellers">
-                                Penjualan Terbaik
+                                Penjualan Terlaris
+                            </a>
+                        </div>
+                        <div>
+                            <a class="text-decoration-none text-secondary" href="{{ route('search') }}?sort=review">
+                                Ulasan Terbaik
                             </a>
                         </div>
                         <div>
