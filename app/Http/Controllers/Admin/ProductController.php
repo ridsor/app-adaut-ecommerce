@@ -19,22 +19,25 @@ class ProductController extends Controller
   public function index(Request $request)
   {
     $products = Product::search($request->query('search'))->query(fn($query) => Product::filters($query, request(['sort', 'category', 'max_price', 'min_price', 'stock'])))->get();
+    $total_items = Product::count();
 
-    return view('product.index', [
+    return view('admin.product.index', [
       'title' => "Produk",
-      "products" => $products
+      "products" => $products,
+      "total_items" => $total_items
     ]);
   }
 
   public function show($slug)
   {
     $product = Product::with([
-      "reviews" => function($query) {
+      "reviews" => function ($query) {
         $query->select(["rating", "product_id", "comment", "user_id", "created_at"]);
       },
-      'reviews.user' => function($query) {
-        $query->select(['id','name']);
-      }])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
+      'reviews.user' => function ($query) {
+        $query->select(['id', 'name']);
+      }
+    ])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
 
     return view('product.show', [
       "product" => $product
@@ -42,7 +45,7 @@ class ProductController extends Controller
   }
 
   public function create()
-  {   
+  {
     $categories = Category::all();
 
     return view('admin.product.create', [
@@ -52,14 +55,15 @@ class ProductController extends Controller
 
   public function store(Request $request)
   {
-    $request->validate([
-      "name" => "required",
-      "description" => "required",
-      "price" => "required|numeric",
-      "stock" => "required|integer",
-      "category_id" => 'required|exists:categories,id',
-      "image" => "required|image|mimes:jpeg,png,jpga,webp|max:1048",
-    ],
+    $request->validate(
+      [
+        "name" => "required",
+        "description" => "required",
+        "price" => "required|numeric",
+        "stock" => "required|integer",
+        "category_id" => 'required|exists:categories,id',
+        "image" => "required|image|mimes:jpeg,png,jpga,webp|max:1048",
+      ],
       [
         'name.required' => 'Nama produk wajib diisi',
         'description.required' => 'Deskripsi produk wajib diisi',
@@ -72,14 +76,15 @@ class ProductController extends Controller
         'image.image' => 'File harus berupa gambar',
         'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
         'image.max' => 'Ukuran gambar maksimal 1MB',
-  
+
         'category_id.required' => 'Kategori wajib dipilih',
         'category_id.exists' => 'Kategori yang dipilih tidak valid'
-    ]);
+      ]
+    );
 
     try {
       $image = FileHelper::uploadFile($request->image, 'gambar/produk');
-      
+
       Product::create([
         "name" => $request->name,
         "price" => $request->price,
@@ -88,7 +93,7 @@ class ProductController extends Controller
         "description" => $request->description,
         "category_id" => $request->category_id,
       ]);
-  
+
       return back()->with('success', 'Produk berhasil dibuat');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal membuat produk');
@@ -114,17 +119,17 @@ class ProductController extends Controller
       "stock" => "required|integer",
       "category_id" => 'required|exists:categories,id',
     ];
-  
+
     if ($request->hasFile('image')) {
       $rules['image'] = "required|image|mimes:jpeg,png,jpg|max:1048";
     }
-  
-    $request->validate($rules,[
+
+    $request->validate($rules, [
       'product_id.required' => 'ID produk wajib diisi',
       'quantity.required' => 'Jumlah produk wajib diisi',
       'quantity.integer' => 'Jumlah produk harus berupa angka bulat',
       'quantity.min' => 'Jumlah produk minimal harus 1',
-      
+
       'name.required' => 'Nama produk wajib diisi',
       'description.required' => 'Deskripsi produk wajib diisi',
       'price.required' => 'Harga produk wajib diisi',
@@ -136,20 +141,20 @@ class ProductController extends Controller
       'image.image' => 'File harus berupa gambar',
       'image.mimes' => 'Format gambar harus jpeg, png, atau jpg',
       'image.max' => 'Ukuran gambar maksimal 1MB',
-  
+
       'category_id.required' => 'Kategori wajib dipilih',
       'category_id.exists' => 'Kategori yang dipilih tidak valid'
     ]);
 
     try {
       $product = Product::findOrFail($id);
-  
+
       $image = $request->image;
-  
+
       if ($request->hasFile('image')) {
         $image = FileHelper::uploadFile($request->image, 'gambar/produk');
       }
-  
+
       $product->update([
         "name" => $request->name,
         "description" => $request->description,
@@ -158,10 +163,9 @@ class ProductController extends Controller
         "category_id" => $request->category_id,
         "image" => $image,
       ]);
-  
+
       return back()->with('success', 'Produk berhasil diperbarui');
-    }
-    catch (\Exception $e) {
+    } catch (\Exception $e) {
       return back()->with('error', 'Gagal menghapus memperbarui produk');
     }
   }
@@ -174,11 +178,10 @@ class ProductController extends Controller
         FileHelper::deleteFileByUrl($product->image);
       }
       $product->delete();
-      
+
       return back()->with('success', 'Produk berhasil dihapus');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal menghapus produk');
     }
-
   }
 }

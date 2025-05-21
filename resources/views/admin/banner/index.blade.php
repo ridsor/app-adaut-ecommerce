@@ -60,18 +60,13 @@
             @endif
             <h4 class="mb-0 mt-5">Spanduk</h4>
             <hr class="mt-2 mb-4">
-
             @if (count($banners) > 0)
                 @foreach ($banners as $banner)
                     <div class="item card card-icon lift lift-sm mb-3 position-static overflow-hidden"
-                        style="cursor: pointer" role="link" tabindex="0" aria-label="spanduk item"
-                        @click="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'"
-                        @keydown.enter="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'"
-                        @keydown.space.prevent="window.location.href='{{ route('banner.show', ['spanduk' => $banner->id]) }}'">
-                        <div class="row g-0">
+                        style="cursor: pointer" role="link" tabindex="0" aria-label="banner item">
+                        <div class="row g-2 flex-column flex-md-row">
                             <div class="col-auto card-icon-aside p-0" style="background: #f9f9f9">
-                                <div class="ratio ratio-1x1  overflow-hidden"
-                                    style="width: 112px">
+                                <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
                                     <div class="wrapper align-items-center d-flex justify-content-center">
                                         <img src="{{ $banner->image }}" style="background-position: center"
                                             class="h-100 object-fit-contain" />
@@ -79,21 +74,13 @@
                                 </div>
                             </div>
 
-                            <div class="col d-flex align-items-center">
-                                <div class="p-3">
-                                    <h5 class="card-title text-primary mb-2 fw-semibold">
-                                        <span
-                                            style="-webkit-line-clamp: 1;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden; max-height: 20px">
+                            <div class="col w-100 d-flex align-items-center">
+                                <div class="row p-1 p-md-3 flex-column flex-md-row flex-grow-1">
+                                    <div class="col">
+                                        <div class="text-primary fw-semibold">
                                             {{ $banner->title }}
-                                        </span>
-                                    </h5>
-
-                                    <p class="card-text mb-1">
-                                        <span
-                                            style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden; max-height: 50px">
-                                            {{ $banner->description }}
-                                        </span>
-                                    </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div
