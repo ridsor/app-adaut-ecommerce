@@ -28,11 +28,11 @@ class Product extends Model
 
         static::creating(function ($product) {
             $product->slug = Str::slug($product->name);
-            
+
             // Jika slug sudah ada, tambahkan ID atau angka acak
             $originalSlug = $product->slug;
             $count = 1;
-            
+
             while (static::where('slug', $product->slug)->exists()) {
                 $product->slug = $originalSlug . '-' . $count++;
             }
@@ -41,10 +41,10 @@ class Product extends Model
         static::updating(function ($product) {
             if ($product->isDirty('name')) { // Cek jika `name` berubah
                 $product->slug = Str::slug($product->name);
-                
+
                 $originalSlug = $product->slug;
                 $count = 1;
-                
+
                 while (static::where('slug', $product->slug)->where('id', '!=', $product->id)->exists()) {
                     $product->slug = $originalSlug . '-' . $count++;
                 }
@@ -114,8 +114,12 @@ class Product extends Model
 
         // rating
         $query->when($filters['rating'] ?? false, function ($query, $rating) {
-            $query->whereHas('reviews', function ($query) use ($rating) {
-                $query->selectRaw('AVG(rating) as avg_rating')->groupBy('product_id')->havingRaw('FLOOR(avg_rating) IN (' . implode(',', $rating) . ')');
+            $query->whereExists(function ($query) use ($rating) {
+                $query->selectRaw('product_id, AVG(rating) as avg_rating')
+                    ->from('reviews')
+                    ->whereColumn('products.id', 'reviews.product_id')
+                    ->groupBy('product_id')
+                    ->havingRaw('FLOOR(avg_rating) IN (' . implode(',', $rating) . ')');
             });
         });
 
