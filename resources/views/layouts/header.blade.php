@@ -54,49 +54,36 @@
 
                         <div class="user">
                             @auth
-                                <div class="nav-item dropdown no-caret dropdown-user me-3 me-lg-4">
-                                    <a class="btn btn-icon btn-transparent-dark dropdown-toggle"
-                                        id="navbarDropdownUserImage" href="javascript:void(0);" role="button"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                            class="img-fluid" src="/assets/img/illustrations/profiles/profile-2.png" /></a>
-                                    <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
-                                        aria-labelledby="navbarDropdownUserImage">
-                                        <h6 class="dropdown-header d-flex align-items-center">
-                                            <img class="dropdown-user-img"
-                                                src="/assets/img/illustrations/profiles/profile-2.png" />
-                                            <div class="dropdown-user-details">
-                                                <div class="dropdown-user-details-name">{{ Auth::user()->name }}</div>
-                                                <div class="dropdown-user-details-email">{{ Auth::user()->email }}</div>
-                                            </div>
-                                        </h6>
-                                        <div class="dropdown-divider"></div>
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <button class="dropdown-item">
-                                                <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
-                                                Logout
-                                            </button>
-                                        </form>
-                                    </div>
+                                <div class="dropdown">
+
+                                    <a href="#"
+                                        class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <x-icon>
+                                            <img src="/assets/img/illustrations/profiles/profile-2.png" alt="mdo"
+                                                width="32" height="32" class="rounded-circle">
+                                        </x-icon>
+                                    </a>
+                                    <ul class="dropdown-menu text-small" style="">
+                                        <li><a class="dropdown-item" href="#">Pesanan</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('profile.index') }}">Akun</a></li>
+                                    </ul>
                                 </div>
-                            @endauth
-                            {{-- <div class="dropdown">
-                                <button class="btn p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <x-icon>
-                                        <i class="fa-solid fa-user fs-4"></i>
-                                    </x-icon>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    @auth
-                                        <li><a class="dropdown-item" href="{{ route('login') }}">Profil</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('register') }}">Pesanan</a></li>
-                                    @else
+                            @else
+                                <div class="dropdown">
+                                    <button class="btn p-0 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <x-icon>
+                                            <i class="fa-solid fa-user fs-4"></i>
+                                        </x-icon>
+                                    </button>
+                                    <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
                                         <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
-                                    @endauth
-                                </ul>
-                            </div> --}}
+
+                                    </ul>
+                                </div>
+                            @endauth
                         </div>
                     </div>
                 </div>

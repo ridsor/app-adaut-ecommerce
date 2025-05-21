@@ -9,11 +9,11 @@
                         <div class="category-item">
                             <div
                                 class="d-flex flex-column gap-1 align-items-center justify-content-center text-center p-4 rounded-3">
-                                <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
-                                    <div class="wrapper align-items-center d-flex justify-content-center">
-                                        <img src="{{ $category->icon }}" style="background-position: center"
-                                            class="h-100 object-fit-contain" />
-                                    </div>
+                                <div class="ratio ratio-1x1  overflow-hidden d-flex align-items-center d-flex justify-content-center"
+                                    style="width: 112px">
+                                    <img src="{{ $category->icon }}" style="background-position: center"
+                                        class="h-100 object-fit-contain" />
+
                                 </div>
                                 <div class="lead fs-6 fw-medium">{{ $category->name }}</div>
                             </div>

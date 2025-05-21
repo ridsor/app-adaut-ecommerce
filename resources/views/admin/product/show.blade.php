@@ -26,13 +26,9 @@
             <div class="d-flex row mb-5">
                 <div class="col-12 col-md-6 col-lg-4">
                     <div
-                        class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-                        <div class="ratio ratio-1x1  overflow-hidden">
-                            <div class="wrapper align-items-center d-flex justify-content-center">
-                                <img src="{{ $product->image }}" style="background-position: center"
-                                    class="h-100 object-fit-contain" />
-                            </div>
-                        </div>
+                        class="product-image mb-3 image d-flex justify-content-center  bg-card rounded-3 overflow-hidden ratio ratio-1x1 align-items-center">
+                        <img src="{{ $product->category->icon }}"
+                            style="background-position: center; object-fit: contain" />
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-8">
