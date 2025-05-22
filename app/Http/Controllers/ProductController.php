@@ -70,7 +70,7 @@ class ProductController extends Controller
         $query->select(["rating", "product_id", "comment", "user_id", "created_at"]);
       },
       'reviews.user' => function ($query) {
-        $query->select(['id', 'name']);
+        $query->select(['username', 'id']);
       }
     ])->withCount('reviews')->withAvg('reviews', 'rating')->where("slug", $slug)->first();
 

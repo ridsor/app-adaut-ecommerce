@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->unique()->references('id')->on('users')->onDelete('cascade');
             $table->string('image')->nullable();
-            $table->string('phone_number',20)->nullable();
-            $table->enum('gender', ['Laki-laki', 'Perempuan'])->default('Laki-laki');
+            $table->string('phone_number', 16)->nullable();
+            $table->enum('gender', ['Laki-laki', 'Perempuan']);
             $table->date('date_of_birth')->nullable();
             $table->timestamps();
         });

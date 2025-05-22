@@ -15,9 +15,9 @@ Route::middleware('admin.redirect')->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/akun/profil', [ProfileController::class, 'index'])->name('profile.index');
+    Route::patch('/akun/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/akun/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/web/auth.php';
