@@ -60,7 +60,7 @@
                                         class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <x-icon>
-                                            <img src="/assets/img/illustrations/profiles/profile-2.png" alt="mdo"
+                                            <img src="{{ Auth::user()->profile->image ?? "/assets/img/illustrations/profiles/profile-2.png" }}" alt="mdo"
                                                 width="32" height="32" class="rounded-circle">
                                         </x-icon>
                                     </a>

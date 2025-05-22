@@ -67,7 +67,7 @@
                     <div class="item card card-icon lift lift-sm mb-3 position-static overflow-hidden"
                         style="cursor: pointer" role="link" tabindex="0" aria-label="category item">
                         <div class="row g-2 flex-column flex-md-row">
-                            <div class="col-auto card-icon-aside p-0" style="background: #f9f9f9">
+                            <div class="col-auto card-icon-aside p-1" style="background: #f9f9f9">
                                 <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
                                     <div class="wrapper align-items-center d-flex justify-content-center">
                                         <img src="{{ $category->icon }}" style="background-position: center"
