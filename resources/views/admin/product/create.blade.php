@@ -63,7 +63,7 @@
                             <div class="card-header">Kategori</div>
                             <div class="card-body">
                                 <select name="category_id" id="category_id" class="form-control">
-                                    <option value="" selected>Pilih kategori produn anda...</option>
+                                    <option value="" selected>Pilih kategori produk anda...</option>
                                     @foreach ($categories as $category)
                                         @if ($category->id === old('category_id'))
                                             <option value="{{ $category->id }}" selected>{{ $category->name }}</option>

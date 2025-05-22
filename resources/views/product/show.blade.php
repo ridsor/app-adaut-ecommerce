@@ -1,14 +1,27 @@
 @extends('layouts.app')
 
+@php
+(bool)$no_stock = 0 >= $product->stock;
+@endphp
+
 @section('content')
     <main x-data="productdetail">
         <div class="container py-5">
             <div class="d-flex row mb-5">
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div
-                        class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-                        <img src="{{ $product->image }}" style="background-position: center"
-                            class="h-100 object-fit-contain" />
+                    <div class="position-relative">
+                        <div x-show="no_stock" x-transition>   
+                            <div class="isEmpity position-absolute top-0 start-0 end-0 bottom-0 z-2 d-flex justify-content-center align-items-center">
+                                <div class="rounded-circle p-5 d-flex justify-content-center align-items-center" style="background-color: rgba(0,0,0,.5); aspect-ratio: 1/1">
+                                    <span class="text-white">Habis</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
+                            <img src="{{ $product->image }}" style="background-position: center"
+                                class="h-100 object-fit-contain" />
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-8">
@@ -36,7 +49,7 @@
                             <span class="text-secondary">Kuantitas</span>
                         </div>
                         <div class="cart-input d-flex border rounded-2 overflow-hidden" style="width:fit-content">
-                            <button class="p-0 minus border-0" :disabled="quantity < 2"
+                            <button class="p-0 minus border-0" :disabled="(quantity < 2) & {{ $no_stock }}"
                                 @click="update(Number(quantity - 1))">
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="width: 30px; height: 30px">
@@ -45,8 +58,9 @@
                             </button>
                             <input type="number" class="rounded-1 border-0 px-2 text-center"
                                 style="width: 50px; font-size: 14px; outline:none" :value="quantity"
+                                :disabled="{{ $no_stock }}"
                                 @change="update(Number($event.target.value))" />
-                            <button class="p-0 plus border-0" @click="update(Number(quantity + 1))">
+                            <button class="p-0 plus border-0" @click="update(Number(quantity + 1))" :disabled="{{ $no_stock }}">
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="width: 30px; height: 30px">
                                     <i class="fa-solid fa-plus"></i>
@@ -58,10 +72,10 @@
                         </div>
                     </div>
                     <div class="d-flex gap-2 flex-column flex-md-row">
-                        <button class="btn btn-primary" :disabled="showAnimationAddCart"
+                        <button class="btn btn-primary" :disabled="showAnimationAddCart & {{ $no_stock }}" 
                             @click="startAnimationAddCart">Keranjang</button>
                         <button class="btn
-                            btn-outline-primary">Beli Sekarang</button>
+                            btn-outline-primary" :disabled="{{ $no_stock }}">Beli Sekarang</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +83,7 @@
                 <div class="product-description mb-5">
                     <div class="fw-semibold mb-3 h4">Deskripsi</div>
                     <div>
-                        {!! $product->description !!}
+                        {!! Str::markdown($product->description) !!}
                     </div>
                 </div>
                 <div class="product-review" style="max-width: 800px">
@@ -133,6 +147,7 @@
     <script>
         document.addEventListener('alpine:init', () => {
             window.Alpine.data('productdetail', () => ({
+                no_stock: @json($no_stock),
                 quantity: 1,
                 update(value) {
                     if (value > 0) {
@@ -150,7 +165,7 @@
                         price: {{ $product->price }},
                         image: '{{ $product->image }}',
                     })
-
+                    
                     this.showAnimationAddCart = true;
                     let animation = bodymovin.loadAnimation({
                         container: document.getElementById('addcart_animation'),
@@ -159,17 +174,16 @@
                         autoplay: true,
                         path: '/assets/animations/cart.json'
                     });
-
+                    
                     animation.addEventListener('complete', () => {
                         setTimeout(() => {
                             this.showAnimationAddCart =
-                                false;
+                            false;
                             animation.destroy();
                         }, 200);
                     });
                 }
-
             }))
         })
-    </script>
+        </script>
 @endpush
