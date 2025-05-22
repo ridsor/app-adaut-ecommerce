@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="d-flex flex-column">
                                         <div class="review-name fw-semibold">
-                                            {{ $review->user->name }}
+                                            {{ $review->user->username }}
                                         </div>
                                         <div class="review-date">
                                             <span x-text="$store.globalState.formatTimeAgo('{{ $review->created_at }}')">

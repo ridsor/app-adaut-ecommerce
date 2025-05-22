@@ -12,7 +12,7 @@ class AdminRedirect
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() && Auth::user()->isAdmin()) {
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }
 
         return $next($request);
