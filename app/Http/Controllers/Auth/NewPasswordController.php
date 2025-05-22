@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class NewPasswordController extends Controller
@@ -33,7 +32,16 @@ class NewPasswordController extends Controller
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(8) // Minimum 8 karakter
+                    ->letters() // Harus mengandung huruf
+                    ->mixedCase() // Harus ada huruf besar dan kecil
+                    ->numbers() // Harus mengandung angka
+                    ->symbols() // Harus ada karakter spesial (!@#$%^&)
+                    ->uncompromised() // Memeriksa apakah password termasuk dalam daf
+            ],
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we
