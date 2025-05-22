@@ -25,10 +25,19 @@
         <div class="container py-5">
             <div class="d-flex row mb-5">
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div
-                        class="product-image mb-3 image d-flex justify-content-center  bg-card rounded-3 overflow-hidden ratio ratio-1x1 align-items-center">
-                        <img src="{{ $product->category->icon }}"
-                            style="background-position: center; object-fit: contain" />
+                    <div class="position-relative">
+                        <div x-show="@json(0 >= $product->stock)" x-transition>   
+                            <div class="isEmpity top-0 start-0 end-0 bottom-0 d-flex justify-content-center align-items-center position-absolute" style="z-index: 2">
+                                <div class="rounded-circle p-5 d-flex justify-content-center align-items-center" style="background-color: rgba(0,0,0,.5); aspect-ratio: 1/1">
+                                    <span class="text-white">Habis</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="product-image mb-3 image d-flex justify-content-center  bg-card rounded-3 overflow-hidden ratio ratio-1x1 align-items-center">
+                            <img src="{{ $product->image }}"
+                                style="background-position: center; object-fit: contain" />
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-8">

@@ -16,7 +16,6 @@ input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   height: 1em;
   width: 1em;
-  background: url(icon-close.svg) no-repeat;
 }
 
 .user .dropdown-toggle::after {
