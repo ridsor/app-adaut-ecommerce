@@ -2,22 +2,22 @@
     <div class="sidenav-menu d-flex flex-column">
         <div class="nav accordion py-3" id="accordionSidenav" style="flex:1">
             <!-- Sidenav Accordion (Dashboard)-->
-            <a class="nav-link  {{ Request::routeIs('dashboard') ? 'active' : '' }}"
+            <a class="nav-link  {{ request()->is('admin/dashboard/*') || request()->is('admin/dashboard') ? 'active' : '' }}"
                 href="{{ route('dashboard') }}">
                 <div class="nav-link-icon"><i data-feather="activity"></i></div>
                 Dashboard
             </a>
-            <a class="nav-link {{ Request::routeIs('category.index') ? 'active' : '' }}"
+            <a class="nav-link {{ request()->is('admin/kategori') || request()->is('admin/kategori/*') ? 'active' : '' }}"
                 href="{{ route('category.index') }}">
                 <div class="nav-link-icon"><i data-feather="list"></i></div>
                 Kategori
             </a>
-            <a class="nav-link {{ Request::routeIs('product.index') ? 'active' : '' }}"
+            <a class="nav-link {{ request()->is('admin/produk/*') || request()->is('admin/produk') ? 'active' : '' }}"
                 href="{{ route('product.index') }}">
                 <div class="nav-link-icon"><i data-feather="package"></i></div>
                 Produk
             </a>
-            <a class="nav-link  {{ Request::routeIs('banner.index') ? 'active' : '' }}"
+            <a class="nav-link  {{ request()->is('admin/spanduk') || request()->is('admin/spanduk/*') ? 'active' : '' }}"
                 href="{{ route('banner.index') }}">
                 <div class="nav-link-icon">
                     <svg fill="#a7aeb8" width="16px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"

@@ -9,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="Ryan Syukur" />
     <title>{{ $title ?? config('app.name') }}</title>
+    @vite(['resources/css/app.css',"resources/js/alpine.js"])
     <link href="/assets/css/styles.css" rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png" />
     <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/js/all.min.js"
@@ -17,7 +18,6 @@
     </script>
     </script>
     @stack('head')
-    @vite(['resources/css/app.css',"resources/js/alpine.js"])
 </head>
 
 <body class="nav-fixed">

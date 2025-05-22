@@ -3,7 +3,7 @@
 <a x-data class="product-item text-decoration-none" href="{{ route("product.detail", ["slug" => $product->slug]) }}">
   <div class="d-flex flex-column justify-content-center rounded-3">
     <div class="position-relative">
-      <div x-show="@json(0 >= $product->stock)" x-transition>
+      <div class="{{ $product->stock > 0 ? "d-none" : "" }}">
         <div
           class="isEmpity position-absolute top-0 start-0 end-0 bottom-0 d-flex justify-content-center align-items-center">
           <div class="rounded-circle p-5 d-flex justify-content-center align-items-center"

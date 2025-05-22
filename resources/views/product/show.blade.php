@@ -10,7 +10,7 @@
             <div class="d-flex row mb-5">
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="position-relative">
-                        <div x-show="no_stock" x-transition>   
+                        <div class="{{ $product->stock > 0 ? "d-none" : "" }}">
                             <div class="isEmpity position-absolute top-0 start-0 end-0 bottom-0 z-2 d-flex justify-content-center align-items-center">
                                 <div class="rounded-circle p-5 d-flex justify-content-center align-items-center" style="background-color: rgba(0,0,0,.5); aspect-ratio: 1/1">
                                     <span class="text-white">Habis</span>

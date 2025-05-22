@@ -29,6 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'email_verified_at'
     ];
+    protected $with = ['profile'];
 
     /**
      * The attributes that should be hidden for serialization.
