@@ -73,9 +73,9 @@
                     </div>
                     <div class="d-flex gap-2 flex-column flex-md-row">
                         <button class="btn btn-primary" :disabled="showAnimationAddCart & {{ $no_stock }}" 
-                            @click="startAnimationAddCart">Keranjang</button>
+                            @click="handleCart">Keranjang</button>
                         <button class="btn
-                            btn-outline-primary" :disabled="{{ $no_stock }}">Beli Sekarang</button>
+                            btn-outline-primary" :disabled="{{ $no_stock }}" @click="handleBuyNow">Beli Sekarang</button>
                     </div>
                 </div>
             </div>
@@ -157,7 +157,18 @@
                     }
                 },
                 showAnimationAddCart: false,
-                startAnimationAddCart() {
+                handleBuyNow() {
+                    if(@json(!Auth::check())) {
+                        window.location.href = '{{ route('login') }}'
+                        return
+                    }
+                },
+                handleCart() {
+                    if(@json(!Auth::check())) {
+                        window.location.href = '{{ route('login') }}'
+                        return
+                    }
+
                     window.Alpine.store('cart').add({
                         quantity: this.quantity,
                         name: '{{ $product->name }}',
