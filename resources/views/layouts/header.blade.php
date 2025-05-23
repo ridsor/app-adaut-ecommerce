@@ -38,22 +38,19 @@
                 </div>
                 <div class="left">
                     <div class="d-flex">
-                        @auth
-                            <div class="cart position-relative">
-                                <button class="btn p-0" type="button" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvas_cart" aria-controls="offcanvas_cart">
-                                    <x-icon>
-                                        <i class="fa-solid fa-cart-shopping fs-4"></i>
-                                    </x-icon>
-                                </button>
-                                <div x-show="$store.cart.items.length > 0" style="top: 1rem; left: 80%"
-                                    class="position-absolute pe-none translate-middle badge rounded-pill bg-danger">
-                                    <span
-                                        x-text="$store.cart.items.length > 100 ? '99+':$store.cart.items.length">99+</span>
-                                </div>
+                        <div class="cart position-relative" x-data>
+                            <button class="btn p-0" @click="handleShowCart" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvas_cart" aria-controls="offcanvas_cart">
+                                <x-icon>
+                                    <i class="fa-solid fa-cart-shopping fs-4"></i>
+                                </x-icon>
+                            </button>
+                            <div x-show="$store.cart.items.length > 0" style="top: 1rem; left: 80%"
+                                class="position-absolute pe-none translate-middle badge rounded-pill bg-danger">
+                                <span
+                                    x-text="$store.cart.items.length > 100 ? '99+':$store.cart.items.length">99+</span>
                             </div>
-                        @endauth
-
+                        </div>
                         <div class="user">
                             @auth
                                 <div class="dropdown">
@@ -82,7 +79,7 @@
                                                 @csrf
                                                 <button class="dropdown-item">
                                                     <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
-                                                    Keluar
+                                                    Logout
                                                 </button>
                                             </form>
                                         </li>
@@ -154,6 +151,13 @@
                     });
                     observer.observe(this.$refs.source);
                 }
+            }
+        }
+
+        function handleShowCart() {
+            if (@json(!Auth::check())) {
+                window.location.href = '{{ route('login') }}'
+                return
             }
         }
     </script>
