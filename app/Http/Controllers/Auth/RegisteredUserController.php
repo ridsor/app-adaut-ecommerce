@@ -33,15 +33,17 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', 
-            Password::min(8) // Minimum 8 karakter
-            ->letters() // Harus mengandung huruf
-            ->mixedCase() // Harus ada huruf besar dan kecil
-            ->numbers() // Harus mengandung angka
-            ->symbols() // Harus ada karakter spesial (!@#$%^&)
-            ->uncompromised() // Memeriksa apakah password termasuk dalam daf
-        ],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'password' => [
+                'required',
+                'confirmed',
+                Password::min(8) // Minimum 8 karakter
+                    ->letters() // Harus mengandung huruf
+                    ->mixedCase() // Harus ada huruf besar dan kecil
+                    ->numbers() // Harus mengandung angka
+                    ->symbols() // Harus ada karakter spesial (!@#$%^&)
+                    ->uncompromised() // Memeriksa apakah password termasuk dalam daf
+            ],
         ]);
 
         $user = User::create([
@@ -52,8 +54,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('verification.notice', absolute: false));
+        return back()->with('success', '<strong>Success!</strong> Akun Berhasil Dibuat, Silahkan Verifikasi Email Anda!');
     }
 }
