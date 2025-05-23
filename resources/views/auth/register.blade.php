@@ -24,6 +24,11 @@
                                     {{ session()->get('error') }}
                                 </div>
                             @endif
+                            @if (session()->has('success'))
+                            <div class="alert alert-info" role="alert">
+                                {!! session()->get('success') !!}
+                            </div>
+                            @endif
                             <!-- Login form-->
                             <form method="POST" action="{{ route('register.post') }}">
                                 @csrf
