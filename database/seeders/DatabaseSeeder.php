@@ -5,9 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
-use App\Models\TourPackage;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,16 +26,14 @@ class DatabaseSeeder extends Seeder
         ]);
         Category::create([
             'name' => 'Makanan',
-            'icon' => asset("storage/icon/kategori/cutlery.png")
+            'icon' => "ikon/kategori/cutlery.png"
         ]);
         Category::create([
             'name' => 'Kerajinan',
-            'icon' => asset("storage/icon/kategori/craft.png")
+            'icon' => "ikon/kategori/craft.png"
         ]);
-        Product::factory(1000)->create([
-            'category_id' => Category::all()->random()->id,
-            'image' => "https://themewagon.github.io/FoodMart/images/product-thumb-1.png"
-        ]);
+
+        Product::factory(1000)->create();
         Review::factory(20)->create();
     }
 }

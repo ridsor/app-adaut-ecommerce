@@ -120,6 +120,6 @@ class ProfileController extends Controller
             $user->save();
         });
 
-        return back()->with(['success' => 'Profil berhasil diperbarui']);
+        return back()->with(['status' => 'Profil berhasil diperbarui']);
     }
 }

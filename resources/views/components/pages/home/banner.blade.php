@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-md-4 pe-none order-1 order-md-2 justify-center">
                             <div class="d-flex h-100 w-100 align-items-center p-2 p-md-0">
-                                <img src="https://themewagon.github.io/FoodMart/images/product-thumb-1.png"
+                                <img src="{{ asset('storage/gambar/produk/kain tenun anteng.png') }}"
                                     alt="" class="w-100 object-fit-contain" />
                             </div>
                         </div>
