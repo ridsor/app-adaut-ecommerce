@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\ItemNotFoundException;
-use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -60,7 +60,7 @@ class CategoryController extends Controller
       ]
     );
     try {
-      $icon = FileHelper::uploadFile($request->icon, 'ikon/kategori');
+      $icon = $request->file('icon')->store('ikon/kategori');
 
       Category::create([
         "name" => $request->name,
@@ -115,7 +115,12 @@ class CategoryController extends Controller
       $icon = $category->icon;
 
       if ($request->hasFile('icon')) {
-        $icon = FileHelper::uploadFile($request->icon, 'icon/kategori');
+        if ($icon) {
+          Storage::delete($icon);
+        }
+
+        // Simpan gambar yang diunggah
+        $icon = $request->file('icon')->store('ikon/kategori');
       }
 
       $category->update([
@@ -137,8 +142,8 @@ class CategoryController extends Controller
   {
     try {
       $category = Category::where('slug', $slug)->firstOrFail();
-      if ($category->image) {
-        FileHelper::deleteFileByUrl($category->image);
+      if ($category->icon) {
+        Storage::delete($category->icon);
       }
       $category->delete();
 

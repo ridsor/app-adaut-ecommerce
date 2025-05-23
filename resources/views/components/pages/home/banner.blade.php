@@ -21,7 +21,7 @@
                         </div>
                         <div class="col-md-4 pe-none order-1 order-md-2 justify-center">
                             <div class="d-flex h-100 w-100 align-items-center p-2 p-md-0 ratio ratio-1x1">
-                                <img src="{{ $banner->image }}"
+                                <img src="{{ asset("storage/" . $banner->image) }}"
                                     alt="" class="h-100 object-fit-contain" />
                             </div>
                         </div>

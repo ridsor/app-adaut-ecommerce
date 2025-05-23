@@ -36,7 +36,7 @@
                 @method('PUT')
                 <div class="row gx-4">
                     <div class="col">
-                        <div class="card mb-4" x-data="imagePreview('{{ old('image', $banner->image) }}')">
+                        <div class="card mb-4" x-data="imagePreview('{{ asset("storage/" . $banner->image) }}')">
                             <div class="card-header">Gambar</div>
                             <div class="card-body">
                                 <label class="file-label d-block">

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\ItemNotFoundException;
-use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
@@ -86,7 +86,7 @@ class BannerController extends Controller
             'button_link.required_with' => 'Button link wajib diisi jika button text ada isinya',
         ]);
         try {
-            $image = FileHelper::uploadFile($request->image, 'gambar/spanduk');
+            $image = $request->file('image')->store('gambar/spanduk');
 
             Banner::create([
                 "title" => $request->title,
@@ -147,8 +147,13 @@ class BannerController extends Controller
             $banner = $banner = Banner::findOrFail($id);
 
             $image = $banner->image;
+
             if ($request->hasFile('image')) {
-                $image = FileHelper::uploadFile($request->image, 'gambar/spanduk');
+                if ($image) {
+                    Storage::delete($image);
+                }
+
+                $image = $request->file('image')->store('gambar/spanduk');
             }
 
             $banner->update([
@@ -173,7 +178,7 @@ class BannerController extends Controller
         try {
             $banner = Banner::findOrFail($id);
             if ($banner->image) {
-                FileHelper::deleteFileByUrl($banner->image);
+                Storage::delete($banner->image);
             }
             $banner->delete();
 
