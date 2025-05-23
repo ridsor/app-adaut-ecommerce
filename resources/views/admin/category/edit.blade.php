@@ -36,12 +36,12 @@
         @csrf
         <div class="row gx-4">
           <div class="col">
-            <div class="card mb-4" x-data="imagePreview('{{ old("icon", $category->icon) }}')">
+            <div class="card mb-4" x-data="imagePreview('{{ asset("storage/" . $category->icon) }}')">
               <div class="card-header">Ikon</div>
               <div class="card-body">
                 <label class="file-label d-block">
                   <span x-text="fileName"
-                    class="fw-500 btn btn-primary form-control w-100 @error("icon") is-invalid @enderror"">Tidak
+                    class="fw-500 btn btn-primary form-control w-100 @error("icon") is-invalid @enderror">Tidak
                     ada
                     file
                     dipilih</span>

@@ -7,8 +7,8 @@ use App\Models\Category;
 use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
-use App\Helpers\FileHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -119,7 +119,7 @@ class ProductController extends Controller
     );
 
     try {
-      $image = FileHelper::uploadFile($request->image, 'gambar/produk');
+      $image = $request->file('image')->store('gambar/produk');
 
       Product::create([
         "name" => $request->name,
@@ -195,9 +195,13 @@ class ProductController extends Controller
       $image = $product->image;
 
       if ($request->hasFile('image')) {
-        $image = FileHelper::uploadFile($request->image, 'gambar/produk');
+        if ($image) {
+          Storage::delete($image);
+        }
+        
+        $image = $request->file('image')->store('gambar/produk');
       }
-
+      
       $product->update([
         "name" => $request->name,
         "description" => $request->description,
@@ -206,19 +210,19 @@ class ProductController extends Controller
         "category_id" => $request->category_id,
         "image" => $image,
       ]);
-
+      
       return redirect(route('product.index'))->with('success', 'Produk berhasil diperbarui');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal menghapus memperbarui produk');
     }
   }
-
+  
   public function destroy($slug)
   {
     try {
       $product = Product::where('slug', $slug)->firstOrFail();
       if ($product->image) {
-        FileHelper::deleteFileByUrl($product->image);
+        Storage::delete($product->image);
       }
       $product->delete();
 
