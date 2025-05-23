@@ -58,13 +58,18 @@
                   <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <x-icon>
-                      <img src="{{ $user->profile?->image ? asset("storage/" . $user->profile?->image) : "/assets/img/illustrations/profiles/profile-2.png" }}"
-                        alt="mdo" width="32" height="32" class="rounded-circle">
+                      <img
+                        src="{{ Auth::user()->profile?->image
+                            ? (filter_var(Auth::user()->profile->image, FILTER_VALIDATE_URL)
+                                ? Auth::user()->profile->image
+                                : asset("storage/" . Auth::user()->profile->image))
+                            : "/assets/img/illustrations/profiles/profile-2.png" }}"
+                        alt="Profile" width="32" height="32" class="rounded-circle">
                     </x-icon>
                   </a>
                   <ul class="dropdown-menu text-small" style="">
                     <li><a class="dropdown-item" href="#">Pesanan</a></li>
-                    <li><a class="dropdown-item" href="{{ route("profile.index") }}">Akun</a></li>
+                    <li><a class="dropdown-item" href="{{ route("account.profile.index") }}">Akun</a></li>
                     <li>
                       <hr class="dropdown-divider">
                     </li>
