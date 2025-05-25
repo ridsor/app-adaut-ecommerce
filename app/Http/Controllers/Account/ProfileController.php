@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Rules\MultiCountryPhoneNumber;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,10 +45,7 @@ class ProfileController extends Controller
             'email' => 'required|email',
             'phone_number' => [
                 'nullable',
-                'string',
-                'min:10',
-                'max:16',
-                'regex:/^(\+62|0)[0-9]{9,13}$/'
+                new MultiCountryPhoneNumber,
             ],
             'gender' => 'nullable|in:Laki-laki,Perempuan',
             'date_of_birth' => 'nullable|date|before_or_equal:today',
@@ -120,6 +118,6 @@ class ProfileController extends Controller
             $user->save();
         });
 
-        return back()->with(['status' => 'Profil berhasil diperbarui']);
+        return back()->with(['success' => 'Profil berhasil diperbarui']);
     }
 }

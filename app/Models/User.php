@@ -59,8 +59,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Order::class);
     }
 
-    public function profile() {
+    public function profile()
+    {
         return $this->hasOne(Profile::class);
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Address::class);
     }
 
     public function isAdmin()
@@ -78,22 +84,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
         static::creating(function ($user) {
             $user->username = Str::slug($user->name, "_");
-            
+
             $originalusername = $user->username;
             $count = 1;
-            
+
             while (static::where('username', $user->username)->where('id', '!=', $user->id)->exists()) {
                 $user->username = $originalusername . '_' . $count++;
             }
         });
 
         static::updating(function ($user) {
-            if ($user->isDirty('name')) { 
+            if ($user->isDirty('name')) {
                 $user->username = Str::slug($user->name, "_");
-                
+
                 $originalusername = $user->username;
                 $count = 1;
-                
+
                 while (static::where('username', $user->username)->where('id', '!=', $user->id)->exists()) {
                     $user->username = $originalusername . '_' . $count++;
                 }

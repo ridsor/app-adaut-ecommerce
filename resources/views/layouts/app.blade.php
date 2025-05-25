@@ -17,7 +17,7 @@
     <!-- CSS -->
     @stack('head')
 
-    @vite(['resources/js/app.js', 'resources/css/app.css', "resources/js/alpine.js"])
+    @vite(['resources/js/app.js', 'resources/css/app.css', 'resources/js/bootstrap.js'])
 </head>
 
 <body>
@@ -32,6 +32,37 @@
         </div>
     </div>
     {{-- JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        console.log("{{ session()->get('token') }}")
+        if (@json(Session::has('success'))) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "{{ Session::get('status') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+        if (@json(Session::has('info'))) {
+            Swal.fire({
+                position: "top-end",
+                icon: "info",
+                title: "{{ Session::get('status') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+        if (@json(Session::has('error'))) {
+            Swal.fire({
+                position: "top-end",
+                icon: "error",
+                title: "{{ Session::get('error') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    </script>
     <script>
         const preloader = document.getElementById("preloader")
         if (preloader) {

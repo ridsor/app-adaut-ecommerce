@@ -20,6 +20,9 @@ class SecurityController extends Controller
         ]);
 
         $user = $request->user();
+        $user->tokens()->delete();
+
+        $request->session()->forget('token');
 
         Auth::logout();
 

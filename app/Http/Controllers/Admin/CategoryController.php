@@ -130,7 +130,6 @@ class CategoryController extends Controller
 
       return redirect(route('category.index'))->with('success', 'Kategori berhasil diperbarui');
     } catch (\Exception $e) {
-      dd($e);
       return back()->with('error', 'Gagal memperbarui kategori');
     }
   }
