@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Exception;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory, Searchable, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -21,6 +22,8 @@ class Product extends Model
         'stock',
         'category_id'
     ];
+
+    protected $dates = ['deleted_at'];
 
     protected static function boot()
     {

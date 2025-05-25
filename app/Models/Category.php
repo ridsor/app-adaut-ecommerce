@@ -45,6 +45,10 @@ class Category extends Model
                 }
             }
         });
+
+        static::deleting(function ($category) {
+            $category->products()->delete();
+        });
     }
 
     public function products()
