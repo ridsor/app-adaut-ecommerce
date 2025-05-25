@@ -198,10 +198,10 @@ class ProductController extends Controller
         if ($image) {
           Storage::delete($image);
         }
-        
+
         $image = $request->file('image')->store('gambar/produk');
       }
-      
+
       $product->update([
         "name" => $request->name,
         "description" => $request->description,
@@ -210,20 +210,17 @@ class ProductController extends Controller
         "category_id" => $request->category_id,
         "image" => $image,
       ]);
-      
+
       return redirect(route('product.index'))->with('success', 'Produk berhasil diperbarui');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal menghapus memperbarui produk');
     }
   }
-  
+
   public function destroy($slug)
   {
     try {
       $product = Product::where('slug', $slug)->firstOrFail();
-      if ($product->image) {
-        Storage::delete($product->image);
-      }
       $product->delete();
 
       return back()->with('success', 'Produk berhasil dihapus');
