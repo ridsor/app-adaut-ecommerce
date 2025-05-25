@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <!-- Form Row-->
-                        <div class="row gx-3 mb-3">
+                        <div class="row gx-3 mb-3" style="row-gap: 1rem">
                             <!-- Form Group (gender)-->
                             <div class="col-md-6">
                                 <label class="small mb-1" for="gender">Jenis Kelamin</label>
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <!-- Save changes button-->
-                        <button class="btn btn-primary" type="submit">Simpan Perubahan</button>
+                        <button class="btn btn-primary" type="submit">Simpan</button>
 
                     </div>
                 </div>
@@ -159,7 +159,6 @@
 @endsection
 
 @push('scripts')
-
     <script>
         function verifyEmail() {
             const form = (document.getElementById('form_verify_email'));

@@ -30,9 +30,12 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $token = $request->user()->createToken('token')->plainTextToken;
+        $request->session()->put('token', $token);
+
         return Auth::user()->role === 'admin'
-        ? redirect()->intended(route('dashboard', absolute: false))
-        : redirect()->intended(route('home', absolute: false));
+            ? redirect()->intended(route('dashboard', absolute: false))
+            : redirect()->intended(route('home', absolute: false));
     }
 
     /**
@@ -40,7 +43,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $request->user()->tokens()->delete();
         Auth::guard('web')->logout();
+        $request->session()->forget('token');
 
         $request->session()->invalidate();
 
