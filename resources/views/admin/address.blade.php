@@ -1,19 +1,33 @@
-@extends("layouts.account.app")
+@extends("layouts.admin.app")
 
 @section("content")
-  <form method="POST" action="{{ route("account.address.update") }}" enctype="multipart/form-data">
-    @csrf
-    @method("PATCH")
-    <!-- Account details card-->
-    <div class="card mb-4">
-      <div class="card-header">Alamat</div>
-      <div class="card-body">
+  <main>
+    <div class="container-xl list-item">
+      @if (Session::has("error"))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ Session::get("error") }}
+          <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
+      @if (Session::has("success"))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ Session::get("success") }}
+          <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
+
+      <h4 class="mb-0 mt-5">Alamat Pengiriman</h4>
+      <hr class="mt-2 mb-4">
+      <form method="POST" action="{{ route("admin.address.update") }}" enctype="multipart/form-data">
+        @csrf
+        @method("PATCH")
+        <!-- Account details card-->
         <!-- Form Row-->
         <div class="row gx-3 mb-3" style="row-gap: 1rem">
           <div class="col-md-6">
-            <label class="small mb-1" for="name">Nama Penerima</label>
-            <input class="form-control @error("name") is-invalid @enderror" id="name" type="text"
-              name="name" value="{{ old("name", $address?->name) }}">
+            <label class="small mb-1" for="name">Nama Pengirim</label>
+            <input class="form-control @error("name") is-invalid @enderror" id="name" type="text" name="name"
+              value="{{ old("name", $address?->name) }}">
             <div class="invalid-feedback">
               @error("name")
                 {{ $message }}
@@ -49,7 +63,7 @@
           <input type="hidden" name="destination_id" value="{{ old("destination_id", $address?->destination_id) }}">
           <input type="hidden" name="address_label" value="{{ old("address_label", $address?->address_label) }}">
           <div class="invalid-feedback">
-            @error("address_label")
+            @error("destination_id")
               Provinsi, Kota, Kecamatan, Kabupaten, Kelurahan, Kode Pos Wajib disi.
             @enderror
           </div>
@@ -78,11 +92,10 @@
         <!-- Save changes button-->
         <button class="btn btn-primary" type="submit">Simpan</button>
 
-      </div>
+      </form>
     </div>
-  </form>
+  </main>
 @endsection
-
 @push("head")
   <link href="https://cdn.jsdelivr.net/npm/tom-select@2.4.3/dist/css/tom-select.css" rel="stylesheet">
   <style>
@@ -140,7 +153,7 @@
         document.querySelector('input[name="destination_id"]').value = data.id
       },
       onInitialize: function() {
-        if (@json($errors->has("destination_id"))) {
+        if (@json($errors->has("address_label"))) {
           this.wrapper.classList.add('is-invalid')
         }
       },

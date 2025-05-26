@@ -39,7 +39,7 @@
             Swal.fire({
                 position: "top-end",
                 icon: "success",
-                title: "{{ Session::get('status') }}",
+                title: "{{ Session::get('success') }}",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -48,7 +48,7 @@
             Swal.fire({
                 position: "top-end",
                 icon: "info",
-                title: "{{ Session::get('status') }}",
+                title: "{{ Session::get('info') }}",
                 showConfirmButton: false,
                 timer: 1500
             });

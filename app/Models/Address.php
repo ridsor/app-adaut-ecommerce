@@ -8,7 +8,7 @@ class Address extends Model
 {
     protected $table = 'address';
     protected $fillable = [
-        'recipient_name',
+        'name',
         'full_address',
         'phone_number',
         'province_name',

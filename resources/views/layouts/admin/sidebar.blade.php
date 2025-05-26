@@ -44,6 +44,11 @@
                 </div>
                 Spanduk
             </a>
+            <a class="nav-link {{ request()->is('admin/address/*') || request()->is('admin/address') ? 'active' : '' }}"
+                href="{{ route('admin.address.index') }}">
+                <div class="nav-link-icon"><i data-feather="map-pin"></i></div>
+                Alamat
+            </a>
         </div>
         <!-- Sidenav Footer-->
         <div class="sidenav-footer">
