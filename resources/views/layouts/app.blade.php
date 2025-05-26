@@ -21,6 +21,7 @@
 </head>
 
 <body>
+    {{-- {{ dd(session()->get('token')) }} --}}
     @include('layouts.header')
     @yield('content')
     @include('layouts.footer')

@@ -9,7 +9,7 @@ class Address extends Model
     protected $table = 'address';
     protected $fillable = [
         'name',
-        'full_address',
+        'address',
         'phone_number',
         'province_name',
         'city_name',

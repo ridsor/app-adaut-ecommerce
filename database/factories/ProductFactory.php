@@ -31,6 +31,7 @@ class ProductFactory extends Factory
             'price' => $this->faker->randomNumber(5, true),
             'description' => $this->faker->paragraph(),
             'stock' => $this->faker->randomNumber(2, true),
+            'weight' => 1000,
             'category_id' => Category::all()->random()->id
         ];
     }

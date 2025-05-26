@@ -97,6 +97,7 @@ class ProductController extends Controller
         "description" => "required",
         "price" => "required|numeric",
         "stock" => "required|integer",
+        "weight" => "required|integer",
         "category_id" => 'required|exists:categories,id',
         "image" => "required|image|mimes:jpeg,png,jpga,webp|max:1048",
       ],
@@ -125,6 +126,7 @@ class ProductController extends Controller
         "name" => $request->name,
         "price" => $request->price,
         "stock" => $request->stock,
+        "weight" => $request->we,
         "image" => $image,
         "description" => $request->description,
         "category_id" => $request->category_id,
@@ -158,8 +160,9 @@ class ProductController extends Controller
     $rules = [
       "name" => "required",
       "description" => "required",
-      "price" => "required|integer",
+      "price" => "required|numeric",
       "stock" => "required|integer",
+      "weight" => "required|integer",
       "category_id" => 'required|exists:categories,id',
     ];
 
@@ -207,6 +210,7 @@ class ProductController extends Controller
         "description" => $request->description,
         "price" => $request->price,
         "stock" => $request->stock,
+        "weight" => $request->weight,
         "category_id" => $request->category_id,
         "image" => $image,
       ]);
