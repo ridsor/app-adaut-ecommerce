@@ -130,15 +130,15 @@
 
         const url = '{{ route("address.search-destination") }}?search=' + encodeURIComponent(
           query);
-        window.axios.get(url, {
-          headers: {
-            'Authorization': `Bearer {{ Session::get("token") }}`,
-            'Accept': 'application/json',
-
-          }
-        }).then(res => {
-          callback(res.data.data)
-        }).catch(() => callback())
+            window.axios.get(url, {
+              headers: {
+                'Authorization': `Bearer {{ Session::get("token") }}`,
+                'Accept': 'application/json',
+    
+              }
+            }).then(res => {
+              callback(res.data.data)
+            }).catch(() => callback())
 
       },
       onChange: function(value) {
