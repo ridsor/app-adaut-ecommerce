@@ -70,11 +70,11 @@
         </div>
         <!-- Form Group (name)-->
         <div class="mb-3">
-          <label class="small mb-1" for="full_address">Alamat Lengkap</label>
-          <textarea class="form-control @error("full_address") is-invalid @enderror" id="full_address" name="full_address"
-            rows="3" type="text" placeholder="Nama Jalan, Gedung, No. Rumah">{{ old("full_address", $address?->full_address) }}</textarea>
+          <label class="small mb-1" for="address">Alamat</label>
+          <textarea class="form-control @error("address") is-invalid @enderror" id="address" name="address"
+            rows="3" type="text" placeholder="Nama Jalan, Gedung, No. Rumah">{{ old("address", $address?->address) }}</textarea>
           <div class="invalid-feedback">
-            @error("full_address")
+            @error("address")
               {{ $message }}
             @enderror
           </div>

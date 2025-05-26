@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\CheckoutController;
+use App\Http\Controllers\Api\PaymentNotification;
 use App\Http\Controllers\Api\RajaOngkirController;
 use Illuminate\Support\Facades\Route;
 
+Route::post("/payment/notification-handler", PaymentNotification::class);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post("/product/checkout", [CheckoutController::class, 'productCheckout'])->name('payment.product.checkout');
     Route::get("/address/search-destination", [RajaOngkirController::class, 'searchDestination'])->name('address.search-destination');

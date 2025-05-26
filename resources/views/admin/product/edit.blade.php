@@ -123,6 +123,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card mb-4">
+                            <div class="card-header">Berat</div>
+                            <div class="card-body">
+                                <div class="input-group input-group-joined">
+                                    <span class="input-group-text">
+                                        Gram
+                                    </span>
+                                    <input class="form-control @error('weight') is-invalid @enderror" name="weight"
+                                        id="weight" type="number" value="{{ old('weight', $product->weight) }}"
+                                        placeholder="Masukkan harga produk Anda..." />
+                                </div>
+                                <div class="invalid-feedback">
+                                    @error('weight')
+                                        {{ $message }}
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                         <div class="card card-header-actions mb-4">
                             <div class="card-header">
                                 Deskripsi Produk

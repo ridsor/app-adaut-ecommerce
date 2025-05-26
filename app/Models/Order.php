@@ -10,21 +10,28 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        'amount',
         'user_id',
-        'total_amount',
-        'status',
-        'order_date',
+        'awb',
+        'status'
     ];
-    protected $primaryKey = 'id';
-    public $incrementing = false;
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function products()
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
+
+    public function shipping()
+    {
+        return $this->hasOne(Shipping::class);
+    }
+
+    public function order_items()
     {
         return $this->hasMany(OrderItem::class);
     }

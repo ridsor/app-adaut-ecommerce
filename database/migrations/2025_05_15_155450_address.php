@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
             $table->string('name', 50);
-            $table->text('full_address');
+            $table->text('address');
             $table->string('note')->nullable();
             $table->string('phone_number', 20);
             $table->string('province_name', 50);

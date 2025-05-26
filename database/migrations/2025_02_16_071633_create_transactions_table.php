@@ -14,14 +14,10 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('invoice')->unique();
-            $table->string('transaction_id')->unique();
-            $table->string('payment_method');
-            $table->integer('total');
-            $table->enum('status', ['pending', 'success', 'failed', 'expired'])->default('pending');
             $table->string('snap_token');
             $table->timestamps();
-
-            $table->foreignId('user_id')->references('id')->on('users');
+            
+            $table->foreignId('order_id')->references('id')->on('orders');
         });
     }
 

@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
             $table->string('name', 50);
             $table->string('code', 50);
             $table->string('description', 100);
             $table->bigInteger('cost');
             $table->string('etd', 20);
+            
+            $table->foreignId('order_id')->references('id')->on('transactions')->onDelete('cascade');
         });
     }
 

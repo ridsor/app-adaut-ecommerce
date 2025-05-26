@@ -20,7 +20,6 @@ class AddressController extends Controller
     public function index(Request $request)
     {
         $address = $request->user()->address;
-
         return view('account.address', [
             'title' => 'Akun - Alamat',
             'address' => $address
@@ -36,7 +35,7 @@ class AddressController extends Controller
 
         $rules = [
             'name' => 'required|min:3|max:50',
-            'full_address' => 'required',
+            'address' => 'required',
             'note' => 'nullable',
             'province_name' => 'required',
             'city_name' => 'required',
@@ -57,7 +56,7 @@ class AddressController extends Controller
             'name.min' => 'Nama Penerima minimal berisi 3 karakter.',
             'name.max' => 'Nama Penerima maksimal berisi 50 karakter.',
             'phone_number.required' => 'Nomor telepon Penerima wajib diisi.',
-            'full_address.required' => 'Alamat Lengkap Penerima wajib diisi.',
+            'address.required' => 'Alamat Lengkap Penerima wajib diisi.',
         ]);
 
         if ($request->address_label == $user->address?->address_label) {

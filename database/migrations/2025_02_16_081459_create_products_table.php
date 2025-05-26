@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger("price");
             $table->text("description");
             $table->integer('stock')->default(0);
+            $table->integer('weight');
             $table->timestamps();
             $table->softDeletes();
             $table->fullText(['name']);
