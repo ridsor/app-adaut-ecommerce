@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Rules\MultiCountryPhoneNumber;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AddressController extends Controller
 {
@@ -14,15 +13,15 @@ class AddressController extends Controller
      */
     public function __construct()
     {
-        $this->authorize('isUser');
+        $this->authorize('isAdmin');
     }
 
     public function index(Request $request)
     {
         $address = $request->user()->address;
 
-        return view('account.address', [
-            'title' => 'Akun - Alamat',
+        return view('admin.address', [
+            'title' => 'Alamat Pengiriman',
             'address' => $address
         ]);
     }

@@ -45,7 +45,7 @@
             </div>
         </header>
         <!-- Main page content-->
-        <div class="container-xl px-4 list-item" x-data="{ itemId: null, deleteRoute: '' }">
+        <div class="container-xl list-item" x-data="{ itemId: null, deleteRoute: '' }">
             @if (Session::has('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ Session::get('error') }}

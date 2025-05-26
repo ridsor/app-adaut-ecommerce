@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('address', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->references('id')->on('users');
-            $table->string('recipient_name', 50);
+            $table->string('name', 50);
             $table->text('full_address');
             $table->string('note')->nullable();
             $table->string('phone_number', 20);
