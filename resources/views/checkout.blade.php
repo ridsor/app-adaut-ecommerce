@@ -220,7 +220,9 @@
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary" :disabled="shipping.selected" @click="handlePayment">
+                        <button class="btn btn-primary"
+                            :disabled="Boolean(!shipping.selected | @json(!$user->address))"
+                            @click="handlePayment">
                             <span class="me-3">Buat Pesanan</span>
                             <i data-feather="arrow-right"></i>
                         </button>
@@ -328,7 +330,6 @@
                     note: null,
                 },
                 handlePayment: function() {
-                    console.log(this.data);
                     if (!@json($user->address)) {
                         Swal.fire({
                             icon: 'error',
@@ -353,6 +354,9 @@
                             quantity: item.quantity
                         }))
                     };
+
+                    console.log(orderData, '{{ Session::get('token') }}');
+                    return
                     axios.post('{{ route('product.checkout.store') }}', orderData, {
                             headers: {
                                 Authorization: `Bearer {{ Session::get('token') }}`,

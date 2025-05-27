@@ -11,7 +11,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'status',
-        'snap_token',
+        'url',
         'invoice'
     ];
 

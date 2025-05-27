@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('invoice')->unique();
-            $table->string('snap_token');
+            $table->string('url');
             $table->timestamps();
-            
+
             $table->foreignId('order_id')->references('id')->on('orders');
         });
     }

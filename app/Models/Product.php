@@ -9,10 +9,11 @@ use Laravel\Scout\Attributes\SearchUsingFullText;
 use Exception;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use App\Helper;
 
 class Product extends Model
 {
-    use HasFactory, Searchable, SoftDeletes;
+    use HasFactory, Searchable, SoftDeletes, Helper;
 
     protected $fillable = [
         'name',
@@ -31,6 +32,7 @@ class Product extends Model
         parent::boot();
 
         static::creating(function ($product) {
+            $product->sku = self::generateSku($product);
             $product->slug = Str::slug($product->name);
 
             // Jika slug sudah ada, tambahkan ID atau angka acak
@@ -43,7 +45,7 @@ class Product extends Model
         });
 
         static::updating(function ($product) {
-            if ($product->isDirty('name')) { // Cek jika `name` berubah
+            if ($product->isDirty('name')) {
                 $product->slug = Str::slug($product->name);
 
                 $originalSlug = $product->slug;
@@ -52,6 +54,10 @@ class Product extends Model
                 while (static::where('slug', $product->slug)->where('id', '!=', $product->id)->exists()) {
                     $product->slug = $originalSlug . '-' . $count++;
                 }
+            }
+
+            if ($product->isDirty('category_id') || $product->isDirty('name')) {
+                $product->sku = self::generateSku($product);
             }
         });
     }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('cost');
             $table->string('etd', 20);
             
-            $table->foreignId('order_id')->references('id')->on('transactions')->onDelete('cascade');
+            $table->foreignId('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
 
