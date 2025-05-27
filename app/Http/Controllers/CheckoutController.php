@@ -14,10 +14,10 @@ class CheckoutController extends Controller
 
     public function produkCheckout(Request $request)
     {
-        $origin = User::where('role', 'admin')->first()->address->destination_id;
+        $origin = User::where('role', 'admin')->first()->address?->destination_id;
         return view('checkout', [
             'title' => 'Checkout Produk',
-            "midtrans_client_key" => config('midtrans.client_key'),
+            "doku_client_key" => config('doku.client_key'),
             "user" => $request->user(),
             'origin' => $origin
         ]);

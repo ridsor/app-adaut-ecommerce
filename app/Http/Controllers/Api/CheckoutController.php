@@ -8,21 +8,16 @@ use App\Models\Product;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Midtrans\Config;
 use Illuminate\Support\Str;
-use Midtrans\Snap;
 
 class CheckoutController extends BaseController
 {
   public function productCheckout(Request $request)
   {
     try {
-      Config::$serverKey = config('midtrans.server_key');
-      Config::$isProduction = config('midtrans.is_production');
-      Config::$isSanitized = config('midtrans.is_sanitized');
-      Config::$is3ds = config('midtrans.is_3ds');
 
       $validator = Validator::make(
         $request->all(),
@@ -54,7 +49,7 @@ class CheckoutController extends BaseController
 
       $amount = 0;
       $total_weight = 0;
-      $item_details = [];
+      $line_items = [];
 
       foreach ($validated['items'] as $item) {
         $price = 0;
@@ -64,13 +59,15 @@ class CheckoutController extends BaseController
 
         $price = $product->price;
 
-        $item_details[] = [
+        $line_items[] = [
           'id' => $product->id,
-          'price' => $product->price,
           'name' => $product->name,
-          'category' => $product->category->name,
-          'url' => route("product.detail", ["slug" => $product->slug]),
           'quantity' => $item['quantity'],
+          'price' => $product->price,
+          'category' => $product->category->name,
+          'sku' => $product->sku,
+          'url' => route("product.detail", ["slug" => $product->slug]),
+          'image_url' => asset('storage/' . $product->image),
         ];
 
         $amount = $amount + ($item['quantity'] * $price);
@@ -78,7 +75,7 @@ class CheckoutController extends BaseController
       }
 
       $prefix = 'INV';
-      $random = Str::upper(Str::random(5)); 
+      $random = Str::upper(Str::random(5));
       $invoice = $prefix . '-' . date('Ymd') . '-' . $random;
       $order = Order::create([
         "amount" => $amount,
@@ -88,43 +85,97 @@ class CheckoutController extends BaseController
       $order->order_items()->createMany($validated['items']);
 
       $order->shipping()->create([
-        'name' => $request->shipping->name,
-        'code' => $request->shipping->code,
-        'description' => $request->shipping->description,
-        'cost' => $request->shipping->cost,
-        'etd' => $request->shipping->etd
+        'name' => $validated['shipping']['name'],
+        'code' => $validated['shipping']['code'],
+        'description' => $validated['shipping']['description'],
+        'cost' => $validated['shipping']['cost'],
+        'etd' => $validated['shipping']['etd']
       ]);
+      // $line_items[] = [
+      //   'id' => 'SHIPPING',
+      //   'name' => 'Biaya Pengiriman',
+      //   'quantity' => 1,
+      //   'price' => $validated['shipping']['cost'],
+      // ];
 
-      $params = [
-        'transaction_details' => [
-          'order_id' => $invoice,
-          'gross_amount' => $amount,
+      $secretKey = config('doku.secret_key');
+      $clientId = config('doku.client_id');
+      $requestId = Str::uuid()->toString();
+      $requestDate = now()->toIso8601ZuluString();
+      $targetPath = "/checkout/v1/payment";
+      $requestBody = [
+        'order' => [
+          'amount' => $amount,
+          'invoice_number' => $invoice,
+          "currency" => "IDR",
+          "language" => "ID",
+          "callback_url" => config('app.url'),
+          "callback_url_cancel" => config('app.url'),
+          "auto_redirect" => true,
+          'line_items' => $line_items
         ],
-        'customer_details' => [
+        "payment" => [
+          "payment_due_date" => 60
+        ],
+        'customer' => [
+          'id' => $request->user()->id,
           'name' => $request->user()->name,
           'email' => $request->user()->email,
-          'phone' => $request->user()->profile->phone_number,
-          'shipping_address' => [
-            'name' => $request->user()->address->name,
-            'address' => $request->user()->address->address,
-            'city' => $request->user()->address->city_name,
-            'zip_code' => $request->user()->address->zip_code,
-            "country_code" => "IDN"
-          ]
+          'phone' => $request->user()->address->phone_number,
+          'address' => $request->user()->address->address,
+          'postcode' => $request->user()->address->zip_code,
+          'city' => $request->user()->address->city_name,
+          'state' => $request->user()->address->province_name,
+          'country' => 'ID',
         ],
-        'item_details' => $item_details
+        'shipping_address' => [
+          'name' => $request->user()->address->name,
+          'address' => $request->user()->address->address,
+          'phone' => $request->user()->address->phone_number,
+          'city' => $request->user()->address->city_name,
+          'postal_code' => $request->user()->address->zip_code,
+          "country_code" => "IDN"
+        ]
       ];
+      $digestValue = base64_encode(hash('sha256', json_encode($requestBody, JSON_UNESCAPED_SLASHES), true));
 
-      $snap_token = Snap::getSnapToken($params);
+      $componentSignature =
+        "Client-Id:" . $clientId . "\n" .
+        "Request-Id:" . $requestId . "\n" .
+        "Request-Timestamp:" . $requestDate . "\n" .
+        "Request-Target:" . $targetPath . "\n" .
+        "Digest:" . $digestValue;
+
+      // Generate the HMAC SHA256 signature
+      $signature = base64_encode(hash_hmac('sha256', $componentSignature, $secretKey, true));
+
+      // Only use the HMACSHA256=... portion for the Signature header
+      $headerSignature =  "Client-Id:" . $clientId . "\n" .
+        "Request-Id:" . $requestId . "\n" .
+        "Request-Timestamp:" . $requestDate . "\n" .
+        // Prepend encoded result with algorithm info HMACSHA256=
+        "Signature:" . "HMACSHA256=" . $signature;
+
+      $doku = Http::withHeaders([
+        'Client-Id' => $clientId,
+        'Request-Id' => $requestId,
+        'Request-Timestamp' => $requestDate,
+        'Signature' => 'HMACSHA256=' . $signature
+      ])->asForm()->post(config('doku.url') . $targetPath, $requestBody);
+
+      if ($doku->status() !== 200) {
+        throw new Exception("Gagal menghubungi Doku API: " . $doku->body());
+      }
+
+      $paymentUrl = $doku->json()['response']['payment']['url'];
 
       $order->transaction()->create([
         'invoice' => $invoice,
-        'snap_token' => $snap_token
+        'url' => $paymentUrl,
       ]);
 
       DB::commit();
-
-      return $this->sendResponse($snap_token, "Checkout Berhasil");
+      return $this->sendResponse($paymentUrl, "Checkout Berhasil");
     } catch (\Exception $e) {
       dd($e);
       DB::rollBack();
