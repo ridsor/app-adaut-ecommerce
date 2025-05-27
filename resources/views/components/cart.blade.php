@@ -27,10 +27,11 @@
                 <div class="d-flex align-items-center gap-1 px-2">
                     <div>
                         <div class="total-price fw-medium" style="font-size: 14px"
-                            x-text="$store.globalState.formattedPrice($store.cart.total($store.cart.selected))"></div>
+                            x-text="$store.globalState.formatPrice($store.cart.total($store.cart.selected))"></div>
                     </div>
                     <div>
-                        <button class="btn btn-primary" :disabled="$store.cart.selected.length < 1">
+                        <button class="btn btn-primary" :disabled="$store.cart.selected.length < 1"
+                            @click="window.location.href = '{{ route('checkout') }}'">
                             <span style="font-size: 14px">
                                 Checkout (<span x-text="$store.cart.selected.length">0</span>)
                             </span>
@@ -52,7 +53,7 @@
                         <div class="cart-body" style="flex: 1">
                             <div class="cart-title" x-text="item.name"></div>
                             <div class="cart-title fw-semibold text-primary mb-2"
-                                x-text="$store.globalState.formattedPrice(item.price)"></div>
+                                x-text="$store.globalState.formatPrice(item.price)"></div>
                             <div class="cart-input d-flex border rounded-2 overflow-hidden" style="width:fit-content">
                                 <button class="p-0 minus border-0"
                                     @click="$store.cart.update(item, Number(item.quantity - 1))"

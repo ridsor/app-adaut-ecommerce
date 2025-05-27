@@ -2,7 +2,6 @@ import axios from "axios";
 import Alpine from "alpinejs";
 import persist from "@alpinejs/persist";
 
-
 window.axios = axios;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 window.axios.defaults.withCredentials = true;
@@ -13,9 +12,10 @@ Alpine.plugin(persist);
 window.Alpine = Alpine;
 
 Alpine.store("globalState", {
-    formattedPrice,
+    formatPrice,
     formatNumberShort,
     formatTimeAgo,
+    formatAddress,
 });
 
 Alpine.store("cart", {
@@ -61,6 +61,7 @@ Alpine.store("cart", {
                 product_id: newItem.product_id,
                 image: newItem.image,
                 name: newItem.name,
+                weight: newItem.weight,
                 price: newItem.price,
             });
         } else {
@@ -84,7 +85,7 @@ Alpine.store("cart", {
         );
         this.selected = [];
     },
-    selected: [],
+    selected: Alpine.$persist([]),
     isSelectedAll: false,
     selectOne(newItem) {
         const isExists = this.selected.some((item) => item.id === newItem.id);
@@ -103,13 +104,28 @@ Alpine.store("cart", {
 
 Alpine.start();
 
-function formattedPrice(value) {
+function formatPrice(value) {
     return new Intl.NumberFormat("id-ID", {
         style: "currency",
         currency: "IDR",
     })
         .format(value)
         .replace(",00", "");
+}
+
+function formatAddress(addressData) {
+    const parts = [
+        addressData.address || null,
+        addressData.subdistrict_name || null,
+        addressData.district_name || null,
+        addressData.city_name || null,
+        addressData.province_name || null,
+        addressData.zip_code || null,
+    ];
+
+    return parts
+        .filter((part) => part !== null && part !== undefined && part !== "")
+        .join(", ");
 }
 
 function formatNumberShort(num) {

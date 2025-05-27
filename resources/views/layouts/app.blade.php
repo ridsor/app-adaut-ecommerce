@@ -35,7 +35,6 @@
     {{-- JS --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        console.log("{{ session()->get('token') }}")
         if (@json(Session::has('success'))) {
             Swal.fire({
                 position: "top-end",

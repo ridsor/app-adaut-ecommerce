@@ -27,6 +27,12 @@ class CheckoutController extends BaseController
       $validator = Validator::make(
         $request->all(),
         [
+          'note' => 'nullable|string|max:255',
+          'shipping.name' => 'required|string|max:255',
+          'shipping.code' => 'required|string|max:50',
+          'shipping.description' => 'nullable|string|max:255',
+          'shipping.cost' => 'required|numeric|min:0',
+          'shipping.etd' => 'required|string|max:50',
           'items' => 'required|array',
           'items.*.product_id' => ['required', Rule::exists('products', 'id')->whereNull('deleted_at')],
           'items.*.quantity' => 'required|integer|min:1',
@@ -82,11 +88,11 @@ class CheckoutController extends BaseController
       $order->order_items()->createMany($validated['items']);
 
       $order->shipping()->create([
-        'name' => $request->shipping_name,
-        'code' => $request->shipping_code,
-        'description' => $request->shipping_description,
-        'cost' => $request->shipping_cost,
-        'etd' => $request->shipping_etd
+        'name' => $request->shipping->name,
+        'code' => $request->shipping->code,
+        'description' => $request->shipping->description,
+        'cost' => $request->shipping->cost,
+        'etd' => $request->shipping->etd
       ]);
 
       $params = [
