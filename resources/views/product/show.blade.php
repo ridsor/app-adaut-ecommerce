@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="product-price fw-bold fs-3" style="margin-bottom: 2rem"
-                        x-text="$store.globalState.formattedPrice({{ $product->price }})">Rp0</div>
+                        x-text="$store.globalState.formatPrice({{ $product->price }})">Rp  0</div>
                     <div class="d-flex gap-3 align-items-center justify-content-start mb-4 flex-md-row flex-column">
                         <div>
                             <span class="text-secondary">Kuantitas</span>
@@ -174,7 +174,8 @@
                         name: '{{ $product->name }}',
                         product_id: {{ $product->id }},
                         price: {{ $product->price }},
-                        image: '{{ $product->image }}',
+                        weight: {{ $product->weight }},
+                        image: '{{ asset("storage/".$product->image) }}',
                     })
                     
                     this.showAnimationAddCart = true;

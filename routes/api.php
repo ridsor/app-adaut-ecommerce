@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post("/payment/notification-handler", PaymentNotification::class);
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post("/product/checkout", [CheckoutController::class, 'productCheckout'])->name('payment.product.checkout');
+    Route::post("/product/checkout", [CheckoutController::class, 'productCheckout'])->name('product.checkout.store');
     Route::get("/address/search-destination", [RajaOngkirController::class, 'searchDestination'])->name('address.search-destination');
     Route::post("/address/domestic-cost", [RajaOngkirController::class, 'domesticCost'])->name('address.domestic-cost');
 });

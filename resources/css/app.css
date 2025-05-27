@@ -13,9 +13,13 @@ input[type="number"] {
 }
 
 input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  height: 1em;
-  width: 1em;
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+}
+
+.fs-12 {
+    font-size: 12px !important;
 }
 
 .user .dropdown-toggle::after {

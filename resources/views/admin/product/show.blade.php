@@ -26,16 +26,18 @@
             <div class="d-flex row mb-5">
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="position-relative">
-                        <div class="{{ $product->stock > 0 ? "d-none" : "" }}">
-                            <div class="isEmpity top-0 start-0 end-0 bottom-0 d-flex justify-content-center align-items-center position-absolute" style="z-index: 2">
-                                <div class="rounded-circle p-5 d-flex justify-content-center align-items-center" style="background-color: rgba(0,0,0,.5); aspect-ratio: 1/1">
+                        <div class="{{ $product->stock > 0 ? 'd-none' : '' }}">
+                            <div class="isEmpity top-0 start-0 end-0 bottom-0 d-flex justify-content-center align-items-center position-absolute"
+                                style="z-index: 2">
+                                <div class="rounded-circle p-5 d-flex justify-content-center align-items-center"
+                                    style="background-color: rgba(0,0,0,.5); aspect-ratio: 1/1">
                                     <span class="text-white">Habis</span>
                                 </div>
                             </div>
                         </div>
                         <div
                             class="product-image mb-3 image d-flex justify-content-center  bg-card rounded-3 overflow-hidden ratio ratio-1x1 align-items-center">
-                            <img src="{{ asset("storage/" . $product->image) }}"
+                            <img src="{{ asset('storage/' . $product->image) }}"
                                 style="background-position: center; object-fit: contain" />
                         </div>
                     </div>
@@ -43,7 +45,7 @@
                 <div class="col-12 col-md-6 col-lg-8">
                     <h2 class="product-name h2 fw-bold">{{ $product->name }}</h2>
                     <div class="product-price fw-bold fs-3 mb-2 text-primary"
-                        x-text="$store.globalState.formattedPrice({{ $product->price }})">Rp 0</div>
+                        x-text="$store.globalState.formatPrice({{ $product->price }})">Rp 0</div>
                     <div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-transparent">Kategori : {{ $product->category->name }}</li>
