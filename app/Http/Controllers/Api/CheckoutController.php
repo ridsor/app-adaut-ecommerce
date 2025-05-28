@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\API\BaseController;
 use App\Models\Order;
 use App\Models\Product;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Crypt;
 
 class CheckoutController extends BaseController
 {
@@ -27,7 +29,7 @@ class CheckoutController extends BaseController
           'shipping.code' => 'required|string|max:50',
           'shipping.description' => 'nullable|string|max:255',
           'shipping.cost' => 'required|numeric|min:0',
-          'shipping.etd' => 'required|string|max:50',
+          'shipping.etd' => 'nullable|string|max:50',
           'items' => 'required|array',
           'items.*.product_id' => ['required', Rule::exists('products', 'id')->whereNull('deleted_at')],
           'items.*.quantity' => 'required|integer|min:1',
@@ -50,9 +52,7 @@ class CheckoutController extends BaseController
       $amount = 0;
       $total_weight = 0;
       $line_items = [];
-
       foreach ($validated['items'] as $item) {
-        $price = 0;
         $product = Product::where('id', $item['product_id'])->lockForUpdate()->first();
 
         $product->decreaseStock($item['quantity']);
@@ -91,16 +91,17 @@ class CheckoutController extends BaseController
         'cost' => $validated['shipping']['cost'],
         'etd' => $validated['shipping']['etd']
       ]);
-      // $line_items[] = [
-      //   'id' => 'SHIPPING',
-      //   'name' => 'Biaya Pengiriman',
-      //   'quantity' => 1,
-      //   'price' => $validated['shipping']['cost'],
-      // ];
+      $line_items[] = [
+        'id' => 'SHIPPING',
+        'name' => 'Biaya Pengiriman',
+        'quantity' => 1,
+        'price' => $validated['shipping']['cost'],
+      ];
+      $amount += $validated['shipping']['cost'];
 
       $secretKey = config('doku.secret_key');
       $clientId = config('doku.client_id');
-      $requestId = Str::uuid()->toString();
+      $requestId = (string) Str::uuid();
       $requestDate = now()->toIso8601ZuluString();
       $targetPath = "/checkout/v1/payment";
       $requestBody = [
@@ -135,35 +136,31 @@ class CheckoutController extends BaseController
           'city' => $request->user()->address->city_name,
           'postal_code' => $request->user()->address->zip_code,
           "country_code" => "IDN"
+        ],
+        "additional_info" => [
+          "override_notification_url" => (env('APP_ENV') == 'production' ? env('APP_URL') : env('APP_DEBUG_URL')) . "/payments/notifications"
         ]
       ];
-      $digestValue = base64_encode(hash('sha256', json_encode($requestBody, JSON_UNESCAPED_SLASHES), true));
 
-      $componentSignature =
-        "Client-Id:" . $clientId . "\n" .
-        "Request-Id:" . $requestId . "\n" .
-        "Request-Timestamp:" . $requestDate . "\n" .
-        "Request-Target:" . $targetPath . "\n" .
-        "Digest:" . $digestValue;
-
-      // Generate the HMAC SHA256 signature
-      $signature = base64_encode(hash_hmac('sha256', $componentSignature, $secretKey, true));
-
-      // Only use the HMACSHA256=... portion for the Signature header
-      $headerSignature =  "Client-Id:" . $clientId . "\n" .
-        "Request-Id:" . $requestId . "\n" .
-        "Request-Timestamp:" . $requestDate . "\n" .
-        // Prepend encoded result with algorithm info HMACSHA256=
-        "Signature:" . "HMACSHA256=" . $signature;
+      $digest = $this->generateDigest($requestBody);
+      $signature = $this->generateSignature(
+        $clientId,
+        $requestId,
+        $targetPath,
+        $digest,
+        $secretKey,
+        $requestDate
+      );
 
       $doku = Http::withHeaders([
         'Client-Id' => $clientId,
         'Request-Id' => $requestId,
         'Request-Timestamp' => $requestDate,
-        'Signature' => 'HMACSHA256=' . $signature
-      ])->asForm()->post(config('doku.url') . $targetPath, $requestBody);
+        'Signature' => $signature,
+        'Digest' => $digest
+      ])->post(config('doku.url') . $targetPath, $requestBody);
 
-      if ($doku->status() !== 200) {
+      if (!$doku->successful()) {
         throw new Exception("Gagal menghubungi Doku API: " . $doku->body());
       }
 
@@ -182,5 +179,34 @@ class CheckoutController extends BaseController
 
       return $this->sendError(error: "Terjadi kesalahan pada server", code: 500);
     }
+  }
+
+  function generateSignature($clientId, $requestId, $requestTarget, $digest, $secret, $requestTimestamp)
+  {
+    // Prepare Signature Component
+    $componentSignature = "Client-Id:" . $clientId;
+    $componentSignature .= "\n";
+    $componentSignature .= "Request-Id:" . $requestId;
+    $componentSignature .= "\n";
+    $componentSignature .= "Request-Timestamp:" . $requestTimestamp;
+    $componentSignature .= "\n";
+    $componentSignature .= "Request-Target:" . $requestTarget;
+
+    if ($digest) {
+      $componentSignature .= "\n";
+      $componentSignature .= "Digest:" . $digest;
+    }
+
+    // Calculate HMAC-SHA256
+    $hmac = hash_hmac('sha256', $componentSignature, $secret, true);
+    $signature = base64_encode($hmac);
+
+    return "HMACSHA256=" . $signature;
+  }
+
+  function generateDigest($body)
+  {
+    $hash = hash('sha256', json_encode($body), true);
+    return base64_encode($hash);
   }
 }
