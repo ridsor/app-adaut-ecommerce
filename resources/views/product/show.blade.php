@@ -162,6 +162,26 @@
                         window.location.href = '{{ route('login') }}'
                         return
                     }
+                    
+                    Alpine.store('cart').selected = []
+                    window.Alpine.store('cart').add({
+                        quantity: this.quantity,
+                        name: '{{ $product->name }}',
+                        product_id: {{ $product->id }},
+                        price: {{ $product->price }},
+                        weight: {{ $product->weight }},
+                        image: '{{ asset("storage/".$product->image) }}',
+                    })
+                    Alpine.store('cart').selectOne({
+                        quantity: this.quantity,
+                        name: '{{ $product->name }}',
+                        product_id: {{ $product->id }},
+                        price: {{ $product->price }},
+                        weight: {{ $product->weight }},
+                        image: '{{ asset("storage/".$product->image) }}',
+                    })
+
+                    window.location.href = '{{ route('checkout') }}'
                 },
                 handleCart() {
                     if(@json(!Auth::check())) {

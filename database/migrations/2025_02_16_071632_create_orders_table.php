@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('awb')->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->decimal('amount', 10, 2);
-            $table->enum('status', ['packed', 'submitted', 'completed', 'failed'])->default('packed');
+            $table->enum('status', ['unpaid', 'packed', 'submitted', 'completed', 'failed'])->default('unpaid');
             $table->timestamps();
         });
     }

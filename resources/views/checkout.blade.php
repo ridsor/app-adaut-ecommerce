@@ -327,7 +327,7 @@
                     this.shipping.loadMethods();
                 },
                 data: {
-                    note: null,
+                    note: undefined,
                 },
                 handlePayment: function() {
                     if (!@json($user->address)) {
@@ -335,6 +335,14 @@
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Silakan lengkapi alamat pengiriman terlebih dahulu!',
+                        });
+                        return;
+                    }
+                    if (!Alpine.store('cart').selected.length) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Silahkan tambahkan produk ke keranjang terlebih dahulu!',
                         });
                         return;
                     }
@@ -355,8 +363,6 @@
                         }))
                     };
 
-                    console.log(orderData, '{{ Session::get('token') }}');
-                    return
                     axios.post('{{ route('product.checkout.store') }}', orderData, {
                             headers: {
                                 Authorization: `Bearer {{ Session::get('token') }}`,
@@ -364,13 +370,11 @@
                             }
                         })
                         .then(response => {
-                            // Swal.fire({
-                            //     icon: 'success',
-                            //     title: 'Pesanan berhasil dibuat!',
-                            //     text: response.data.message,
-                            // }).then(() => {
-                            //     window.location.href = response.data.redirect_url;
-                            // });
+                            this.shipping.selected = null;
+                            this.note = undefined;
+                            Alpine.store('cart').remove(Alpine.store('cart').selected)
+                            Alpine.store('cart').selected = [];
+                            window.location.href = response.data.data;
                         })
                         .catch(error => {
                             Swal.fire({

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('code', 50);
             $table->string('description', 100);
             $table->bigInteger('cost');
-            $table->string('etd', 20);
-            
+            $table->string('etd', 20)->nullable();
+
             $table->foreignId('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
