@@ -20,7 +20,6 @@ class CheckoutController extends BaseController
   public function productCheckout(Request $request)
   {
     try {
-
       $validator = Validator::make(
         $request->all(),
         [
@@ -137,9 +136,6 @@ class CheckoutController extends BaseController
           'postal_code' => $request->user()->address->zip_code,
           "country_code" => "IDN"
         ],
-        "additional_info" => [
-          "override_notification_url" => (env('APP_ENV') == 'production' ? env('APP_URL') : env('APP_DEBUG_URL')) . "/payments/notifications"
-        ]
       ];
 
       $digest = $this->generateDigest($requestBody);

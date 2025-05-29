@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\API\BaseController;
 use App\Models\Payment;
-use App\Models\Transaction;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Midtrans\Config;
 use Illuminate\Support\Str;
 
 class PaymentNotification extends BaseController
@@ -90,10 +89,11 @@ class PaymentNotification extends BaseController
 
     public function __invoke(Request $request)
     {
+        return $this->sendResponse('s', "Notifikasi Doku diterima");
         try {
-            Log::info($request->all());
-            return
-                $payment = Payment::where('invoice', $request->order_id)->first();
+            // Log::info($request->all());
+
+            $payment = Payment::where('invoice', $request->order_id)->first();
 
             if (!$payment) {
                 return $this->sendError(error: "Payment not found", code: 404);
