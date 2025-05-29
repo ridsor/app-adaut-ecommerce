@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('payment_method');
             $table->decimal('amount', 10, 2);
-            $table->enum('status', ['pending', 'success', 'failed', 'expired'])->default('pending');
+            $table->enum('status', ['success', 'failed', 'expired']);
             $table->timestamp('payment_date')->useCurrent();
             $table->timestamps();
 

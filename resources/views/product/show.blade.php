@@ -150,7 +150,7 @@
                 no_stock: @json($no_stock),
                 quantity: 1,
                 update(value) {
-                    if (value > 0) {
+                    if (value > 0 && value) {
                         this.quantity = Number(value)
                     } else {
                         this.quantity = 1

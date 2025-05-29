@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\API\BaseController;
 use App\Models\Order;
 use App\Models\Product;
@@ -136,6 +137,11 @@ class CheckoutController extends BaseController
           'postal_code' => $request->user()->address->zip_code,
           "country_code" => "IDN"
         ],
+        'additional_info' => [
+          "allow_tenor" => [0, 3, 6, 12],
+          "doku_wallet_notify_url" => "https://goose-honest-newly.ngrok-free.app/api/payments/notifications",
+          "override_notification_url" => "https://goose-honest-newly.ngrok-free.app/api/payments/notifications",
+        ]
       ];
 
       $digest = $this->generateDigest($requestBody);
@@ -169,8 +175,11 @@ class CheckoutController extends BaseController
 
       DB::commit();
       return $this->sendResponse($paymentUrl, "Checkout Berhasil");
+    } catch (CustomException $e) {
+      DB::rollBack();
+
+      return $this->sendError(error: $e->getMessage(), code: 400);
     } catch (\Exception $e) {
-      dd($e);
       DB::rollBack();
 
       return $this->sendError(error: "Terjadi kesalahan pada server", code: 500);
