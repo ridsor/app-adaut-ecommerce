@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+{{ dd(Auth::user()) }}
     <main x-data>
         <div id="layoutError_content">
             <div class="container-xl px-4 py-5">

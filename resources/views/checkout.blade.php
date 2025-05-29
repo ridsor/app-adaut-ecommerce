@@ -221,7 +221,7 @@
                 <div class="card-footer">
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-primary"
-                            :disabled="Boolean(!shipping.selected | @json(!$user->address))"
+                            :disabled="Boolean(!shipping.selected | isSubmit | @json(!$user->address))"
                             @click="handlePayment">
                             <span class="me-3">Buat Pesanan</span>
                             <i data-feather="arrow-right"></i>
@@ -292,7 +292,7 @@
         const preloader = document.getElementById("preloader")
         if (preloader) {
             window.addEventListener('load', () => {
-                preloader.remove();
+                preloader.remove()
             })
         }
     </script>
@@ -323,6 +323,7 @@
     <script>
         document.addEventListener('alpine:init', () => {
             window.Alpine.data('checkout', () => ({
+                isSubmit: false,
                 init() {
                     this.shipping.loadMethods();
                 },
@@ -362,7 +363,7 @@
                             quantity: item.quantity
                         }))
                     };
-
+                    this.isSubmit=true
                     axios.post('{{ route('product.checkout.store') }}', orderData, {
                             headers: {
                                 Authorization: `Bearer {{ Session::get('token') }}`,
@@ -377,10 +378,11 @@
                             window.location.href = response.data.data;
                         })
                         .catch(error => {
+                            this.isSubmit=false;
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Gagal membuat pesanan',
-                                text: 'Terjadi kesalahan saat membuat pesanan.',
+                                text: error.response.data.message,
                             });
                         });
                 },

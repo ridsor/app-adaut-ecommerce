@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Exceptions\CustomException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingFullText;
-use Exception;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use App\Helper;
@@ -80,7 +80,7 @@ class Product extends Model
     public function decreaseStock($quantity)
     {
         if ($this->stock < $quantity) {
-            throw new Exception("Stok tidak cukup untuk produk: {$this->name}");
+            throw new CustomException("Stok tidak cukup untuk produk ini");
         }
 
         $this->stock -= $quantity;

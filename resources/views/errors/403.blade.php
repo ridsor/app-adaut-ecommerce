@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <main x-data>
         <div id="layoutError_content">
             <main>
