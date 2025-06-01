@@ -3,14 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\API\BaseController;
-use App\Models\Payment;
 use App\Models\Transaction;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class PaymentNotification extends BaseController
 {
@@ -39,14 +35,24 @@ class PaymentNotification extends BaseController
                 'amount' => $amount,
             ]);
 
-            $transaction->order()->update([
-                'status' => 'packed',
-            ]);
+            if ($status === 'SUCCESS') {
+                $transaction->order()->update([
+                    'status' => 'packed',
+                ]);
+            } else if ($status === 'FAILED') {
+                $transaction->order()->update([
+                    'status' => 'failed',
+                ]);
+            } else if ($status === 'EXPIRED') {
+                $transaction->order()->update([
+                    'status' => 'failed',
+                ]);
+            }
+
 
 
             return response()->json(['message' => 'Notification processed successfully'], 200);
         } catch (\Exception $e) {
-            Log::info($e);
             return $this->sendError(error: "Terjadi kesalahan pada server", code: 500);
         }
     }

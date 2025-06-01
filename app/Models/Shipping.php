@@ -12,6 +12,17 @@ class Shipping extends Model
         'description',
         'cost',
         'etd',
+        'recipient_name',
+        'address',
+        'note',
+        'phone_number',
+        'province_name',
+        'city_name',
+        'district_name',
+        'subdistrict_name',
+        'zip_code',
+        'address_label',
+        'destination_id',
     ];
 
     public $timestamps = false;

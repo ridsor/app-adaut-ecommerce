@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\User\Account;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
@@ -19,8 +19,9 @@ class ProfileController extends Controller
      */
     public function index(Request $request): View
     {
-        return view('account.profile', [
+        return view('user.account.profile', [
             'title' => 'Akun - Profil',
+            'header_title' => 'Pengaturan Akun',
             'user' => $request->user(),
             'genders' => ['Laki-laki', 'Perempuan']
         ]);

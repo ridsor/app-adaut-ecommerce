@@ -19,7 +19,7 @@
                 </div>
                 <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
                     <div class="wrapper align-items-center d-flex justify-content-center">
-                        <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center"
+                        <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center" alt=""
                             class="h-100 object-fit-contain" />
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                 <div class="col text-dark fw-semibold d-flex align-items-center gap-1">
                     <div style="width: 40px">
                         <div class="d-flex justify-content-center ratio ratio-1x1 align-items-center">
-                            <img src="{{ asset('storage/' . $product->category->icon) }}"
+                            <img src="{{ asset('storage/' . $product->category->icon) }}" alt=""
                                 style="background-position: center; object-fit: contain" />
                         </div>
                     </div>

@@ -13,5 +13,5 @@ Route::middleware('admin.redirect')->group(function () {
 });
 
 require __DIR__ . '/web/auth.php';
-require __DIR__ . '/web/account/index.php';
+require __DIR__ . '/web/user/index.php';
 require __DIR__ . '/web/admin/index.php';

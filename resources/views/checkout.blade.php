@@ -16,17 +16,6 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js" crossorigin="anonymous">
     </script>
-    <style>
-        .fs-responsive {
-            font-size: 14px !important;
-        }
-
-        @media (min-width: 576px) {
-            .fs-responsive {
-                font-size: 16px !important;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -67,15 +56,18 @@
                 <div class="card-body">
                     <div class="shpiing-address">
                         @if ($user->address)
-                            <a class="text-dark text-decoration-none" href="{{ route('account.address.index') }}">
-                                <div class="content" x-data>
-                                    <div class="d-flex gap-2 mb-1">
+                            <a class="text-dark text-decoration-none" href="{{ route('user.account.address.index') }}">
+                                <div class="content">
+                                    <div class="d-flex gap-2 mb-1 fs-responsive">
                                         <span>{{ $user->address->name }}</span>
                                         <span> - </span>
                                         <span>{{ $user->address->phone_number }}</span>
                                     </div>
-                                    <p class="fs-responsive"
-                                        x-text="$store.globalState.formatAddress({{ $user->address }})">
+                                    <p class="fs-responsive mb-0">
+                                        {{ $user->address->address }}
+                                    </p>
+                                    <p class="fs-responsive m-0">
+                                        {{ $user->address->address_label }}
                                     </p>
                                 </div>
                             </a>
@@ -84,7 +76,7 @@
                                 <p class="fs-responsive">Anda belum belum memiliki alamat pengiriman, mohon tambahkan
                                     alamat baru.
                                 </p>
-                                <a href="{{ route('account.address.index') }}" class="btn btn-primary">
+                                <a href="{{ route('user.account.address.index') }}" class="btn btn-primary">
                                     <span class="me-3">Tmabahkan Alamat</span>
                                     <i data-feather="plus"></i>
                                 </a>
@@ -123,7 +115,7 @@
                                                 <div class="product-image ratio ratio-1x1 overflow-hidden"
                                                     style="width: 80px">
                                                     <img :src="item.image" style="background-position: center"
-                                                        class="h-100 object-fit-contain" />
+                                                        alt="" class="h-100 object-fit-contain" />
                                                 </div>
                                             </div>
                                             <div class="order-body flex-grow-1 flex-column gap-1 d-flex ">
@@ -250,7 +242,10 @@
                                 <div class="d-flex flex-column">
                                     <template x-for="(method, index) in shipping.methods" :key="index">
                                         <div class="shipping-option d-flex justify-content-between align-items-center border p-2"
-                                            @click="shipping.select(method)" data-bs-dismiss="modal">
+                                            @click="shipping.select(method)" data-bs-dismiss="modal"
+                                            style="cursor: pointer" role="link" tabindex="0"
+                                            aria-label="shipping-option" @keydown.enter="shipping.select(method)"
+                                            @keydown.space.prevent="shipping.select(method)">
                                             <div class="d-flex gap-2">
                                                 <div class="shipping-details">
                                                     <div class="shipping-name fw-medium" x-text="method.name"></div>
@@ -356,14 +351,14 @@
                         return;
                     }
                     const orderData = {
-                        note: this.note,
+                        note: this.data.note ?? null,
                         shipping: this.shipping.selected,
                         items: Alpine.store('cart').selected.map(item => ({
                             product_id: item.product_id,
                             quantity: item.quantity
                         }))
                     };
-                    this.isSubmit=true
+                    this.isSubmit = true
                     axios.post('{{ route('product.checkout.store') }}', orderData, {
                             headers: {
                                 Authorization: `Bearer {{ Session::get('token') }}`,
@@ -373,12 +368,12 @@
                         .then(response => {
                             this.shipping.selected = null;
                             this.note = undefined;
-                            Alpine.store('cart').remove(Alpine.store('cart').selected)
+                            Alpine.store('cart').remove(Alpine.store('cart').selected);
                             Alpine.store('cart').selected = [];
                             window.location.href = response.data.data;
                         })
                         .catch(error => {
-                            this.isSubmit=false;
+                            this.isSubmit = false;
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Gagal membuat pesanan',

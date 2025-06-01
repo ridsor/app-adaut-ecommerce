@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\User\Account;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -36,8 +36,9 @@ class SecurityController extends Controller
 
     public function index()
     {
-        return view('account.security', [
-            'title' => 'Akun - Keamanan'
+        return view('user.account.security', [
+            'title' => 'Akun - Keamanan',
+            'header_title' => 'Pengaturan Akun',
         ]);
     }
 }

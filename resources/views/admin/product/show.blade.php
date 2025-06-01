@@ -37,7 +37,7 @@
                         </div>
                         <div
                             class="product-image mb-3 image d-flex justify-content-center  bg-card rounded-3 overflow-hidden ratio ratio-1x1 align-items-center">
-                            <img src="{{ asset('storage/' . $product->image) }}"
+                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                 style="background-position: center; object-fit: contain" />
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                                     x-text="$store.globalState.formatNumberShort({{ $product->total_sold ?? 0 }})">0</span>
                             </li>
                             <li class="list-group-item bg-transparent">Peringkat :
-                                {{ round($product->reviews_avg_rating, 1) ?? 0 }} <img src="/icons/rate.svg" alt=""
+                                {{ round($product->reviews_avg_rating, 1) ?? 0 }} <img src="/icons/rate.svg" alt="" 
                                     style="width: 20px; height: 20px; transform: translateY(-2px)"></li>
                             <li class="list-group-item bg-transparent">Penilaian : <span
                                     x-text="$store.globalState.formatNumberShort({{ $product->review_count ?? 0 }})">0</span>

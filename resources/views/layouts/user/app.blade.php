@@ -20,23 +20,22 @@
 </head>
 
 <body>
-    <main x-data>
+    <main x-data class="overflow-hidden">
         <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
             <div class="container-xl px-4">
                 <div class="page-header-content">
                     <div class="row align-items-center justify-content-between pt-3">
                         <div class="col-auto mb-3">
                             <h1 class="page-header-title d-flex gap-2">
-                                <a class="btn btn-transparent-dark btn-icon" @click.prevent="window.history.back()"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-arrow-left">
+                                <a class="btn btn-transparent-dark btn-icon"
+                                    href="{{ $header_url ?? route('home') }}"><svg xmlns="http://www.w3.org/2000/svg"
+                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-arrow-left">
                                         <line x1="19" y1="12" x2="5" y2="12"></line>
                                         <polyline points="12 19 5 12 12 5"></polyline>
                                     </svg></a>
-                                <div class="page-header-icon"><i data-feather="user"></i></div>
-                                Pengaturan Akun
+                                {{ $header_title }}
                             </h1>
                         </div>
                     </div>
@@ -44,20 +43,8 @@
             </div>
         </header>
         <!-- Main page content-->
-        <div class="container-xl mt-4">
-            <nav class="nav nav-borders">
-                <a class="nav-link ms-0 {{ Request::routeIs('account.profile.index') ? 'active' : '' }}"
-                    href="{{ !Request::routeIs('account.profile.index') ? route('account.profile.index') : '#' }}">Profil</a>
-                <a class="nav-link ms-0 {{ Request::routeIs('account.address.index') ? 'active' : '' }}"
-                    href="{{ !Request::routeIs('account.address.index') ? route('account.address.index') : '#' }}">Alamat</a>
-                <a class="nav-link ms-0 {{ Request::routeIs('account.security.index') ? 'active' : '' }}"
-                    href="{{ !Request::routeIs('account.security.index') ? route('account.security.index') : '#' }}">Keamanan</a>
-            </nav>
-            <hr class="mt-0 mb-4" />
-            <div class="content">
-                @yield('content')
-            </div>
-        </div>
+
+        @yield('content')
     </main>
 
 

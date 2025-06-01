@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends BaseController
 {
@@ -78,8 +79,9 @@ class CheckoutController extends BaseController
       $random = Str::upper(Str::random(5));
       $invoice = $prefix . '-' . date('Ymd') . '-' . $random;
       $order = Order::create([
-        "amount" => $amount,
+        "amount" => $amount + $validated['shipping']['cost'],
         'user_id' => $request->user()->id,
+        'note' => $validated['note'],
       ]);
 
       $order->order_items()->createMany($validated['items']);
@@ -89,8 +91,21 @@ class CheckoutController extends BaseController
         'code' => $validated['shipping']['code'],
         'description' => $validated['shipping']['description'],
         'cost' => $validated['shipping']['cost'],
-        'etd' => $validated['shipping']['etd']
+        'etd' => $validated['shipping']['etd'],
+
+        'recipient_name' => $request->user()->address->name,
+        'address' => $request->user()->address->address,
+        'phone_number' => $request->user()->address->phone_number,
+        'province_name' => $request->user()->address->province_name,
+        'city_name' => $request->user()->address->city_name,
+        'district_name' => $request->user()->address->district_name,
+        'subdistrict_name' => $request->user()->address->subdistrict_name,
+        'zip_code' => $request->user()->address->zip_code,
+        'address_label' => $request->user()->address->address_label,
+        'destination_id' => $request->user()->address->destination_id,
+        'note' => $request->user()->address->note,
       ]);
+
       $line_items[] = [
         'id' => 'SHIPPING',
         'name' => 'Biaya Pengiriman',
@@ -110,8 +125,8 @@ class CheckoutController extends BaseController
           'invoice_number' => $invoice,
           "currency" => "IDR",
           "language" => "ID",
-          "callback_url" => config('app.url'),
-          "callback_url_cancel" => config('app.url'),
+          "callback_url" => route("user.order.show", ["order_number" => $order->order_number]),
+          "callback_url_cancel" => route("user.order.show", ["order_number" => $order->order_number]),
           "auto_redirect" => true,
           'line_items' => $line_items
         ],
@@ -181,7 +196,7 @@ class CheckoutController extends BaseController
       return $this->sendError(error: $e->getMessage(), code: 400);
     } catch (\Exception $e) {
       DB::rollBack();
-
+      Log::error($e->getMessage());
       return $this->sendError(error: "Terjadi kesalahan pada server", code: 500);
     }
   }

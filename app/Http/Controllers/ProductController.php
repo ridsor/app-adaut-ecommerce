@@ -4,15 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ItemNotFoundException;
 use App\Models\Category;
-use App\Models\Order;
 use App\Models\Product;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Midtrans\Config;
-use Midtrans\Snap;
 
 class ProductController extends Controller
 {

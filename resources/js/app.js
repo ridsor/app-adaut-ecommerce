@@ -15,7 +15,6 @@ Alpine.store("globalState", {
     formatPrice,
     formatNumberShort,
     formatTimeAgo,
-    formatAddress,
 });
 
 Alpine.store("cart", {
@@ -53,8 +52,8 @@ Alpine.store("cart", {
         const isExists = this.items.find(
             (x) => x.product_id == newItem.product_id
         );
+        const id = crypto.randomUUID();
         if (!isExists) {
-            const id = crypto.randomUUID();
             this.items.push({
                 id,
                 quantity: newItem.quantity,
@@ -72,6 +71,7 @@ Alpine.store("cart", {
                 return item;
             });
         }
+        return id;
     },
     total(items) {
         const result = items.reduce((acc, cur) => {
@@ -111,21 +111,6 @@ function formatPrice(value) {
     })
         .format(value)
         .replace(",00", "");
-}
-
-function formatAddress(addressData) {
-    const parts = [
-        addressData.address || null,
-        addressData.subdistrict_name || null,
-        addressData.district_name || null,
-        addressData.city_name || null,
-        addressData.province_name || null,
-        addressData.zip_code || null,
-    ];
-
-    return parts
-        .filter((part) => part !== null && part !== undefined && part !== "")
-        .join(", ");
 }
 
 function formatNumberShort(num) {

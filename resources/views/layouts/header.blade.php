@@ -68,8 +68,9 @@
                                         </x-icon>
                                     </a>
                                     <ul class="dropdown-menu text-small" style="">
-                                        <li><a class="dropdown-item" href="#">Pesanan</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('account.profile.index') }}">Akun</a>
+                                        <li><a class="dropdown-item" href="{{ route('user.order.index') }}">Pesanan</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('user.account.profile.index') }}">Akun</a>
                                         </li>
                                         <li>
                                             <hr class="dropdown-divider">

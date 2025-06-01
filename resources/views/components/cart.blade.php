@@ -47,7 +47,7 @@
                 <div class="cart-item">
                     <div class="d-flex gap-2">
                         <div class="product-image ratio ratio-1x1" style="width: 80px">
-                            <img :src="item.image" style="background-position: center"
+                            <img :src="item.image" style="background-position: center" alt=""
                                 class="h-100 object-fit-contain" />
                         </div>
                         <div class="cart-body" style="flex: 1">

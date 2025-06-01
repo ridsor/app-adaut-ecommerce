@@ -23,7 +23,7 @@
                             <div
                                 class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
                                 <div class="wrapper d-flex justify-content-center align-items-center">
-                                    <img src="{{ asset("storage/" . $banner->image) }}" style="background-position: center"
+                                    <img src="{{ asset("storage/" . $banner->image) }}" style="background-position: center" alt=""
                                         class="h-100 object-fit-contain" />
                                 </div>
                             </div>

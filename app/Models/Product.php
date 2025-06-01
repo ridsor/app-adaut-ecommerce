@@ -9,11 +9,11 @@ use Laravel\Scout\Searchable;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
-use App\Helper;
+use App\Traits\ProductTrait;
 
 class Product extends Model
 {
-    use HasFactory, Searchable, SoftDeletes, Helper;
+    use HasFactory, Searchable, SoftDeletes, ProductTrait;
 
     protected $fillable = [
         'name',

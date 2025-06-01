@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Traits;
 
 use Illuminate\Support\Str;
 
-trait Helper
+trait ProductTrait
 {
     public static function generateSku($product): string
     {
