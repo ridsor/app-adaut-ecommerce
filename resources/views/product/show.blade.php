@@ -19,7 +19,7 @@
                         </div>
                         <div
                             class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-                            <img src="{{ asset("storage/" . $product->image) }}" style="background-position: center"
+                            <img src="{{ asset("storage/" . $product->image) }}" style="background-position: center" alt="{{ $product->name }}"
                                 class="h-100 object-fit-contain" />
                         </div>
                     </div>
@@ -164,7 +164,7 @@
                     }
                     
                     Alpine.store('cart').selected = []
-                    window.Alpine.store('cart').add({
+                    const id = window.Alpine.store('cart').add({
                         quantity: this.quantity,
                         name: '{{ $product->name }}',
                         product_id: {{ $product->id }},
@@ -173,6 +173,7 @@
                         image: '{{ asset("storage/".$product->image) }}',
                     })
                     Alpine.store('cart').selectOne({
+                        id,
                         quantity: this.quantity,
                         name: '{{ $product->name }}',
                         product_id: {{ $product->id }},

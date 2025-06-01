@@ -12,6 +12,7 @@ class Review extends Model
     protected $filltable = [
         'product_id',
         'user_id',
+        'order_id',
         'rating',
         'comment'
     ];
@@ -24,5 +25,10 @@ class Review extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

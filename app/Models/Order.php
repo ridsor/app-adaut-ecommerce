@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Laravel\Scout\Attributes\SearchUsingFullText;
+use Laravel\Scout\Searchable;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'amount',
@@ -16,6 +20,15 @@ class Order extends Model
         'status',
         'note'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($order) {
+            $order->order_number = 'ORD' . Str::upper(Str::random(10));;
+        });
+    }
 
     public function user()
     {
@@ -35,5 +48,18 @@ class Order extends Model
     public function order_items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+
+    #[SearchUsingFullText(['order_number'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'order_number' => $this->order_number,
+        ];
     }
 }

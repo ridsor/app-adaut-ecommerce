@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\User\Account;
 
 use App\Http\Controllers\Controller;
 use App\Rules\MultiCountryPhoneNumber;
@@ -20,8 +20,9 @@ class AddressController extends Controller
     public function index(Request $request)
     {
         $address = $request->user()->address;
-        return view('account.address', [
+        return view('user.account.address', [
             'title' => 'Akun - Alamat',
+            'header_title' => 'Pengaturan Akun',
             'address' => $address
         ]);
     }

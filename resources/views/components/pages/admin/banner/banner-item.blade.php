@@ -9,7 +9,7 @@
     <div class="col-auto card-icon-aside p-0" style="background: #f9f9f9">
       <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
         <div class="wrapper align-items-center d-flex justify-content-center">
-          <img src="{{ asset("storage/" . $banner->image) }}" style="background-position: center"
+          <img src="{{ asset("storage/" . $banner->image) }}" style="background-position: center" alt=""
             class="h-100 object-fit-contain" />
         </div>
       </div>

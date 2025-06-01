@@ -14,7 +14,7 @@
             </div>
             <div
                 class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-                <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center"
+                <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center" alt="{{ $product->name }}"
                     class="object-fit-contain" />
             </div>
         </div>

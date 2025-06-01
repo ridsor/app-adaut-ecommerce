@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
             'icon' => "ikon/kategori/craft.png"
         ]);
 
-        Product::factory(1000)->create();
-        Review::factory(20)->create();
+        Product::factory(100)->create();
     }
 }
