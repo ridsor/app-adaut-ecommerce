@@ -14,7 +14,8 @@ class Review extends Model
         'user_id',
         'order_id',
         'rating',
-        'comment'
+        'comment',
+        'image'
     ];
 
     public function user()
@@ -30,5 +31,10 @@ class Review extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    public function review_media()
+    {
+        return $this->hasMany(ReviewMedia::class);
     }
 }

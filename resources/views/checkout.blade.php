@@ -307,7 +307,7 @@
         if (@json(Session::has('error'))) {
             Swal.fire({
                 position: "top-end",
-                icon: "success",
+                icon: "error",
                 title: "{{ Session::get('error') }}",
                 showConfirmButton: false,
                 timer: 1500

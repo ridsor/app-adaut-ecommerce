@@ -11,7 +11,7 @@
                             <div class="text-center mt-4">
                                 <img class="img-fluid p-4" src="/assets/img/illustrations/403-error-forbidden.svg"
                                     alt="" />
-                                <p class="lead">Klien Anda tidak memiliki izin untuk mendapatkan halaman ini dari server.
+                                <p class="lead">Anda tidak memiliki izin untuk mendapatkan halaman ini dari server.
                                 </p>
                                 <a class="text-arrow-icon small text-decoration-none d-flex align-items-center justify-content-center"
                                     style="cursor: pointer;" @click.prevent="window.history.back()">

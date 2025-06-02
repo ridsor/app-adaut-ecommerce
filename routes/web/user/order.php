@@ -11,5 +11,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengguna/pesanan/selesai', [OrderController::class, 'completed'])->name('user.order.completed');
     Route::get('/pengguna/pesanan/dibatalkan', [OrderController::class, 'failed'])->name('user.order.failed');
     Route::get('/pengguna/pesanan/{order_number}', [OrderController::class, 'show'])->name('user.order.show');
-    // Route::patch('/user/pesanan', [AddressController::class, 'update'])->name('account.address.update');
 });
