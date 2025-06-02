@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->tinyInteger('rating')->check('rating >= 1 AND rating <= 5');
             $table->text('comment');
-            $table->string("image")->nullable();
             $table->timestamps();
         });
     }

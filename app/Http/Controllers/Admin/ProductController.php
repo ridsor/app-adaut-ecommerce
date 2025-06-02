@@ -217,7 +217,7 @@ class ProductController extends Controller
 
       return redirect(route('product.index'))->with('success', 'Produk berhasil diperbarui');
     } catch (\Exception $e) {
-      return back()->with('error', 'Gagal menghapus memperbarui produk');
+      return back()->with('error', 'Gagal mengedit produk');
     }
   }
 

@@ -64,12 +64,11 @@
                     </div>
 
                     <!-- Payment Information -->
-                    <div class="card mb-4">
+                    {{-- <div class="card mb-4">
                         <div class="card-header">
                             <h5 class="card-title mb-0">Informasi Pembayaran</h5>
                         </div>
                         <div class="card-body">
-                            {{-- {{ dd($order->transaction) }} --}}
                             @if ($order->transaction->payment)
                                 <div class="row mb-2">
                                     <div class="col-md-4 fw-bold">Metode Pembayaran</div>
@@ -102,7 +101,7 @@
                                 </div>
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <!-- Order Summar -->
                 <div class="col-lg-4">

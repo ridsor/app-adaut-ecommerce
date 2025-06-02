@@ -366,11 +366,11 @@
                             }
                         })
                         .then(response => {
+                            window.location.href = response.data.data;
                             this.shipping.selected = null;
                             this.note = undefined;
                             Alpine.store('cart').remove(Alpine.store('cart').selected);
                             Alpine.store('cart').selected = [];
-                            window.location.href = response.data.data;
                         })
                         .catch(error => {
                             this.isSubmit = false;

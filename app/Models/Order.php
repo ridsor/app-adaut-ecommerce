@@ -50,7 +50,7 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function review()
+    public function reviews()
     {
         return $this->hasMany(Review::class);
     }

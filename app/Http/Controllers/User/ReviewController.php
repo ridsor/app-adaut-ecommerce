@@ -7,7 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\ReviewMedia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class ReviewController extends Controller
 {
@@ -20,13 +24,15 @@ class ReviewController extends Controller
     {
         $order_review = Order::with([
             'order_items' => function ($query) {
-                $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
+                $query->select(['quantity', 'product_id', 'order_id']);
             },
             'order_items.product' => function ($query) {
                 $query->select(['name', 'id', 'image', 'slug']);
             },
-            'order_items.product.reviews' => fn($query) => $query->select('id', 'user_id', 'product_id', 'order_id'),
-            'order_items.product.reviews.user' => fn($query) => $query->select('id', 'username', 'image')
+            'order_items.product.reviews' => fn($query) => $query->whereHas('order', function ($query) use ($order_number) {
+                $query->where('order_number', $order_number);
+            }),
+            'order_items.product.reviews.review_media' => fn($query) => $query->select('review_id', 'file_path')
         ])->where('user_id', $request->user()->id)->where('order_number', $order_number)->first();
 
         if (!$order_review) {
@@ -43,7 +49,9 @@ class ReviewController extends Controller
     {
         $product = Product::select(['id', 'image'])->where('slug', $slug)->first();
 
-        $review = Review::whereHas('product', function ($query) use ($slug) {
+        $review = Review::with([
+            'review_media' => fn($query) => $query->select('review_id', 'file_path', 'id')
+        ])->whereHas('product', function ($query) use ($slug) {
             $query->where('slug', $slug);
         })->whereHas('order', function ($query) use ($order_number) {
             $query->where('order_number', $order_number);
@@ -55,7 +63,7 @@ class ReviewController extends Controller
             throw new ItemNotFoundException('Penilaian produk');
         }
 
-        return view('user.order.review.show', [
+        return view('user.order.review.edit', [
             'title' => 'Penilaian Produk',
             'header_url' => route('user.review.product.index', ['order_number' => $order_number]),
             'review' => $review,
@@ -65,21 +73,55 @@ class ReviewController extends Controller
 
     public function productUpdate(Request $request, $order_number, $slug)
     {
-        $validated = $request->validate([
-            'rating' => 'required|integer|max:5',
+        $rules = [
+            'rating' => 'required|integer|min:1|max:5',
             'comment' => 'required|string',
-            'photos' => 'array|max:5',
-            'photos.*' => 'image|mimes:jpeg,png,jpg,gif|max:1048',
-        ]);
+            'photos' => 'nullable|array|max:5',
+            'photos.*' => 'image|mimes:jpeg,png,jpg|max:1048',
+            'deletedFiles' => 'nullable|array|max:5',
+            'deletedFiles.*' => 'nullable|exists:review_media,id'
+        ];
 
-        if ($request->hasFile('photos')) {
+        $validated = $request->validate($rules);
+
+        try {
+            $order = Order::select('id')->where('order_number', $order_number)->firstOrFail();
+            $product = Product::select('id')->where('slug', $slug)->firstOrFail();
+
+
+            $review = $request->user()->reviews()->updateOrCreate([
+                'order_id' => $order->id,
+                'product_id' => $product->id
+            ], [
+                'rating' => $validated['rating'],
+                'comment' => $validated['comment'],
+            ]);
+
+            // Hapus file yang dipilih user
+            if ($request->has('deletedFiles')) {
+                foreach ($request->deletedFiles as $fileId) {
+                    $media = ReviewMedia::find($fileId);
+                    if ($media && $media->review_id === $review->id) {
+                        Storage::delete($media->file_path);
+                        $media->delete();
+                    }
+                }
+            }
+
+            if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $image) {
                 $path = $image->store('foto/ulasan');
-                // $->media()->create([
-                //     'file_path' => $path,
-                //     'type' => 'image'
-                // ]);
+                    $review->review_media()->create([
+                        'file_path' => $path,
+                        'type' => 'photo'
+                    ]);
+                }
             }
+
+            return redirect(route('user.review.product.index', ['order_number' => $order_number]));
+        } catch (\Exception $e) {
+            Log::info($e);
+            return back()->with('error', 'Gagal menilai produk');
         }
     }
 }

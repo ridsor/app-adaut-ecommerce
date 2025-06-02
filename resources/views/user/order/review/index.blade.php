@@ -25,8 +25,8 @@
                                                     style="background-position: center" class="h-100 object-fit-contain" />
                                             </div>
                                         </div>
-                                        <div class="flex-grow-1 flex-column gap-1 d-flex ">
-                                            <div class="order-title flex-grow-1">
+                                        <div class="flex-grow-1 flex-column gap-1 d-flex justify-content-center">
+                                            <div class="order-title fw-bold">
                                                 <span
                                                     style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
                                                     {{ $item->product->name }}
@@ -35,38 +35,53 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if(count($item->product->reviews) > 0) 
                                 <hr class="my-2" />
                                 <div class="d-flex justify-content-between gap-2 align-items-center">
                                     <div class="review-item">
                                         <div class="d-flex gap-2 mb-1">
                                             <div class="image ration ratio-1x1 overflow-hidden"
                                                 style="width: 50px; border-radius: 100%">
-                                                <img src="http://images.tokopedia.net/img/cache/100-square/tPxBYm/2023/1/20/0c17a989-7381-454e-92f5-488ae5fe16f4.jpg"
+                                                <img src="{{ Auth::user()->profile?->image
+                                                ? (filter_var(Auth::user()->profile->image, FILTER_VALIDATE_URL)
+                                                    ? Auth::user()->profile->image
+                                                    : asset('storage/' . Auth::user()->profile->image))
+                                                : '/assets/img/illustrations/profiles/profile-2.png' }}"
                                                     alt="" class="object-fit-cover w-100 h-100"
-                                                    style="background-position: center">
+                                                    style="object-position: center">
                                             </div>
                                             <div class="d-flex flex-column">
                                                 <div class="review-name fw-semibold">
-                                                    {{ $order_review->review[0]->user->username }}
+                                                    {{ Auth::user()->username }}
                                                 </div>
                                                 <div class="review-date">
                                                     <span>
-                                                        {{ $order_review->review[0]->created_at->translatedFormat('d M Y H:i') }}
+                                                        {{ $item->product->reviews[0]->created_at->translatedFormat('d M Y H:i') }}
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="review-rating mb-1" x-data="{ rating: {{ $order_review->review[0]->rating }} }">
-                                            <template x-for="i in 5" :key="i">
-                                                <img :src="i <= rating ? '/icons/rate.svg' : '/icons/nonrate.svg'"
-                                                    alt="star" style="width: 20px; height: 20px;">
-                                            </template>
+                                        <div class="review-rating mb-1">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                            <img src="{{  $i <= $item->product->reviews[0]->rating ? '/icons/rate.svg' : '/icons/nonrate.svg' }}"
+                                                alt="star" style="width: 20px; height: 20px;">
+                                            @endfor
                                         </div>
-                                        <div class="rating-comment">
-                                            <p>{{ $order_review->review[0]->comment }}</p>
+                                        <div class="rating-comment mb-1">
+                                            <p>{{ $item->product->reviews[0]->comment }}</p>
+                                        </div>
+                                        <div class="d-flex gap-2 flex-wrap">
+                                            @foreach ($item->product->reviews[0]->review_media as $media)
+                                            <div class="product-image overflow-hidden position-relative"
+                                                style="width: 100px; height: 100px">
+                                                <img src="{{ asset('storage/'.$media->file_path) }}" alt=""
+                                                style="object-position: center; object-fit: cover" class="w-100 h-100" />
+                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
