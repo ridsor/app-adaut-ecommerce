@@ -2,6 +2,7 @@
 
     @php
         use App\Helpers\OrderHelper;
+        use App\Helpers\ProductHelper;
     @endphp
 
     @section('content')
@@ -47,12 +48,12 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="text-end">
-                                                    {{ OrderHelper::formatCurrency($item->product->price, 0, ',', '.') }}
+                                                <td class="text-end" style="white-space: nowrap">
+                                                    {{ ProductHelper::formatCurrency($item->product->price, 0, ',', '.') }}
                                                 </td>
                                                 <td class="text-center">{{ $item->quantity }}</td>
                                                 <td class="text-end">
-                                                    {{ OrderHelper::formatCurrency($item->product->price * $item->quantity, 0, ',', '.') }}
+                                                    {{ ProductHelper::formatCurrency($item->product->price * $item->quantity, 0, ',', '.') }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -136,19 +137,19 @@
                             <div class="row mb-2">
                                 <div class="col-6">Subtotal Produk</div>
                                 <div class="col-6 text-end">
-                                    {{ OrderHelper::formatCurrency($order->total_price, 0, ',', '.') }}
+                                    {{ ProductHelper::formatCurrency($order->total_price, 0, ',', '.') }}
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-6">Subtotal Pengiriman</div>
                                 <div class="col-6 text-end">
-                                    {{ OrderHelper::formatCurrency($order->shipping->cost, 0, ',', '.') }}
+                                    {{ ProductHelper::formatCurrency($order->shipping->cost, 0, ',', '.') }}
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-6 fw-bold">Total Pembayaran</div>
                                 <div class="col-6 text-end fw-bold text-primary">
-                                    {{ OrderHelper::formatCurrency($order->amount, 0, ',', '.') }}</div>
+                                    {{ ProductHelper::formatCurrency($order->amount, 0, ',', '.') }}</div>
                             </div>
                         </div>
                         @if ($order->status == 'unpaid' || $order->status == 'completed')
@@ -159,7 +160,8 @@
                                             Sekarang</a>
                                     @endif
                                     @if ($order->status == 'completed')
-                                        <button class="btn btn-primary w-100">Nilai</button>
+                                        <a href="{{ route('user.review.product.index', ['order_number' => $order->order_number]) }}"
+                                            class="btn btn-primary w-100">Nilai</a>
                                     @endif
                                 </div>
                             </div>
@@ -225,7 +227,7 @@
                                         <div class="mb-0">
                                             <label class="form-label text-muted">Biaya Pengiriman:</label>
                                             <p class="mb-0 fw-medium text-primary">
-                                                {{ OrderHelper::formatCurrency($order->shipping->cost) }}</p>
+                                                {{ ProductHelper::formatCurrency($order->shipping->cost) }}</p>
                                         </div>
                                     </div>
                                 </div>

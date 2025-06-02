@@ -2,6 +2,7 @@
 
 @php
     use App\Helpers\OrderHelper;
+    use App\Helpers\ProductHelper;
 @endphp
 
 @section('content')
@@ -99,7 +100,7 @@
                                         </span>
                                         <span>
                                             Total Pesanan: <span
-                                                class="text-primary">{{ OrderHelper::formatCurrency($order->amount, 0, ',', '.') }}</span>
+                                                class="text-primary">{{ ProductHelper::formatCurrency($order->amount, 0, ',', '.') }}</span>
                                         </span>
                                     </div>
                                     <div class="d-flex justify-content-end gap-2 mt-2 align-items-center flex-wrap">
@@ -117,9 +118,10 @@
                                             @break
 
                                             @case('completed')
-                                                <button class="btn btn-primary">
+                                                <a href="{{ route('user.review.product.index', ['order_number' => $order->order_number]) }}"
+                                                    class="btn btn-primary">
                                                     Nilai
-                                                </button>
+                                                </a>
                                             @break
                                         @endswitch
 
