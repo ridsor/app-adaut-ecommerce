@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends BaseController
