@@ -63,7 +63,7 @@
                                                 ? (filter_var(Auth::user()->profile->image, FILTER_VALIDATE_URL)
                                                     ? Auth::user()->profile->image
                                                     : asset('storage/' . Auth::user()->profile->image))
-                                                : '/assets/img/illustrations/profiles/profile-2.png' }}"
+                                                : '/assets/img/user-placeholder.svg' }}"
                                                 alt="Profile" width="32" height="32" class="rounded-circle">
                                         </x-icon>
                                     </a>

@@ -56,7 +56,7 @@ class ProductController extends Controller
     ]);
   }
 
-  public function show($slug)
+  public function show(Request $request, $slug)
   {
     $product = Product::with([
       "reviews" => function ($query) {
@@ -74,7 +74,8 @@ class ProductController extends Controller
 
     return view('product.show', [
       "title" => $product->name,
-      "product" => $product
+      "product" => $product,
+      'user' => $request->user()
     ]);
   }
 }

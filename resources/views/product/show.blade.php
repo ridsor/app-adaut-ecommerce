@@ -93,9 +93,13 @@
                 <div class="review-item">
                   <div class="d-flex gap-2 mb-1">
                     <div class="image ration ratio-1x1 overflow-hidden" style="width: 50px; border-radius: 100%">
-                      <img
-                        src="http://images.tokopedia.net/img/cache/100-square/tPxBYm/2023/1/20/0c17a989-7381-454e-92f5-488ae5fe16f4.jpg"
-                        alt="" class="object-fit-cover w-100 h-100" style="background-position: center">
+                      <img src="{{ $user->profile?->image
+                                                    ? (filter_var($user->profile->image, FILTER_VALIDATE_URL)
+                                                        ? $user->profile->image
+                                                        : asset('storage/' . $user->profile->image))
+                                                    : '/assets/img/user-placeholder.svg' }}"
+                                                    alt="" class="object-fit-cover w-100 h-100"
+                                                    style="background-position: center">
                     </div>
                     <div class="d-flex flex-column">
                       <div class="review-name fw-semibold">

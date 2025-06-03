@@ -33,7 +33,7 @@ class ReviewController extends Controller
                 $query->where('order_number', $order_number);
             }),
             'order_items.product.reviews.review_media' => fn($query) => $query->select('review_id', 'file_path')
-        ])->where('user_id', $request->user()->id)->where('order_number', $order_number)->first();
+        ])->where('user_id', $request->user()->id)->where('order_number', $order_number)->where('status', 'completed')->first();
 
         if (!$order_review) {
             throw new ItemNotFoundException($order_number);
@@ -41,7 +41,8 @@ class ReviewController extends Controller
 
         return view('user.order.review.index', [
             'title' => 'Penilaian Produk',
-            'order_review' => $order_review
+            'order_review' => $order_review,
+            'user' => $request->user()
         ]);
     }
 
@@ -54,7 +55,7 @@ class ReviewController extends Controller
         ])->whereHas('product', function ($query) use ($slug) {
             $query->where('slug', $slug);
         })->whereHas('order', function ($query) use ($order_number) {
-            $query->where('order_number', $order_number);
+            $query->where('order_number', $order_number)->where('status', 'completed');
         })
             ->where('user_id', $request->user()->id)
             ->first();
@@ -85,7 +86,7 @@ class ReviewController extends Controller
         $validated = $request->validate($rules);
 
         try {
-            $order = Order::select('id')->where('order_number', $order_number)->firstOrFail();
+            $order = Order::select('id')->where('user_id', $request->user()->id)->where('order_number', $order_number)->where('status', 'completed')->firstOrFail();
             $product = Product::select('id')->where('slug', $slug)->firstOrFail();
 
 
@@ -109,8 +110,8 @@ class ReviewController extends Controller
             }
 
             if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $image) {
-                $path = $image->store('foto/ulasan');
+                foreach ($request->file('photos') as $image) {
+                    $path = $image->store('foto/ulasan');
                     $review->review_media()->create([
                         'file_path' => $path,
                         'type' => 'photo'

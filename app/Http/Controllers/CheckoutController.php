@@ -17,7 +17,7 @@ class CheckoutController extends Controller
         $origin = User::where('role', 'admin')->first()->address?->destination_id;
         return view('checkout', [
             'title' => 'Checkout Produk',
-            "doku_client_key" => config('doku.client_key'),
+            'header_title' => 'Checkout',
             "user" => $request->user(),
             'origin' => $origin
         ]);
