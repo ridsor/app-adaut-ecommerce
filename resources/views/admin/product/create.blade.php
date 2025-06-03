@@ -13,7 +13,7 @@
                             </h1>
                         </div>
                         <div class="col-12 col-xl-auto mb-3">
-                            <a class="btn btn-sm btn-light text-primary" href="{{ route('product.index') }}">
+                            <a class="btn btn-sm btn-light text-primary" href="{{ route('admin.product.index') }}">
                                 <i class="me-1" data-feather="arrow-left"></i>
                                 Kembali ke Semua Produk
                             </a>
@@ -30,7 +30,7 @@
                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row gx-4">
                     <div class="col">
@@ -101,11 +101,11 @@
                                     <input class="form-control @error('price') is-invalid @enderror" name="price"
                                         id="price" type="number" value="{{ old('price') }}"
                                         placeholder="Masukkan harga produk Anda..." />
-                                </div>
-                                <div class="invalid-feedback">
-                                    @error('price')
-                                        {{ $message }}
-                                    @enderror
+                                        <div class="invalid-feedback">
+                                            @error('price')
+                                                {{ $message }}
+                                            @enderror
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                                 <div class="invalid-feedback">
                                     @error('stock')
                                         {{ $message }}
-                                        @enderror
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -133,11 +133,11 @@
                                     <input class="form-control @error('weight') is-invalid @enderror" name="weight"
                                         id="weight" type="number" value="{{ old('weight') }}"
                                         placeholder="Masukkan harga produk Anda..." />
-                                </div>
-                                <div class="invalid-feedback">
-                                    @error('weight')
-                                        {{ $message }}
-                                    @enderror
+                                        <div class="invalid-feedback">
+                                            @error('weight')
+                                                {{ $message }}
+                                            @enderror
+                                        </div>
                                 </div>
                             </div>
                         </div>

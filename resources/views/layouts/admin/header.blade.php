@@ -42,11 +42,11 @@
                 <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage"
                     href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false"><img class="img-fluid" alt=""
-                        src="/assets/img/illustrations/profiles/profile-2.png" /></a>
+                        src="/assets/img/user-placeholder.svg" /></a>
                 <div class="dropdown-menu dropdown-menu-end border-0 shadow animated--fade-in-up"
                     aria-labelledby="navbarDropdownUserImage">
                     <h6 class="dropdown-header d-flex align-items-center">
-                        <img class="dropdown-user-img" src="/assets/img/illustrations/profiles/profile-2.png" alt="" />
+                        <img class="dropdown-user-img" src="/assets/img/user-placeholder.svg" alt="" />
                         <div class="dropdown-user-details">
                             <div class="dropdown-user-details-name">{{ Auth::user()->name }}</div>
                             <div class="dropdown-user-details-email">{{ Auth::user()->email }}</div>

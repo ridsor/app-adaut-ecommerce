@@ -1,5 +1,9 @@
 @extends('layouts.admin.app')
 
+@php
+    use App\Helpers\Helper;
+@endphp
+
 @section('content')
     <main x-data>
         <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
@@ -13,7 +17,7 @@
                             </h1>
                         </div>
                         <div class="col-12 col-xl-auto mb-3">
-                            <a class="btn btn-sm btn-light text-primary" href="{{ route('product.index') }}">
+                            <a class="btn btn-sm btn-light text-primary" href="{{ route('admin.product.index') }}">
                                 <i class="me-1" data-feather="arrow-left"></i>
                                 Kembali ke Semua Produk
                             </a>
@@ -44,8 +48,8 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-8">
                     <h2 class="product-name h2 fw-bold">{{ $product->name }}</h2>
-                    <div class="product-price fw-bold fs-3 mb-2 text-primary"
-                        x-text="$store.globalState.formatPrice({{ $product->price }})">Rp 0</div>
+                    <div class="product-price fw-bold fs-3 mb-2 text-primary">{{ Helper::formatCurrency($product->price) }}
+                    </div>
                     <div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item bg-transparent">Kategori : {{ $product->category->name }}</li>
@@ -53,7 +57,7 @@
                                     x-text="$store.globalState.formatNumberShort({{ $product->total_sold ?? 0 }})">0</span>
                             </li>
                             <li class="list-group-item bg-transparent">Peringkat :
-                                {{ round($product->reviews_avg_rating, 1) ?? 0 }} <img src="/icons/rate.svg" alt="" 
+                                {{ round($product->reviews_avg_rating, 1) ?? 0 }} <img src="/icons/rate.svg" alt=""
                                     style="width: 20px; height: 20px; transform: translateY(-2px)"></li>
                             <li class="list-group-item bg-transparent">Penilaian : <span
                                     x-text="$store.globalState.formatNumberShort({{ $product->review_count ?? 0 }})">0</span>

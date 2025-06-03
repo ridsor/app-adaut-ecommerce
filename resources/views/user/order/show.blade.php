@@ -2,7 +2,7 @@
 
     @php
         use App\Helpers\OrderHelper;
-        use App\Helpers\ProductHelper;
+        use App\Helpers\Helper;
     @endphp
 
     @section('content')
@@ -49,11 +49,11 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-end" style="white-space: nowrap">
-                                                    {{ ProductHelper::formatCurrency($item->product->price, 0, ',', '.') }}
+                                                    {{ Helper::formatCurrency($item->product->price, 0, ',', '.') }}
                                                 </td>
                                                 <td class="text-center">{{ $item->quantity }}</td>
                                                 <td class="text-end">
-                                                    {{ ProductHelper::formatCurrency($item->product->price * $item->quantity, 0, ',', '.') }}
+                                                    {{ Helper::formatCurrency($item->product->price * $item->quantity, 0, ',', '.') }}
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -62,46 +62,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Payment Information -->
-                    {{-- <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Informasi Pembayaran</h5>
-                        </div>
-                        <div class="card-body">
-                            @if ($order->transaction->payment)
-                                <div class="row mb-2">
-                                    <div class="col-md-4 fw-bold">Metode Pembayaran</div>
-                                    <div class="col-md-8">{{ $order->transaction->payment->payment_method }}</div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-4 fw-bold">Status Pembayaran</div>
-                                    <div class="col-md-8">
-                                        <span
-                                            class="badge bg-{{ OrderHelper::getPaymentStatusClass($order->transaction->payment->status) }}">
-                                            {{ OrderHelper::getPaymentStatusLabel($order->transaction->payment->status) }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-4 fw-bold">Tanggal Pembayaran</div>
-                                    <div class="col-md-8">
-                                        {{ $order->transaction->payment->payment_date ? $order->transaction->payment->payment_date->translatedFormat('d M Y H:i') : '-' }}
-                                    </div>
-                                </div>
-                                @if ($order->transaction)
-                                    <div class="row mb-2">
-                                        <div class="col-md-4 fw-bold">No. Invoice</div>
-                                        <div class="col-md-8">{{ $order->transaction->invoice }}</div>
-                                    </div>
-                                @endif
-                            @else
-                                <div class="alert alert-warning mb-0">
-                                    Belum ada informasi pembayaran
-                                </div>
-                            @endif
-                        </div>
-                    </div> --}}
                 </div>
                 <!-- Order Summar -->
                 <div class="col-lg-4">
@@ -136,19 +96,19 @@
                             <div class="row mb-2">
                                 <div class="col-6">Subtotal Produk</div>
                                 <div class="col-6 text-end">
-                                    {{ ProductHelper::formatCurrency($order->total_price, 0, ',', '.') }}
+                                    {{ Helper::formatCurrency($order->total_price, 0, ',', '.') }}
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-6">Subtotal Pengiriman</div>
                                 <div class="col-6 text-end">
-                                    {{ ProductHelper::formatCurrency($order->shipping->cost, 0, ',', '.') }}
+                                    {{ Helper::formatCurrency($order->shipping->cost, 0, ',', '.') }}
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-6 fw-bold">Total Pembayaran</div>
                                 <div class="col-6 text-end fw-bold text-primary">
-                                    {{ ProductHelper::formatCurrency($order->amount, 0, ',', '.') }}</div>
+                                    {{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</div>
                             </div>
                         </div>
                         @if ($order->status == 'unpaid' || $order->status == 'completed')
@@ -226,7 +186,7 @@
                                         <div class="mb-0">
                                             <label class="form-label text-muted">Biaya Pengiriman:</label>
                                             <p class="mb-0 fw-medium text-primary">
-                                                {{ ProductHelper::formatCurrency($order->shipping->cost) }}</p>
+                                                {{ Helper::formatCurrency($order->shipping->cost) }}</p>
                                         </div>
                                     </div>
                                 </div>

@@ -1,5 +1,9 @@
 @extends('layouts.user.app')
 
+@php
+    use App\Helpers\Helper;
+@endphp
+
 @section('content')
     <div class="container-xl py-4" x-data="checkout">
         <div class="card mb-4">
@@ -123,7 +127,6 @@
                             <div class="shipping-description fs-12" x-text="shipping.selected.description"></div>
                             <div class="shipping-price fw-semibold text-dark"
                                 x-text="$store.globalState.formatPrice(shipping.selected.cost)"></div>
-
                         </div>
                     </div>
                 </template>

@@ -126,13 +126,13 @@ class ProductController extends Controller
         "name" => $request->name,
         "price" => $request->price,
         "stock" => $request->stock,
-        "weight" => $request->we,
+        "weight" => $request->weight,
         "image" => $image,
         "description" => $request->description,
         "category_id" => $request->category_id,
       ]);
 
-      return redirect(route('product.index'))->with('success', 'Produk berhasil dibuat');
+      return redirect(route('admin.product.index'))->with('success', 'Produk berhasil dibuat');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal membuat produk');
     }
@@ -215,7 +215,7 @@ class ProductController extends Controller
         "image" => $image,
       ]);
 
-      return redirect(route('product.index'))->with('success', 'Produk berhasil diperbarui');
+      return redirect(route('admin.product.index'))->with('success', 'Produk berhasil diperbarui');
     } catch (\Exception $e) {
       return back()->with('error', 'Gagal mengedit produk');
     }

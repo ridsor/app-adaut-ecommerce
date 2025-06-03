@@ -57,8 +57,8 @@
                                                     {{ $user->username }}
                                                 </div>
                                                 <div class="review-date">
-                                                    <span
-                                                        x-text="$store.globalState.formatTimeAgo('{{ $item->product->reviews[0]->created_at }}')">
+                                                    <span>
+                                                        {{ $item->product->reviews[0]->created_at->subDays(1)->diffForHumans() }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -76,7 +76,7 @@
                                             @foreach ($item->product->reviews[0]->review_media as $index => $media)
                                                 <div class="box">
                                                     <div class="inner">
-                                                        <a href="{{ asset('storage/' . $media->file_path) }}"
+                                                        <a @click.stop href="{{ asset('storage/' . $media->file_path) }}"
                                                             class="reviewGlightbox" data-type="image" data-effect="fade">
                                                             <div class="review-image"
                                                                 href="{{ asset('storage/' . $media->file_path) }}"

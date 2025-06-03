@@ -8,7 +8,7 @@
                             <div class="row w-100 h-100">
                                 <div class="col-md-8 order-2 order-md-1">
                                     <div class="d-flex h-100 align-items-center">
-                                        <div class="p-md-5 pb-5 p-2">
+                                        <div class="p-lg-5 pb-5 p-2">
                                             <h1 class="display-2 fw-medium mb-2">{{ $banner->title }}</h1>
                                             <p class="fs-6 text-secondary lh-lg">
                                                 {{ $banner->description }}
@@ -34,7 +34,7 @@
                         <div class="row">
                             <div class="col-md-8 order-2 order-md-1">
                                 <div class="d-flex h-100 align-items-center">
-                                    <div class="p-md-5 pb-5 p-2">
+                                    <div class="p-lg-5 pb-5 p-2">
                                         <h1 class="display-2 fw-medium mb-2">TEMUKAN KEBAHAGIAAN BELANJA</h1>
                                         <p class="fs-6 text-secondary lh-lg">
                                             Produk berkualitas dengan pelayanan terbaik

@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class ProductHelper
+class Helper
 {
 
     public static function formatCurrency($amount)

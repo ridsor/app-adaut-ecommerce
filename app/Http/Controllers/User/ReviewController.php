@@ -42,6 +42,7 @@ class ReviewController extends Controller
         return view('user.order.review.index', [
             'title' => 'Penilaian Produk',
             'order_review' => $order_review,
+            "header_url" => route('user.order.index'),
             'user' => $request->user()
         ]);
     }
@@ -121,7 +122,6 @@ class ReviewController extends Controller
 
             return redirect(route('user.review.product.index', ['order_number' => $order_number]));
         } catch (\Exception $e) {
-            Log::info($e);
             return back()->with('error', 'Gagal menilai produk');
         }
     }

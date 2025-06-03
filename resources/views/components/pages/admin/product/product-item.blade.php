@@ -1,10 +1,15 @@
 @props(['product'])
 
-<div class="item card card-icon lift lift-sm mb-3 position-static overflow-hidden" style="cursor: pointer" role="link"
+@php
+    use App\Helpers\Helper;
+@endphp
+
+<div class="item card card-icon lift lift-sm mb-3 position-static overflow-hidden" 
+    style="cursor: pointer" role="link"
     tabindex="0" aria-label="product item"
-    @click="window.location.href='{{ route('product.show', ['produk' => $product->slug]) }}'"
-    @keydown.enter="window.location.href='{{ route('product.show', ['produk' => $product->slug]) }}'"
-    @keydown.space.prevent="window.location.href='{{ route('product.show', ['produk' => $product->slug]) }}'">
+    @click="window.location.href='{{ route('admin.product.show', ['produk' => $product->slug]) }}'"
+    @keydown.enter="window.location.href='{{ route('admin.product.show', ['produk' => $product->slug]) }}'"
+    @keydown.space.prevent="window.location.href='{{ route('admin.product.show', ['produk' => $product->slug]) }}'">
     <div class="row g-2 flex-column flex-md-row">
         <div class="col-auto card-icon-aside p-0" style="background: #f9f9f9">
             <div class="position-relative">
@@ -19,8 +24,8 @@
                 </div>
                 <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
                     <div class="wrapper align-items-center d-flex justify-content-center">
-                        <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center" alt=""
-                            class="h-100 object-fit-contain" />
+                        <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center"
+                            alt="" class="h-100 object-fit-contain" />
                     </div>
                 </div>
             </div>
@@ -33,8 +38,7 @@
                         {{ $product->name }}
                     </div>
                     <div class="text-primary fw-semibold">
-                        <span x-text="$store.globalState.formatPrice({{ $product->price }})">Rp
-                            0</span>
+                        <span>{{ Helper::formatCurrency($product->price) }}</span>
                     </div>
                 </div>
                 <div class="col text-dark fw-semibold d-flex align-items-center gap-1">
@@ -52,12 +56,12 @@
         </div>
         <div
             class="col-12 col-md-auto d-flex align-items-center justify-content-end justify-content-md-center gap-1 flex-md-column p-2">
-            <a href="{{ route('product.edit', ['produk' => $product->slug]) }}" class="btn btn-warning btn-icon"
+            <a href="{{ route('admin.product.edit', ['produk' => $product->slug]) }}" class="btn btn-warning btn-icon"
                 @click.stop>
                 <i data-feather="edit"></i>
             </a>
             <button class="btn btn-danger btn-icon" data-bs-toggle="modal" data-bs-target="#confirmModal"
-                @click.stop="deleteRoute = '{{ route('product.destroy', ['produk' => $product->slug]) }}'"
+                @click.stop="deleteRoute = '{{ route('admin.product.destroy', ['produk' => $product->slug]) }}'"
                 type="button">
                 <i data-feather="trash"></i>
             </button>
