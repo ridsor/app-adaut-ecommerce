@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rules\Unique;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -31,9 +32,9 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', (new Unique('users', 'email'))->whereNull('deleted_at')],
             'password' => [
                 'required',
                 'confirmed',
@@ -46,13 +47,29 @@ class RegisteredUserController extends Controller
             ],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $trashedUser = User::onlyTrashed()->where('email', $validated['email'])->first();
 
-        event(new Registered($user));
+        if ($trashedUser) {
+            // Kirim email verifikasi untuk restorasi
+            $trashedUser->restore();
+
+            // Update data user
+            $trashedUser->update([
+                'password' => Hash::make($validated['password']),
+                'email_verified_at' => null,
+            ]);
+
+            $trashedUser->sendEmailVerificationNotification();
+        } else {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            event(new Registered($user));
+        }
+
 
         return back()->with('success', '<strong>Success!</strong> Akun Berhasil Dibuat, Silahkan Verifikasi Email Anda!');
     }
