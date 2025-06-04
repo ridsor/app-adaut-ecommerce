@@ -67,7 +67,6 @@ class DashboardController extends Controller
 
         // Chart revenue
         // Get monthly sales data for last 6 months
-        // dd('here');
         $monthlyRevenue = Order::selectRaw('
                 MONTH(created_at) as month,
                 YEAR(created_at) as year,

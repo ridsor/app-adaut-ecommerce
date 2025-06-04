@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\User;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\API\BaseController;
 use App\Models\Order;
 use App\Models\Product;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +35,6 @@ class CheckoutController extends BaseController
         ],
         [
           'items.*.product_id.required' => 'Item ID wajib diisi.',
-          'items.*.product_id.string' => 'Item ID harus berupa teks.',
           'items.*.quantity.required' => 'Kuantitas wajib diisi.',
           'items.*.quantity.integer' => 'Kuantitas harus berupa angka.',
           'items.*.quantity.min' => 'Kuantitas minimal adalah 1.',
@@ -45,6 +43,7 @@ class CheckoutController extends BaseController
       if ($validator->fails()) {
         return $this->sendError(error: 'Validasi gagal', errorMessages: $validator->errors(), code: 500);
       }
+
       DB::beginTransaction();
 
       $validated = $validator->validated();
@@ -188,14 +187,13 @@ class CheckoutController extends BaseController
       ]);
 
       DB::commit();
-      return $this->sendResponse($paymentUrl, "Checkout Berhasil");
+      return $this->sendResponse("Checkout Berhasil", $paymentUrl);
     } catch (CustomException $e) {
       DB::rollBack();
 
       return $this->sendError(error: $e->getMessage(), code: 400);
     } catch (\Exception $e) {
       DB::rollBack();
-      Log::error($e->getMessage());
       return $this->sendError(error: "Terjadi kesalahan pada server", code: 500);
     }
   }

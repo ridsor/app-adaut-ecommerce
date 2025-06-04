@@ -19,7 +19,8 @@ class ProductController extends Controller
 
   public function index(Request $request)
   {
-    $products = Product::search($request->query('search'))->query(fn($query) => Product::admin_filters($query, request(['availability', 'sort', 'categories', 'max_price', 'min_price', 'stock', 'rating'])))->paginate(10);
+    $products = Product::search($request->query('search'))->query(fn($query) => $query->with(['category'])->select(['category_id', 'id', 'name', 'image', 'slug', 'price', 'stock'])->filters(request(['availability', 'sort', 'categories', 'max_price', 'min_price', 'stock', 'rating'])))->paginate(10);
+
     $categories = Category::select(['name', 'id', 'slug'])->withCount('products')->get();
     $sort = [
       [

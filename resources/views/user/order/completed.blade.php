@@ -24,7 +24,7 @@
             <form class="form-inline mt-3">
                 <div class="input-group input-group-joined input-group-solid">
                     <input class="form-control pe-0 " type="search" placeholder="Cari Berdasarkan No. Pesanan"
-                        aria-label="Search" name="mencari" value="{{ request()->query('mencari') }}" />
+                        aria-label="Search" name="mencari" value="{{ request()->query('search') }}" />
                     <div class="input-group-text"><i data-feather="search"></i></div>
                 </div>
             </form>
@@ -97,7 +97,8 @@
                                             {{ count($order->order_items) }} Produk
                                         </span>
                                         <span>
-                                            Total Pesanan: <span class="text-primary">{{ Helper::formatCurrency($order->amount) }}</span>
+                                            Total Pesanan: <span
+                                                class="text-primary">{{ Helper::formatCurrency($order->amount) }}</span>
                                         </span>
                                     </div>
                                     <div class="d-flex justify-content-end gap-2 mt-2 align-items-center flex-wrap">

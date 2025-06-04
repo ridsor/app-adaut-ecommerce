@@ -302,7 +302,7 @@
                     this.isSubmit = true
                     this.$refs.loading.style.display = 'flex'
 
-                    const response = await axios.post('{{ route('product.checkout.store') }}',
+                    const response = await axios.post('{{ route('api.product.checkout.store') }}',
                             orderData, {
                                 headers: {
                                     Authorization: `Bearer {{ Session::get('token') }}`,
@@ -327,18 +327,19 @@
                     methods: [],
                     selected: null,
                     async loadMethods() {
-                        const response = await axios.post('{{ route('address.domestic-cost') }}', {
-                                origin: '{{ $origin }}',
-                                destination: '{{ $user->address?->destination_id }}',
-                                weight: Alpine.store('cart').selected.reduce((total, item) =>
-                                    total + (
-                                        item.weight * item.quantity), 0),
-                            }, {
-                                headers: {
-                                    Authorization: `Bearer {{ Session::get('token') }}`,
-                                    Accept: 'application/json'
-                                }
-                            })
+                        const response = await axios.post(
+                                '{{ route('api.address.domestic-cost') }}', {
+                                    origin: '{{ $origin }}',
+                                    destination: '{{ $user->address?->destination_id }}',
+                                    weight: Alpine.store('cart').selected.reduce((total, item) =>
+                                        total + (
+                                            item.weight * item.quantity), 0),
+                                }, {
+                                    headers: {
+                                        Authorization: `Bearer {{ Session::get('token') }}`,
+                                        Accept: 'application/json'
+                                    }
+                                })
                             .catch(error => {
                                 this.methods = [];
                                 console.error('Error loading shipping methods:', error);

@@ -62,4 +62,32 @@ class Order extends Model
             'order_number' => $this->order_number,
         ];
     }
+
+    static public function scopeFilters($query, array $filters)
+    {
+        // sort
+        $query->when($filters['sort'] ?? true, function ($query, $sort) {
+            if ($sort === 'oldest') {
+                $query->oldest();
+            } else if ($sort == "lowest_price") {
+                $query->orderBy('amount', 'asc');
+            } else if ($sort == "highest_price") {
+                $query->orderBy('amount', 'desc');
+            } else {
+                $query->latest();
+            }
+        });
+
+        // status
+        $query->when($filters['status'] ?? false, function ($query, $status) {
+            $query->where('status', $status);
+        });
+
+        // courir
+        $query->when($filters['courir'] ?? false, function ($query, $courir) {
+            $query->whereHas('shipping', function ($query) use ($courir) {
+                $query->whereIn('name', $courir);
+            });
+        });
+    }
 }
