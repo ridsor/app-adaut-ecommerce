@@ -17,7 +17,7 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $orders = Order::search($request->query('mencari'))->query(
+        $orders = Order::search($request->query('search'))->query(
             fn($query) =>
             $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
                 ->with([
@@ -42,7 +42,7 @@ class OrderController extends Controller
     }
     public function unpaid(Request $request)
     {
-        $orders = Order::search($request->query('mencari'))->query(
+        $orders = Order::search($request->query('search'))->query(
             fn($query) =>
             $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
                 ->with([
@@ -66,7 +66,7 @@ class OrderController extends Controller
     }
     public function packed(Request $request)
     {
-        $orders = Order::search($request->query('mencari'))->query(
+        $orders = Order::search($request->query('search'))->query(
             fn($query) =>
             $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
                 ->with([
@@ -90,7 +90,7 @@ class OrderController extends Controller
     }
     public function submitted(Request $request)
     {
-        $orders = Order::search($request->query('mencari'))->query(
+        $orders = Order::search($request->query('search'))->query(
             fn($query) =>
             $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
                 ->with([
@@ -114,7 +114,7 @@ class OrderController extends Controller
     }
     public function completed(Request $request)
     {
-        $orders = Order::search($request->query('mencari'))->query(
+        $orders = Order::search($request->query('search'))->query(
             fn($query) =>
             $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
                 ->with([
@@ -138,7 +138,7 @@ class OrderController extends Controller
     }
     public function failed(Request $request)
     {
-        $orders = Order::search($request->query('mencari'))->query(
+        $orders = Order::search($request->query('search'))->query(
             fn($query) =>
             $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
                 ->with([
@@ -163,30 +163,7 @@ class OrderController extends Controller
 
     public function show(Request $request, $order_number)
     {
-        $order = Order::with(['order_items', 'order_items.product', 'transaction', 'shipping', 'transaction.payment'])->withSum([
-            'order_items as total_price' => function ($query) {
-                $query->select(DB::raw('SUM(order_items.quantity * products.price)'))
-                    ->join('products', 'order_items.product_id', '=', 'products.id');
-            }
-        ], '')
-            ->withSum([
-                'order_items as total_price' => function ($query) {
-                    $query->select(DB::raw('SUM(order_items.quantity * products.price)'))
-                        ->join('products', 'order_items.product_id', '=', 'products.id');
-                }
-            ], '')
-            ->withSum([
-                'order_items as total_price' => function ($query) {
-                    $query->select(DB::raw('SUM(order_items.quantity * products.price)'))
-                        ->join('products', 'order_items.product_id', '=', 'products.id');
-                }
-            ], '')
-            ->withSum([
-                'order_items as total_price' => function ($query) {
-                    $query->select(DB::raw('SUM(order_items.quantity * products.price)'))
-                        ->join('products', 'order_items.product_id', '=', 'products.id');
-                }
-            ], '')
+        $order = Order::with(['order_items', 'order_items.product', 'transaction', 'shipping', 'transaction.payment'])
             ->withSum([
                 'order_items as total_price' => function ($query) {
                     $query->select(DB::raw('SUM(order_items.quantity * products.price)'))
@@ -200,7 +177,7 @@ class OrderController extends Controller
 
         return view('user.order.show', [
             'title' => 'Pesanan ' . $order->order_number,
-            'header_title' => 'Kembali',
+            'header_title' => $order->order_number,
             "header_url" => route('user.order.index'),
             'order' => $order,
         ]);

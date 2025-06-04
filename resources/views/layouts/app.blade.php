@@ -21,17 +21,10 @@
 </head>
 
 <body>
-    {{-- {{ dd(session()->get('token')) }} --}}
     @include('layouts.header')
     @yield('content')
     @include('layouts.footer')
 
-    <div id="preloader"
-        class="pe-none position-fixed top-0 bg-light bottom-0 end-0 start-0 z-2 d-flex justify-content-center align-items-center">
-        <div style="width: 200px; height: 200px">
-            <x-loading />
-        </div>
-    </div>
     {{-- JS --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -61,14 +54,6 @@
                 showConfirmButton: false,
                 timer: 1500
             });
-        }
-    </script>
-    <script>
-        const preloader = document.getElementById("preloader")
-        if (preloader) {
-            window.addEventListener('load', () => {
-                preloader.remove();
-            })
         }
     </script>
     <script src="/assets/js/bootstrap.bundle.min.js"></script>

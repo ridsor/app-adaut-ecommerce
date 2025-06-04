@@ -1,5 +1,9 @@
 @props(['product'])
 
+@php
+    use App\Helpers\Helper;
+@endphp
+
 <a x-data class="product-item text-decoration-none" href="{{ route('product.detail', ['slug' => $product->slug]) }}">
     <div class="d-flex flex-column justify-content-center rounded-3">
         <div class="position-relative">
@@ -14,8 +18,8 @@
             </div>
             <div
                 class="product-image mb-3 image d-flex justify-content-center ratio ratio-1x1 align-items-center bg-card rounded-3 overflow-hidden">
-                <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center" alt="{{ $product->name }}"
-                    class="object-fit-contain" />
+                <img src="{{ asset('storage/' . $product->image) }}" style="background-position: center"
+                    alt="{{ $product->name }}" class="object-fit-contain" />
             </div>
         </div>
         <div class="product-title fw-semibold mb-2">{{ $product->name }}</div>
@@ -31,8 +35,8 @@
                         x-text="$store.globalState.formatNumberShort({{ $product->review_count ?? 0 }})">0</span>)</span>
             </div>
         </div>
-        <div x-data class="product-price fw-semibold" x-text="$store.globalState.formatPrice({{ $product->price }})">
-            Rp 0
+        <div x-data class="product-price fw-semibold">
+            {{ Helper::formatCurrency($product->price) }}
         </div>
     </div>
 </a>

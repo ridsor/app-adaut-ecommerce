@@ -14,7 +14,6 @@ window.Alpine = Alpine;
 Alpine.store("globalState", {
     formatPrice,
     formatNumberShort,
-    formatTimeAgo,
 });
 
 Alpine.store("cart", {
@@ -138,29 +137,4 @@ function formatNumberShort(num) {
     }
 
     return result;
-}
-
-function formatTimeAgo(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now - date) / 1000);
-
-    const intervals = {
-        tahun: 31536000,
-        bulan: 2592000,
-        minggu: 604800,
-        hari: 86400,
-        jam: 3600,
-        menit: 60,
-        detik: 1,
-    };
-
-    for (const [unit, secondsInUnit] of Object.entries(intervals)) {
-        const interval = Math.floor(seconds / secondsInUnit);
-        if (interval >= 1) {
-            return `${interval} ${unit} yang lalu`;
-        }
-    }
-
-    return "baru saja";
 }
