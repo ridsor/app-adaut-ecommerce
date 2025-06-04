@@ -82,9 +82,8 @@
                                                         </span>
                                                     </div>
                                                     <div class="d-flex gap-1 justify-content-between">
-                                                        <div class="order-price text-primary"
-                                                            x-text="$store.globalState.formatPrice({{ $item->product->price }})">
-                                                            Rp 0
+                                                        <div class="order-price text-primary">
+                                                            {{ Helper::formatCurrency($item->product->price) }}
                                                         </div>
                                                         <div class="order-quantity">x {{ $item->quantity }}</div>
                                                     </div>
@@ -98,9 +97,7 @@
                                             {{ count($order->order_items) }} Produk
                                         </span>
                                         <span>
-                                            Total Pesanan: <span class="text-primary"
-                                                x-text="$store.globalState.formatPrice({{ $order->amount }})">Rp
-                                                0</span>
+                                            Total Pesanan: <span class="text-primary">{{ Helper::formatCurrency($order->amount) }}</span>
                                         </span>
                                     </div>
                                     <div class="d-flex justify-content-end gap-2 mt-2 align-items-center flex-wrap">

@@ -13,9 +13,14 @@
                 Kategori
             </a>
             <a class="nav-link {{ request()->is('admin/produk/*') || request()->is('admin/produk') ? 'active' : '' }}"
-                href="{{ route('product.index') }}">
+                href="{{ route('admin.product.index') }}">
                 <div class="nav-link-icon"><i data-feather="package"></i></div>
                 Produk
+            </a>
+        <a class="nav-link {{ request()->is('admin/pesanan/*') || request()->is('admin/pesanan') ? 'active' : '' }}"
+                href="{{ route('admin.order.index') }}">
+                <div class="nav-link-icon"><i data-feather="shopping-bag"></i></div>
+                Pesanan
             </a>
             <a class="nav-link  {{ request()->is('admin/spanduk') || request()->is('admin/spanduk/*') ? 'active' : '' }}"
                 href="{{ route('banner.index') }}">

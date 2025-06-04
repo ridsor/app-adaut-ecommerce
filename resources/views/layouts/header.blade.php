@@ -26,7 +26,7 @@
                         <div class="d-none d-sm-block">
                             <form method="GET" action="{{ route('search') }}">
                                 <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">
-                                    <input type="search" class="form-control border-0 bg-transparent" name="value"
+                                    <input type="search" class="form-control border-0 bg-transparent" name="search"
                                         placeholder="Cari..." aria-label="Cari..." aria-describedby="btn-search">
                                     <button class="py-2 px-3 border-0 bg-transparent" id="btn-search">
                                         <i class="fa-solid fa-magnifying-glass fs-5 "></i>
@@ -63,7 +63,7 @@
                                                 ? (filter_var(Auth::user()->profile->image, FILTER_VALIDATE_URL)
                                                     ? Auth::user()->profile->image
                                                     : asset('storage/' . Auth::user()->profile->image))
-                                                : '/assets/img/illustrations/profiles/profile-2.png' }}"
+                                                : '/assets/img/user-placeholder.svg' }}"
                                                 alt="Profile" width="32" height="32" class="rounded-circle">
                                         </x-icon>
                                     </a>
@@ -127,7 +127,7 @@
                 <form method="GET" action="{{ route('search') }}">
                     <div class="d-flex align-items-center bg-light px-2 py-1 rounded-4">
                         <input type="search" class="form-control border-0 bg-transparent" placeholder="Cari..."
-                            name="value" aria-label="Cari..." aria-describedby="btn-search">
+                            name="search" aria-label="Cari..." aria-describedby="btn-search">
                         <button style="transform: translateY(2px)" class="py-2 px-3 border-0 bg-transparent"
                             id="btn-search">
                             <i class="fa-solid fa-magnifying-glass fs-5 "></i>

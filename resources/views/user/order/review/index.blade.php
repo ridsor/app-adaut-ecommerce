@@ -16,6 +16,9 @@
                         @keydown.enter="window.location.href='{{ route('user.review.product.show', ['order_number' => $order_review->order_number, 'slug' => $item->product->slug]) }}'"
                         @keydown.space.prevent="window.location.href='{{ route('user.review.product.show', ['order_number' => $order_review->order_number, 'slug' => $item->product->slug]) }}'">
                         <div class="card rounded-0">
+                            <div class="card-header">
+                                Penilaian Produk
+                            </div>
                             <div class="card-body p-2">
                                 <div class="order-item">
                                     <div class="d-flex gap-2">
@@ -35,52 +38,64 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(count($item->product->reviews) > 0) 
-                                <hr class="my-2" />
-                                <div class="d-flex justify-content-between gap-2 align-items-center">
+                                @if (count($item->product->reviews) > 0)
+                                    <hr class="my-2" />
                                     <div class="review-item">
                                         <div class="d-flex gap-2 mb-1">
                                             <div class="image ration ratio-1x1 overflow-hidden"
                                                 style="width: 50px; border-radius: 100%">
-                                                <img src="{{ Auth::user()->profile?->image
-                                                ? (filter_var(Auth::user()->profile->image, FILTER_VALIDATE_URL)
-                                                    ? Auth::user()->profile->image
-                                                    : asset('storage/' . Auth::user()->profile->image))
-                                                : '/assets/img/illustrations/profiles/profile-2.png' }}"
+                                                <img src="{{ $user->profile?->image
+                                                    ? (filter_var($user->profile->image, FILTER_VALIDATE_URL)
+                                                        ? $user->profile->image
+                                                        : asset('storage/' . $user->profile->image))
+                                                    : '/assets/img/user-placeholder.svg' }}"
                                                     alt="" class="object-fit-cover w-100 h-100"
-                                                    style="object-position: center">
+                                                    style="background-position: center">
                                             </div>
                                             <div class="d-flex flex-column">
                                                 <div class="review-name fw-semibold">
-                                                    {{ Auth::user()->username }}
+                                                    {{ $user->username }}
                                                 </div>
                                                 <div class="review-date">
                                                     <span>
-                                                        {{ $item->product->reviews[0]->created_at->translatedFormat('d M Y H:i') }}
+                                                        {{ $item->product->reviews[0]->created_at->subDays(1)->diffForHumans() }}
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="review-rating mb-1">
                                             @for ($i = 1; $i <= 5; $i++)
-                                            <img src="{{  $i <= $item->product->reviews[0]->rating ? '/icons/rate.svg' : '/icons/nonrate.svg' }}"
-                                                alt="star" style="width: 20px; height: 20px;">
+                                                <img src="{{ $i <= $item->product->reviews[0]->rating ? '/icons/rate.svg' : '/icons/nonrate.svg' }}"
+                                                    alt="star" style="width: 20px; height: 20px;">
                                             @endfor
                                         </div>
                                         <div class="rating-comment mb-1">
                                             <p>{{ $item->product->reviews[0]->comment }}</p>
                                         </div>
-                                        <div class="d-flex gap-2 flex-wrap">
-                                            @foreach ($item->product->reviews[0]->review_media as $media)
-                                            <div class="product-image overflow-hidden position-relative"
-                                                style="width: 100px; height: 100px">
-                                                <img src="{{ asset('storage/'.$media->file_path) }}" alt=""
-                                                style="object-position: center; object-fit: cover" class="w-100 h-100" />
-                                            </div>
+                                        <div class="d-flex gap-2 flex-wrap box-container">
+                                            @foreach ($item->product->reviews[0]->review_media as $index => $media)
+                                                <div class="box">
+                                                    <div class="inner">
+                                                        <a @click.stop href="{{ asset('storage/' . $media->file_path) }}"
+                                                            class="reviewGlightbox" data-type="image" data-effect="fade">
+                                                            <div class="review-image"
+                                                                href="{{ asset('storage/' . $media->file_path) }}"
+                                                                style="width: 100px; height: 100px">
+                                                                <img src="{{ asset('storage/' . $media->file_path) }}"
+                                                                    alt=""
+                                                                    style="object-position: center; object-fit: cover"
+                                                                    class="w-100 h-100" />
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             @endforeach
                                         </div>
                                     </div>
-                                </div>
+                                @else
+                                    <div class="mt-2">
+                                        <div class="lead">Belum ada ulasan untuk produk ini</div>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -96,3 +111,18 @@
         </div>
     </div>
 @endsection
+
+@push('head')
+    <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
+@endpush
+
+@push('scripts')
+    <script src="/assets/js/glightbox.min.js"></script>
+    <script>
+        const lightbox = GLightbox();
+
+        const lightboxReview = GLightbox({
+            selector: '.reviewGlightbox'
+        });
+    </script>
+@endpush

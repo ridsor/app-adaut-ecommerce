@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@php
+    use App\Helpers\Helper;
+@endphp
+
 @section('content')
     <form action="{{ route('search') }}" id="searchForm" action="" />
     <main x-data>
@@ -150,8 +154,8 @@
                             <div class="col-12 col-lg-6">
                                 <form method="GET">
                                     <div class="rounded position-relative">
-                                        <input class="form-control bg-light pe-5 ps-3 py-2" type="search" name="value"
-                                            value="{{ request()->query('value') }}"
+                                        <input class="form-control bg-light pe-5 ps-3 py-2" type="search" name="search"
+                                            value="{{ request()->query('search') }}"
                                             placeholder="Cari produk berdasarkan nama..." aria-label="Search">
                                         <button
                                             class="btn bg-transparent border-0 px-2 py-0 position-absolute top-50 end-0 translate-middle-y"
@@ -227,8 +231,7 @@
         .pagination nav>div:last-of-type {
             display: flex !important;
             justify-content: center !important;
-            flex-wrap: wrap !important
-            column-gap: .5rem
+            flex-wrap: wrap !important column-gap: .5rem
         }
 
         .pagination nav>div:last-of-type ul {

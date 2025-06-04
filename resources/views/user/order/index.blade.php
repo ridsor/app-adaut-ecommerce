@@ -2,7 +2,7 @@
 
 @php
     use App\Helpers\OrderHelper;
-    use App\Helpers\ProductHelper;
+    use App\Helpers\Helper;
 @endphp
 
 @section('content')
@@ -25,7 +25,7 @@
             <form class="form-inline mt-3">
                 <div class="input-group input-group-joined input-group-solid">
                     <input class="form-control pe-0 " type="search" placeholder="Cari Berdasarkan No. Pesanan"
-                        aria-label="Search" name="mencari" value="{{ request()->query('mencari') }}" />
+                        aria-label="Search" name="search" value="{{ request()->query('mencari') }}" />
                     <div class="input-group-text"><i data-feather="search"></i></div>
                 </div>
             </form>
@@ -42,56 +42,38 @@
                             <div class="card rounded-0">
                                 <div class="card-body p-2">
                                     <div class="d-flex justify-content-end mb-2">
-                                        @switch($order->status)
-                                            @case('unpaid')
-                                                <span class="badge bg-danger-soft text-warning">Belum Bayar</span>
-                                            @break
-
-                                            @case('packed')
-                                                <span class="badge bg-warning-soft text-info">Dikemas</span>
-                                            @break
-
-                                            @case('submitted')
-                                                <span class="badge bg-info-soft text-info">Dikirim</span>
-                                            @break
-
-                                            @case('failed')
-                                                <span class="badge bg-danger-soft text-danger">Dibatalkan</span>
-                                            @break
-
-                                            @case('completed')
-                                                <span class="badge bg-green-soft text-green">Salesai</span>
-                                            @break
-                                        @endswitch
+                                        <span
+                                            class="badge bg-{{ OrderHelper::getStatusClass($order->status) }}">{{ OrderHelper::getStatusLabel($order->status) }}</span>
                                     </div>
                                     <div class="order-item d-flex flex-column gap-2">
-                                        @foreach ($order->order_items as $item)
-                                            <div class="d-flex gap-2">
-                                                <div>
-                                                    <div class="product-image ratio ratio-1x1 overflow-hidden"
-                                                        style="width: 80px">
-                                                        <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                            alt="" style="background-position: center"
-                                                            class="h-100 object-fit-contain" />
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 flex-column gap-1 d-flex ">
-                                                    <div class="order-title flex-grow-1">
-                                                        <span
-                                                            style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
-                                                            {{ $item->product->name }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="d-flex gap-1 justify-content-between">
-                                                        <div class="order-price text-primary"
-                                                            x-text="$store.globalState.formatPrice({{ $item->product->price }})">
-                                                            Rp 0
+                                        @if (count($order->order_items) > 0)
+                                            @foreach ($order->order_items as $item)
+                                                <div class="d-flex gap-2">
+                                                    <div>
+                                                        <div class="product-image ratio ratio-1x1 overflow-hidden"
+                                                            style="width: 80px">
+                                                            <img src="{{ asset('storage/' . $item->product->image) }}"
+                                                                alt="" style="background-position: center"
+                                                                class="h-100 object-fit-contain" />
                                                         </div>
-                                                        <div class="order-quantity">x {{ $item->quantity }}</div>
+                                                    </div>
+                                                    <div class="flex-grow-1 flex-column gap-1 d-flex ">
+                                                        <div class="order-title flex-grow-1">
+                                                            <span
+                                                                style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
+                                                                {{ $item->product->name }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex gap-1 justify-content-between">
+                                                            <div class="order-price text-primary">
+                                                                {{ Helper::formatCurrency($item->product->price) }}
+                                                            </div>
+                                                            <div class="order-quantity">x {{ $item->quantity }}</div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        @endif
                                     </div>
                                     <hr class="my-2" />
                                     <div class="d-flex justify-content-between gap-2 align-items-center">
@@ -100,7 +82,7 @@
                                         </span>
                                         <span>
                                             Total Pesanan: <span
-                                                class="text-primary">{{ ProductHelper::formatCurrency($order->amount, 0, ',', '.') }}</span>
+                                                class="text-primary">{{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</span>
                                         </span>
                                     </div>
                                     <div class="d-flex justify-content-end gap-2 mt-2 align-items-center flex-wrap">
@@ -124,7 +106,6 @@
                                                 </a>
                                             @break
                                         @endswitch
-
                                     </div>
                                 </div>
                             </div>
