@@ -87,12 +87,9 @@ class Product extends Model
         $this->save();
     }
 
-    static public function filters($query, array $filters)
+    static public function scopeFilters($query, array $filters)
     {
-        $query->select(['id', 'name', 'image', 'slug', 'price', 'stock'])->withCount('reviews')->withAvg('reviews', 'rating')->latest();
-
-        // sort "latest, oldest, bestsellers, highest_price, lowest_price"
-        $query->when($filters['sort'] ?? false, function ($query, $sort) {
+        $query->when($filters['sort'] ?? true, function ($query, $sort) {
             if ($sort === 'oldest') {
                 $query->oldest();
             } elseif ($sort === 'bestsellers') {
@@ -110,63 +107,8 @@ class Product extends Model
                 $query->orderBy('price', 'asc');
             } elseif ($sort === 'review') {
                 $query->orderBy('reviews_avg_rating', 'desc');
-            }
-        });
-
-        // categories
-        $query->when($filters['categories'] ?? false, function ($query, $categories) {
-            $query->whereHas("category", function ($query) use ($categories) {
-                $query->whereIn('slug', $categories);
-            });
-        });
-
-        // rating
-        $query->when($filters['rating'] ?? false, function ($query, $rating) {
-            $query->whereExists(function ($query) use ($rating) {
-                $query->selectRaw('product_id, AVG(rating) as avg_rating')
-                    ->from('reviews')
-                    ->whereColumn('products.id', 'reviews.product_id')
-                    ->groupBy('product_id')
-                    ->havingRaw('FLOOR(avg_rating) IN (' . implode(',', $rating) . ')');
-            });
-        });
-
-        // price
-        $query->when($filters['max_price'] ?? false, fn($query, $price) => $query->where('price', '<=', $price));
-        $query->when($filters['min_price'] ?? false, fn($query, $price) => $query->where('price', '>=', $price));
-
-        // availability
-        $query->when($filters['availability'] ?? false, function ($query, $availability) {
-            if ($availability === 'stock') {
-                $query->where('stock', '>', 0);
-            }
-        });
-
-        return $query;
-    }
-    static public function admin_filters($query, array $filters)
-    {
-        $query->select(['category_id', 'id', 'name', 'image', 'slug', 'price', 'stock'])->with(['category'])->withCount('reviews')->withAvg('reviews', 'rating')->latest();
-
-        // sort "latest, oldest, bestsellers, highest_price, lowest_price"
-        $query->when($filters['sort'] ?? false, function ($query, $sort) {
-            if ($sort === 'oldest') {
-                $query->oldest();
-            } elseif ($sort === 'bestsellers') {
-                $query->withSum([
-                    'order_items as total_sold'
-                ], 'quantity')
-                    ->orderBy('total_sold', 'desc');
-            } elseif ($sort === 'asc') {
-                $query->orderBy('name', 'asc');
-            } elseif ($sort === 'desc') {
-                $query->orderBy('name', 'desc');
-            } elseif ($sort === 'highest_price') {
-                $query->orderBy('price', 'desc');
-            } elseif ($sort === 'lowest_price') {
-                $query->orderBy('price', 'asc');
-            } elseif ($sort === 'review') {
-                $query->orderBy('reviews_avg_rating', 'desc');
+            } else {
+                $query->latest();
             }
         });
 

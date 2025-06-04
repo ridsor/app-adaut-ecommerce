@@ -24,7 +24,7 @@ class RajaOngkirController extends BaseController
             return $this->sendError(error: $response->json()['meta']['message'], code: $response->json()['meta']['code']);
         }
 
-        return $this->sendResponse(result: $response->json()["data"], message: $response->json()['meta']['message'], code: $response->json()['meta']['code']);
+        return $this->sendResponse(message: $response->json()['meta']['message'], result: $response->json()["data"],  code: $response->json()['meta']['code']);
     }
 
     public function domesticCost(Request $request)
@@ -47,6 +47,6 @@ class RajaOngkirController extends BaseController
             return $this->sendError(error: $response->json()['meta']['message'], code: $response->json()['meta']['code']);
         }
 
-        return $this->sendResponse(result: $response->json()["data"], message: $response->json()['meta']['message'], code: $response->json()['meta']['code']);
+        return $this->sendResponse(message: $response->json()['meta']['message'], result: $response->json()["data"], code: $response->json()['meta']['code']);
     }
 }

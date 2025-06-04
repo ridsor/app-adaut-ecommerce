@@ -135,7 +135,7 @@
             },
             load: function(query, callback) {
 
-                const url = '{{ route('address.search-destination') }}?search=' + encodeURIComponent(
+                const url = '{{ route('api.address.search-destination') }}?search=' + encodeURIComponent(
                     query);
                 window.axios.get(url, {
                     headers: {

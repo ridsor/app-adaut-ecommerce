@@ -6,7 +6,7 @@
 @endphp
 
 @section('content')
-    <div class="container-xl mt-4 p-0 px-md-2">
+    <div class="container-xl mt-4 p-0 px-md-2" x-data="order">
         <div class="head px-2 px-md-0">
             <nav class="nav nav-borders">
                 <a class="nav-link ms-0 {{ Request::routeIs('user.order.index') ? 'active' : '' }}"
@@ -24,8 +24,8 @@
             </nav>
             <form class="form-inline mt-3">
                 <div class="input-group input-group-joined input-group-solid">
-                    <input class="form-control pe-0 " type="search" placeholder="Cari Berdasarkan No. Pesanan"
-                        aria-label="Search" name="search" value="{{ request()->query('mencari') }}" />
+                    <input class="form-control pe-0 " type="search" placeholder="No. Pesanan" aria-label="Search"
+                        name="search" value="{{ request()->query('search') }}" />
                     <div class="input-group-text"><i data-feather="search"></i></div>
                 </div>
             </form>
@@ -93,6 +93,13 @@
                                                 </a>
                                             @break
 
+                                            @case('packed')
+                                                <button class="btn btn-primary"
+                                                    @click.stop="handleOrderSuccess('{{ $order->order_number }}')">
+                                                    Selesai
+                                                </button>
+                                            @break
+
                                             @case('failed')
                                                 <button class="btn btn-primary">
                                                     Beli Lagi
@@ -121,6 +128,23 @@
             </div>
             <div class="mt-4 pagination d-flex">
                 {!! $orders->withQueryString()->links('pagination::bootstrap-5') !!}
+            </div>
+        </div>
+
+        <div id="loading" x-ref="loading"
+            style="
+            position: fixed; 
+            top: 0; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            background-color: rgba(0,0,0,.5); 
+            z-index: 2; 
+            display: none; 
+            justify-content: center; 
+            align-items: center;">
+            <div style="width: 200px; height: 200px">
+                <div id="loadingAnimation"></div>
             </div>
         </div>
     </div>
@@ -155,4 +179,73 @@
             }
         }
     </style>
+@endpush
+
+@push('scripts')
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js'></script>
+    <script>
+        var animation = bodymovin.loadAnimation({
+            container: document.getElementById('loadingAnimation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '/assets/animations/loading.json'
+        })
+        document.addEventListener('alpine:init', () => {
+            window.Alpine.data('order', () => ({
+                handleOrderSuccess(order_number) {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: "btn btn-success",
+                            cancelButton: "btn btn-danger"
+                        },
+                    });
+                    swalWithBootstrapButtons.fire({
+                        title: "Apa anda yakin?",
+                        text: "Selesaikan pesanan",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya",
+                        cancelButtonText: "Tidak, Batal!",
+                        reverseButtons: true
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            this.$refs.loading.style.display = 'flex'
+
+                            const payload = {
+                                status: 'completed',
+                                items: [{
+                                    "order_number": order_number
+                                }]
+                            };
+
+                            try {
+                                await window.axios.patch(
+                                    '{{ route('api.user.order.update') }}',
+                                    payload, {
+                                        headers: {
+                                            Authorization: `Bearer {{ Session::get('token') }}`,
+                                            Accept: 'application/json'
+                                        }
+                                    }
+                                );
+
+                                this.$refs.loading.style.display = 'none';
+
+                                location.reload();
+                            } catch (error) {
+                                this.$refs.loading.style.display = 'none';
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal membatalkan pesanan',
+                                    text: error.response?.data?.message ||
+                                        'Terjadi kesalahan',
+                                });
+                            }
+                        }
+                    });
+                }
+            }))
+        })
+    </script>
 @endpush

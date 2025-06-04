@@ -2,16 +2,16 @@
 
 @section('content')
     <main x-data="{ itemId: null, deleteRoute: '' }">
-        <header class="page-header page-header-dark bg-gradient-primary-to-secondary mb-4">
+        <div class="page-header page-header-dark bg-gradient-primary-to-secondary mb-4">
             <div class="container-xl px-4">
                 <div class="page-header-content pt-4">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-auto mt-4">
-                            <h1 class="page-header-title">
+                            <h1 class="page-header-title fs-1">
                                 <div class="page-header-icon"><i data-feather="file"></i></div>
-                                {{ $total_categories }} Total kategori
+                                {{ $total_categories }} Total Kategori
                             </h1>
-                            <div class="page-header-subtitle">Lihat dan perbarui daftar kategory Anda di sini.
+                            <div class="page-header-subtitle">Lihat dan perbarui daftar kategori Anda di sini.
                             </div>
                         </div>
                         <div class="col-12 col-md-auto ">
@@ -26,24 +26,9 @@
                             </a>
                         </div>
                     </div>
-                    <div class="page-header-search mt-4">
-                        <form method="GET">
-                            <div class="input-group input-group-joined">
-                                <input class="form-control" type="text" name="search" placeholder="Cari..."
-                                    aria-label="Cari" autofocus="">
-                                <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-search">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                    </svg></span>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
-        </header>
+        </div>
         <!-- Main page content-->
         <div class="container-xl list-item">
             @if (Session::has('error'))
@@ -62,14 +47,30 @@
             <h4 class="mb-0 mt-5">Kategori</h4>
             <hr class="mt-2 mb-4">
 
+            <div class="mb-3">
+                <form action="{{ route('category.index') }}" id="orderForm" action="">
+                    <div class="order-header row g-2 g-xl-4 mb-4 flex-wrap">
+                        <div class="col-12">
+                            <div class="input-group input-group-joined input-group-solid">
+                                <input class="form-control pe-0 " type="search" placeholder="Nama Kategori"
+                                    aria-label="Search" name="search" value="{{ request()->query('search') }}" />
+                                <div class="input-group-text"><i data-feather="search"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             @if (count($categories) > 0)
                 @foreach ($categories as $category)
                     <x-pages.admin.category.category-item :category="$category" />
                 @endforeach
             @else
                 <div>
-                    <div class="display-6">
-                        Data tidak ditemukan
+                    <div colspan="6" class="text-center border-0">
+                        <img src="/assets/img/illustrations/404-error.svg" alt="No Orders" class="img-fluid mb-3"
+                            style="max-width: 200px;">
+                        <h5 class="text-muted">Tidak ada kategori yang ditemukan</h5>
                     </div>
                 </div>
             @endif
@@ -84,8 +85,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="confirmModalLabel">Hapus</h5>
-                            <button class="btn-close" type="button" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p>Produk yang memiliki kategori ini akan terhapus.

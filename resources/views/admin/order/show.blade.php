@@ -164,20 +164,6 @@
                                         {{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</div>
                                 </div>
                             </div>
-                            @if ($order->status == 'unpaid' || $order->status == 'completed')
-                                <div class="card-footer">
-                                    <div class="d-flex gap-2">
-                                        @if ($order->status == 'unpaid')
-                                            <a href="{{ $order->transaction->url }}" class="btn btn-success w-100">Bayar
-                                                Sekarang</a>
-                                        @endif
-                                        @if ($order->status == 'completed')
-                                            <a href="{{ route('user.review.product.index', ['order_number' => $order->order_number]) }}"
-                                                class="btn btn-primary w-100">Nilai</a>
-                                        @endif
-                                    </div>
-                                </div>
-                            @endif
                         </div>
                     </div>
 
@@ -250,7 +236,7 @@
                                             <label class="form-label text-muted">Estimasi Pengiriman:</label>
                                             <p class="mb-0">
 
-                                                {{ $order->shipping->etd ? ' - ' : $order->shipping->etd }}</p>
+                                                {{ $order->shipping->etd ? $order->shipping->etd : ' - ' }}</p>
                                         </div>
                                         <div class="mb-0">
                                             <label class="form-label text-muted">Biaya Pengiriman:</label>

@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-xl order-list">
+        <div class="container-xl list">
             @if (Session::has('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     {{ Session::get('error') }}
@@ -45,8 +45,8 @@
                     <div class="order-header row g-2 g-xl-4 mb-4 flex-wrap">
                         <div class="col-12 col-lg-6">
                             <div class="input-group input-group-joined input-group-solid">
-                                <input class="form-control pe-0 " type="search" placeholder="No. Pesanan/Nama/Nama Produk"
-                                    aria-label="Search" name="search" value="{{ request()->query('mencari') }}" />
+                                <input class="form-control pe-0 " type="search" placeholder="No. Pesanan"
+                                    aria-label="Search" name="search" value="{{ request()->query('search') }}" />
                                 <div class="input-group-text"><i data-feather="search"></i></div>
                             </div>
                         </div>
@@ -208,30 +208,49 @@
                                                             class="btn btn-primary"
                                                             href="{{ route('admin.order.show', ['order_number' => $order->order_number]) }}">Detail
                                                             Pesanan</a>
-                                                        <div class="dropdown" x-data="{ dropdown: false }">
-                                                            <button button @focus ="active=true" @blur="active = false"
-                                                                class="btn btn-primary dropdown-toggle" type="button"
-                                                                @click.stop="dropdown=!dropdown" data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                                <div x-show="dropdown">
-                                                                    <i data-feather="chevron-up"></i>
-                                                                </div>
-                                                                <div x-show="!dropdown">
-                                                                    <i data-feather="chevron-down"></i>
-                                                                </div>
-                                                            </button>
-                                                            <ul class="dropdown-menu z-3">
-                                                                <li>
-                                                                    <button class="dropdown-item"
-                                                                        @click.stop="handleDelivery">Atur
-                                                                        Pengiriman</button>
-                                                                </li>
-                                                                <li><a @focus="active = true" @blur="active = false"
-                                                                        class="dropdown-item" href="#">Batalkan
-                                                                        Pesanan</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                        @if ($order->status != 'failed' && $order->status != 'completed' && $order->status != 'unpaid')
+                                                            <div class="dropdown" x-data="{ dropdown: false }">
+                                                                <button button @focus ="active=true"
+                                                                    @blur="active = false"
+                                                                    class="btn btn-primary dropdown-toggle" type="button"
+                                                                    @click.stop="dropdown=!dropdown"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <div x-show="dropdown">
+                                                                        <i data-feather="chevron-up"></i>
+                                                                    </div>
+                                                                    <div x-show="!dropdown">
+                                                                        <i data-feather="chevron-down"></i>
+                                                                    </div>
+                                                                </button>
+                                                                <ul class="dropdown-menu z-3">
+                                                                    @if ($order->status != 'submitted')
+                                                                        <li>
+                                                                            <button class="dropdown-item"
+                                                                                @click.stop="active = true; handleOrderDelivery('{{ $order->order_number }}')"
+                                                                                @focus="active = true"
+                                                                                @blur="active = false">Atur
+                                                                                Pengiriman</button>
+                                                                        </li>
+                                                                    @endif
+                                                                    @if ($order->status != 'packed')
+                                                                        <li>
+                                                                            <button class="dropdown-item"
+                                                                                @click.stop="active = true; handleOrderPacked('{{ $order->order_number }}')"
+                                                                                @focus="active = true"
+                                                                                @blur="active = false">Atur
+                                                                                Kemasan</button>
+                                                                        </li>
+                                                                    @endif
+                                                                    <li>
+                                                                        <button @focus="active = true"
+                                                                            @blur="active = false"
+                                                                            @click.stop="active = true; handleOrderCanceled('{{ $order->order_number }}')"
+                                                                            class="dropdown-item" href="#">Batalkan
+                                                                            Pesanan</button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -239,13 +258,13 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="6" class="text-center">
+                                        <td colspan="6" class="text-center border-0">
                                             <img src="/assets/img/illustrations/404-error.svg" alt="No Orders"
                                                 class="img-fluid mb-3" style="max-width: 200px;">
                                             <h5 class="text-muted">Tidak ada pesanan yang ditemukan</h5>
                                         </td>
+                                    </tr>
                                 @endif
-                                </tr>
                             </tbody>
                         </table>
 
@@ -312,6 +331,7 @@
 
 @push('scripts')
     <script src='https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         var animation = bodymovin.loadAnimation({
             container: document.getElementById('loadingAnimation'),
@@ -323,10 +343,138 @@
 
         document.addEventListener('alpine:init', () => {
             window.Alpine.data('data', () => ({
-                handleDelivery(order_number) {
+                async handleOrderDelivery(order_number) {
                     this.$refs.loading.style.display = 'flex'
+
+                    const payload = {
+                        status: 'submitted',
+                        items: [{
+                            order_number: order_number
+                        }]
+                    };
+
+                    try {
+                        await axios.patch(
+                            '{{ route('api.admin.order.update') }}',
+                            payload, {
+                                headers: {
+                                    Authorization: `Bearer {{ Session::get('token') }}`,
+                                    Accept: 'application/json'
+                                }
+                            }
+                        );
+
+                        this.$refs.loading.style.display = 'none';
+
+                        location.reload();
+                    } catch (error) {
+                        this.$refs.loading.style.display = 'none';
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal memperbarui pesanan',
+                            text: error.response?.data?.message ||
+                                'Terjadi kesalahan',
+                        });
+                    }
+
+                },
+                async handleOrderPacked(order_number) {
+                    this.$refs.loading.style.display = 'flex'
+
+                    const payload = {
+                        status: 'packed',
+                        items: [{
+                            order_number: order_number
+                        }]
+                    };
+
+                    try {
+                        await axios.patch(
+                            '{{ route('api.admin.order.update') }}',
+                            payload, {
+                                headers: {
+                                    Authorization: `Bearer {{ Session::get('token') }}`,
+                                    Accept: 'application/json'
+                                }
+                            }
+                        );
+
+                        this.$refs.loading.style.display = 'none';
+
+                        location.reload();
+                    } catch (error) {
+                        this.$refs.loading.style.display = 'none';
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal memperbarui pesanan',
+                            text: error.response?.data?.message ||
+                                'Terjadi kesalahan',
+                        });
+                    }
+
+                },
+                handleOrderCanceled(order_number) {
+                    const swalWithBootstrapButtons = Swal.mixin({
+                        customClass: {
+                            confirmButton: "btn btn-success",
+                            cancelButton: "btn btn-danger"
+                        },
+                    });
+                    swalWithBootstrapButtons.fire({
+                        title: "Apa anda yakin?",
+                        text: "membatalkan pesanan",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Ya",
+                        cancelButtonText: "Tidak, Batal!",
+                        reverseButtons: true
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            this.$refs.loading.style.display = 'flex'
+
+                            const payload = {
+                                status: 'failed',
+                                items: [{
+                                    "order_number": order_number
+                                }]
+                            };
+
+                            try {
+                                await window.axios.patch(
+                                    '{{ route('api.admin.order.update') }}',
+                                    payload, {
+                                        headers: {
+                                            Authorization: `Bearer {{ Session::get('token') }}`,
+                                            Accept: 'application/json'
+                                        }
+                                    }
+                                );
+
+                                this.$refs.loading.style.display = 'none';
+
+                                location.reload();
+                            } catch (error) {
+                                this.$refs.loading.style.display = 'none';
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal membatalkan pesanan',
+                                    text: error.response?.data?.message ||
+                                        'Terjadi kesalahan',
+                                });
+                            }
+                        }
+                    });
                 }
-            }))
-        })
+            }));
+        });
+
+        function sorftBy(event) {
+            const form = event.target.form;
+            const params = new URLSearchParams(new FormData(form));
+
+            window.location.href = `${form.action}?${params.toString()}`;
+        }
     </script>
 @endpush

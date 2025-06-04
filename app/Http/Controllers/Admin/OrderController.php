@@ -50,6 +50,7 @@ class OrderController extends Controller
         $orders = Order::search($request->query('search'))->query(
             fn($query) =>
             $query->select(['id', 'order_number', 'status', 'amount', 'user_id'])
+                ->filters(request(['sort', 'status', 'courir']))
                 ->with([
                     'order_items' => function ($query) {
                         $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
@@ -58,9 +59,9 @@ class OrderController extends Controller
                         $query->select(['order_id', 'url']);
                     },
                     'order_items.product' => function ($query) {
-                        $query->select(['name', 'price', 'id', 'image']);
+                        $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     },
-                    'user' => fn($query) => $query->select(['name', 'id']),
+                    'user' => fn($query) => $query->withTrashed()->select(['name', 'id']),
                     'shipping' => fn($query) => $query->select(['order_id', 'name']),
                 ])->withCount('order_items')
         )->paginate(10);
@@ -82,11 +83,11 @@ class OrderController extends Controller
     {
         $order = Order::with([
             'order_items',
-            'order_items.product',
+            'order_items.product' => fn($query) => $query->withTrashed()->select('id', 'name', 'price', 'image'),
             'transaction',
             'shipping',
             'transaction.payment',
-            'user' => fn($query) => $query->select('id', 'name', 'email')
+            'user' => fn($query) => $query->withTrashed()->select('id', 'name', 'email')
         ])
             ->withSum([
                 'order_items as total_price' => function ($query) {
