@@ -55,6 +55,7 @@ class RegisteredUserController extends Controller
 
             // Update data user
             $trashedUser->update([
+                'name' => $validated['name'],
                 'password' => Hash::make($validated['password']),
                 'email_verified_at' => null,
             ]);
