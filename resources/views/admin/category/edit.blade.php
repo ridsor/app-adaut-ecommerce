@@ -74,7 +74,7 @@
             </div>
             <div class="card card-header-actions">
               <div class="card-body">
-                <div class="d-grid"><button class="fw-500 btn btn-primary">Kirim</button>
+                <div class="d-grid"><button class="fw-500 btn btn-primary">Simpan</button>
                 </div>
               </div>
             </div>

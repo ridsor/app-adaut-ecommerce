@@ -6,7 +6,7 @@
         <p>Tidak dapat email?</p>
         <form method="post" action="{{ route('verification.send') }}">
             @csrf
-            <button class="btn btn-dark">
+            <button class="btn btn-primary">
                 <span class="text-light">Kirim Lagi</span>
             </button>
         </form>

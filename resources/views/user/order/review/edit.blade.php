@@ -143,7 +143,7 @@
               </div>
             </div>
             <div class="mb-3">
-              <button class="fw-500 btn btn-primary w-100">KIRIM</button>
+              <button class="fw-500 btn btn-primary w-100">Simpan</button>
             </div>
           </div>
         </div>
