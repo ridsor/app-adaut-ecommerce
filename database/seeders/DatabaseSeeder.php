@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Review;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -17,22 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $admin = User::factory()->create([
             "email" => "admin@adaut.com",
-            "password" => bcrypt('password'),
+            "password" => bcrypt('^6Again9^'),
             "role" => "admin"
         ]);
-        $user = User::factory()->create([
-            "email" => "user@gmail.com",
-            "password" => bcrypt('password'),
-        ]);
-        Category::create([
-            'name' => 'Makanan',
-            'icon' => "ikon/kategori/cutlery.png"
-        ]);
-        Category::create([
-            'name' => 'Kerajinan',
-            'icon' => "ikon/kategori/craft.png"
-        ]);
-
-        Product::factory(100)->create();
     }
 }
