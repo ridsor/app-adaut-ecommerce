@@ -6,7 +6,7 @@
 
 @section('content')
     <main x-data>
-        <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
+        <div class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
             <div class="container-fluid px-4">
                 <div class="page-header-content">
                     <div class="row align-items-center justify-content-between pt-3">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
         <div class="container py-5">
             <div class="d-flex row mb-5">
                 <div class="col-12 col-md-6 col-lg-4">

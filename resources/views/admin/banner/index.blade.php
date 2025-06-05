@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <main x-data>
+    <main x-data="{ itemId: null, deleteRoute: '' }">
         <div class="page-header page-header-dark bg-gradient-primary-to-secondary mb-4">
             <div class="container-xl px-4">
                 <div class="page-header-content pt-4">
