@@ -13,10 +13,10 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('redirect.role','guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
+    Route::get('daftar', [RegisteredUserController::class, 'create'])
         ->name('register');
 
-    Route::post('register', [RegisteredUserController::class, 'store'])->name('register.post');
+    Route::post('daftar', [RegisteredUserController::class, 'store'])->name('register.post');
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');

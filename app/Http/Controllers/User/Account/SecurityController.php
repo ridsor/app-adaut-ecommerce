@@ -13,6 +13,11 @@ class SecurityController extends Controller
     /**
      * Delete the user's account.
      */
+    public function __construct()
+    {
+        $this->authorize("isUser");
+    }
+    
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [

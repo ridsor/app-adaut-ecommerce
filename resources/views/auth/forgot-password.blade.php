@@ -21,9 +21,9 @@
                                     {{ Session::get('error') }}
                                 </div>
                             @endif
-                            @if (Session::has('status'))
+                            @if (Session::has('success'))
                                 <div class="alert alert-success" role="alert">
-                                    {{ Session::get('status') }}
+                                    {{ Session::get('success') }}
                                 </div>
                             @endif
                             <!-- Forgot password form-->
