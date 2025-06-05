@@ -27,6 +27,7 @@
                                 <div class="mb-3">
                                     <label class="text-gray-600 small" for="emailExample">Email address</label>
                                     <input class="form-control form-control-solid @error('email') is-invalid @enderror"
+                                    value="{{ old('email') }}"
                                         type="text" placeholder="" aria-label="Email Address"
                                         aria-describedby="emailExample" name="email" />
                                     <div class="invalid-feedback">
