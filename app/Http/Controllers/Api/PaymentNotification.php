@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\API\BaseController;
+use App\Http\Controllers\Api\BaseController;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class PaymentNotification extends BaseController
 {

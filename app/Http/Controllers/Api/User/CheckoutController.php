@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Exceptions\CustomException;
-use App\Http\Controllers\API\BaseController;
+use App\Http\Controllers\Api\BaseController;
 use App\Models\Order;
 use App\Models\Product;
 use Exception;
