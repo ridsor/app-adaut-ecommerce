@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\User\Account;
+namespace App\Http\Controllers\Admin\Account;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Rules\MultiCountryPhoneNumber;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,12 +19,12 @@ class ProfileController extends Controller
      */
     public function __construct()
     {
-        $this->authorize("isUser");
+        $this->authorize("isAdmin");
     }
 
     public function index(Request $request): View
     {
-        return view('user.account.profile', [
+        return view('admin.account.profile', [
             'title' => 'Akun - Profil',
             'header_title' => 'Pengaturan Akun',
             'user' => $request->user(),
