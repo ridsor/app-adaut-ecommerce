@@ -123,8 +123,8 @@ class CheckoutController extends BaseController
           'invoice_number' => $invoice,
           "currency" => "IDR",
           "language" => "ID",
-          "callback_url" => route("user.order.show", ["order_number" => $order->order_number]),
-          "callback_url_cancel" => route("user.order.show", ["order_number" => $order->order_number]),
+          "callback_url" => route("user.order.index"),
+          "callback_url_cancel" => route("user.order.index"),
           "auto_redirect" => true,
           'line_items' => $line_items
         ],
@@ -152,8 +152,8 @@ class CheckoutController extends BaseController
         ],
         'additional_info' => [
           "allow_tenor" => [0, 3, 6, 12],
-          "doku_wallet_notify_url" => "https://goose-honest-newly.ngrok-free.app/api/payments/notifications",
-          "override_notification_url" => "https://goose-honest-newly.ngrok-free.app/api/payments/notifications",
+          "doku_wallet_notify_url" => (env('APP_ENV') == 'production') ? env('APP_URL') : env('APP_DEV_URL') . "/api/payments/notifications",
+          "override_notification_url" => (env('APP_ENV') == 'production') ? env('APP_URL') : env('APP_DEV_URL') . "/api/payments/notifications",
         ]
       ];
 
@@ -167,7 +167,7 @@ class CheckoutController extends BaseController
         $requestDate
       );
 
-      $doku = Http::withHeaders([
+      $doku = Http::timeout(30)->retry(3, 100)->withHeaders([
         'Client-Id' => $clientId,
         'Request-Id' => $requestId,
         'Request-Timestamp' => $requestDate,
@@ -194,6 +194,7 @@ class CheckoutController extends BaseController
       return $this->sendError(error: $e->getMessage(), code: 400);
     } catch (\Exception $e) {
       DB::rollBack();
+      Log::error($e);
       return $this->sendError(error: "Terjadi kesalahan pada server", code: 500);
     }
   }

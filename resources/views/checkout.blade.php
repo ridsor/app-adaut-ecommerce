@@ -310,12 +310,13 @@
                                 }
                             })
                         .catch(error => {
-                            this.isSubmit = false;
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Gagal membuat pesanan',
                                 text: error.response.data.message,
                             });
+                            this.isSubmit = false;
+                            this.$refs.loading.style.display = 'none'
                         });
                     window.location.href = response.data.data;
                     this.shipping.selected = null;
