@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,21 +13,22 @@ class HomeController extends Controller
     public function index()
     {
         $bestsellers = Product::select("id", "image", "price", "name", "slug", "stock")
-                ->withSum([
-                    'order_items as total_sold'
-                ], 'quantity')
-                ->withCount('reviews')->withAvg('reviews', 'rating')
-                ->orderBy('total_sold', 'desc')
-                ->limit(10)->get();
+            ->withSum([
+                'order_items as total_sold'
+            ], 'quantity')
+            ->withCount('reviews')->withAvg('reviews', 'rating')
+            ->orderBy('total_sold', 'desc')
+            ->limit(10)->get();
         $products = Product::select("id", "image", "price", "name", "slug", "stock")
-                ->withSum([
-                    'order_items as total_sold'
-                ], 'quantity')
-                ->withCount('reviews')->withAvg('reviews', 'rating')
-                ->latest()
-                ->limit(10)->get();
-        $categories = Category::select('name','icon','id','slug')->get();
+            ->withSum([
+                'order_items as total_sold'
+            ], 'quantity')
+            ->withCount('reviews')->withAvg('reviews', 'rating')
+            ->latest()
+            ->limit(10)->get();
+        $categories = Category::select('name', 'icon', 'id', 'slug')->get();
         $banners = Banner::select('title', 'description', 'button_text', 'button_link', 'image')->latest()->get();
+        $shop = User::where('role', 'admin')->first();
 
         return view('home', [
             'bestsellers' => $bestsellers,
@@ -34,6 +36,7 @@ class HomeController extends Controller
             'categories' => $categories,
             'title' => 'Home',
             'banners' => $banners,
+            'shop' => $shop
         ]);
     }
 }
