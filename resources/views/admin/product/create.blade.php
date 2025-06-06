@@ -62,10 +62,11 @@
                         <div class="card mb-4">
                             <div class="card-header">Kategori</div>
                             <div class="card-body">
-                                <select name="category_id" id="category_id" class="form-control">
+                                <select name="category_id" id="category_id"
+                                    class="form-control @error('category_id') is-invalid @enderror">
                                     <option value="" selected>Pilih kategori produk anda...</option>
                                     @foreach ($categories as $category)
-                                        @if ($category->id === old('category_id'))
+                                        @if ($category->id == old('category_id'))
                                             <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
                                         @else
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -94,18 +95,18 @@
                         <div class="card mb-4">
                             <div class="card-header">Harga</div>
                             <div class="card-body">
-                                <div class="input-group input-group-joined">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text">
                                         Rp
                                     </span>
                                     <input class="form-control @error('price') is-invalid @enderror" name="price"
                                         id="price" type="number" value="{{ old('price') }}"
                                         placeholder="Masukkan harga produk Anda..." />
-                                        <div class="invalid-feedback">
-                                            @error('price')
-                                                {{ $message }}
-                                            @enderror
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        @error('price')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -126,18 +127,18 @@
                         <div class="card mb-4">
                             <div class="card-header">Berat</div>
                             <div class="card-body">
-                                <div class="input-group input-group-joined">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text">
                                         Gram
                                     </span>
                                     <input class="form-control @error('weight') is-invalid @enderror" name="weight"
                                         id="weight" type="number" value="{{ old('weight') }}"
                                         placeholder="Masukkan harga produk Anda..." />
-                                        <div class="invalid-feedback">
-                                            @error('weight')
-                                                {{ $message }}
-                                            @enderror
-                                        </div>
+                                    <div class="invalid-feedback">
+                                        @error('weight')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                         </div>

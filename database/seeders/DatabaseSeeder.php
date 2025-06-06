@@ -14,8 +14,12 @@ class DatabaseSeeder extends Seeder
     {
         $admin = User::factory()->create([
             "email" => "admin@adaut.com",
-            "password" => bcrypt('^6Again9^'),
+            "password" => bcrypt('^6Adaut9^'),
             "role" => "admin"
+        ]);
+        $user = User::factory()->create([
+            "email" => "user@gmail.com",
+            "password" => bcrypt('^6Adaut9^'),
         ]);
     }
 }

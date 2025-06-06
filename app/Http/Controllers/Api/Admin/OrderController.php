@@ -21,7 +21,7 @@ class OrderController extends BaseController
             $validator = Validator::make(
                 $request->all(),
                 [
-                    'status' => 'required|in:submitted,failed,packed',
+                    'status' => 'required|in:failed,packed',
                     'items' => 'required|array',
                     'items.*.order_number' => ['required', Rule::exists('orders', 'order_number')],
                 ],

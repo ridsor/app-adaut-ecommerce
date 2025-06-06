@@ -139,10 +139,10 @@
                                     <div class="col-6 fw-bold">Tanggal Pesanan</div>
                                     <div class="col-6 text-end">{{ $order->created_at->translatedFormat('d F Y') }}</div>
                                 </div>
-                                @if ($order->awb)
+                                @if ($order->shipping->awb)
                                     <div class="row mb-2">
                                         <div class="col-6 fw-bold">No. Resi</div>
-                                        <div class="col-6 text-end">{{ $order->awb }}</div>
+                                        <div class="col-6 text-end">{{ $order->shipping->awb }}</div>
                                     </div>
                                 @endif
                                 <hr>

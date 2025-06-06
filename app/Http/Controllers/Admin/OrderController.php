@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -62,7 +63,7 @@ class OrderController extends Controller
                         $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     },
                     'user' => fn($query) => $query->withTrashed()->select(['name', 'id']),
-                    'shipping' => fn($query) => $query->select(['order_id', 'name']),
+                    'shipping' => fn($query) => $query->select(['order_id', 'name', 'awb']),
                 ])->withCount('order_items')
         )->paginate(10);
 
@@ -106,5 +107,29 @@ class OrderController extends Controller
             "header_url" => route('admin.order.index'),
             'order' => $order,
         ]);
+    }
+
+    public function updateAwb(Request $request, $order_number)
+    {
+
+        $validated = $request->validateWithBag(
+            'awb',
+            [
+                'awb' => 'required|unique:shippings,awb',
+            ],
+        );
+        try {
+
+            DB::beginTransaction();
+            $order = Order::where('order_number', $order_number)->firstOrFail();
+            $order->shipping->update(['awb' => $validated['awb']]);
+            $order->update(['status' => 'submitted']);
+
+            DB::commit();
+            return back()->with('success', 'Berhasil menambah no resi pengiriman');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal menambah no resi pengiriman');
+        }
     }
 }
