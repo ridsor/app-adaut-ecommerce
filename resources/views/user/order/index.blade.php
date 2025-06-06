@@ -47,32 +47,31 @@
                                     </div>
                                     <div class="order-item d-flex flex-column gap-2">
                                         @if (count($order->order_items) > 0)
-                                            @foreach ($order->order_items as $item)
-                                                <div class="d-flex gap-2">
-                                                    <div>
-                                                        <div class="product-image ratio ratio-1x1 overflow-hidden"
-                                                            style="width: 80px">
-                                                            <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                                alt="" style="background-position: center"
-                                                                class="h-100 object-fit-contain" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 flex-column gap-1 d-flex ">
-                                                        <div class="order-title flex-grow-1">
-                                                            <span
-                                                                style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
-                                                                {{ $item->product->name }}
-                                                            </span>
-                                                        </div>
-                                                        <div class="d-flex gap-1 justify-content-between">
-                                                            <div class="order-price text-primary">
-                                                                {{ Helper::formatCurrency($item->product->price) }}
-                                                            </div>
-                                                            <div class="order-quantity">x {{ $item->quantity }}</div>
-                                                        </div>
+                                            <div class="d-flex gap-2">
+                                                <div>
+                                                    <div class="product-image ratio ratio-1x1 overflow-hidden"
+                                                        style="width: 80px">
+                                                        <img src="{{ asset('storage/' . $order->order_items[0]->product->image) }}"
+                                                            alt="" style="background-position: center"
+                                                            class="h-100 object-fit-contain" />
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                                <div class="flex-grow-1 flex-column gap-1 d-flex ">
+                                                    <div class="order-title flex-grow-1">
+                                                        <span
+                                                            style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
+                                                            {{ $order->order_items[0]->product->name }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="d-flex gap-1 justify-content-between">
+                                                        <div class="order-price text-primary">
+                                                            {{ Helper::formatCurrency($order->order_items[0]->product->price) }}
+                                                        </div>
+                                                        <div class="order-quantity">x
+                                                            {{ $order->order_items[0]->quantity }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endif
                                     </div>
                                     <hr class="my-2" />
