@@ -22,8 +22,13 @@
                     alt="{{ $product->name }}" class="object-fit-contain" />
             </div>
         </div>
-        <div class="p-3">
-            <div class="product-title fw-semibold mb-2">{{ $product->name }}</div>
+        <div class="px-3 d-flex flex-column justify-content-center" style="height: 152px">
+            <div class="product-title fw-semibold mb-2">
+                <span
+                    style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
+                    {{ $product->name }}
+                </span>
+            </div>
             <div class="d-flex align-items-center mb-2" style="gap: 8px">
                 <div class="product-sold">
                     <span x-text="$store.globalState.formatNumberShort({{ $product->total_sold ?? 0 }})">0</span>

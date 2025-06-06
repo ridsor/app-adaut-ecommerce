@@ -6,18 +6,21 @@
             <div class="swiper-wrapper w-100 h-100 py-5">
                 @foreach ($categories as $category)
                     <div class="swiper-slide">
-                        <div class="category-item">
-                            <div
-                                class="d-flex flex-column gap-1 align-items-center justify-content-center text-center p-4 rounded-3">
-                                <div class="ratio ratio-1x1  overflow-hidden d-flex align-items-center d-flex justify-content-center"
-                                    style="width: 112px">
-                                    <img src="{{ asset("storage/" . $category->icon) }}" style="background-position: center" alt=""
-                                        class="h-100 object-fit-contain" />
+                        <a href="" class="text-decoration-none">
+                            <div class="category-item">
+                                <div
+                                    class="d-flex flex-column gap-1 align-items-center justify-content-center text-center p-4 rounded-3">
+                                    <div class="ratio ratio-1x1  overflow-hidden d-flex align-items-center d-flex justify-content-center"
+                                        style="width: 112px">
+                                        <img src="{{ asset('storage/' . $category->icon) }}"
+                                            style="background-position: center" alt=""
+                                            class="h-100 object-fit-contain" />
 
+                                    </div>
+                                    <div class="lead fs-6 fw-medium text-dark">{{ $category->name }}</div>
                                 </div>
-                                <div class="lead fs-6 fw-medium">{{ $category->name }}</div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
             </div>

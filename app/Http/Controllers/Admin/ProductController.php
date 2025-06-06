@@ -225,7 +225,7 @@ class ProductController extends Controller
   public function destroy($slug)
   {
     try {
-      $product = Product::where('slug', $slug)->firstOrFail();
+    $product = Product::where('slug', $slug)->firstOrFail();
       $product->delete();
 
       return back()->with('success', 'Produk berhasil dihapus');
