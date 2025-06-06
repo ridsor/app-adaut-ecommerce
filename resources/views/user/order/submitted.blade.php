@@ -1,5 +1,6 @@
 @php
     use App\Helpers\OrderHelper;
+    use App\Helpers\Helper;
 @endphp
 
 @extends('layouts.user.app')
@@ -23,7 +24,7 @@
             </nav>
             <form class="form-inline mt-3">
                 <div class="input-group input-group-joined input-group-solid">
-                    <input class="form-control pe-0 " type="search" placeholder="Cari Berdasarkan No. Pesanan"
+                    <input class="form-control pe-0 " type="search" placeholder="No. Pesanan"
                         aria-label="Search" name="mencari" value="{{ request()->query('search') }}" />
                     <div class="input-group-text"><i data-feather="search"></i></div>
                 </div>
