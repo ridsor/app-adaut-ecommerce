@@ -6,7 +6,7 @@
             <div class="swiper-wrapper w-100 h-100 py-5">
                 @foreach ($categories as $category)
                     <div class="swiper-slide">
-                        <a href="" class="text-decoration-none">
+                        <a href="{{ route('search') }}?categories[]={{ $category->slug }}" class="text-decoration-none">
                             <div class="category-item">
                                 <div
                                     class="d-flex flex-column gap-1 align-items-center justify-content-center text-center p-4 rounded-3">

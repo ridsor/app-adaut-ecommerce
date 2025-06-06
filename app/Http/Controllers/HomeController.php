@@ -25,7 +25,7 @@ class HomeController extends Controller
                 ->withCount('reviews')->withAvg('reviews', 'rating')
                 ->latest()
                 ->limit(10)->get();
-        $categories = Category::select('name','icon','id')->get();
+        $categories = Category::select('name','icon','id','slug')->get();
         $banners = Banner::select('title', 'description', 'button_text', 'button_link', 'image')->latest()->get();
 
         return view('home', [
