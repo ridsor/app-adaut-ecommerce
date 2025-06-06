@@ -94,7 +94,7 @@ class ProductController extends Controller
   {
     $request->validate(
       [
-        "name" => "required",
+        "name" => ["required", 'regex:/^[a-zA-Z0-9 .\-\/+,=_:@%\']+$/'],
         "description" => "required",
         "price" => "required|numeric",
         "stock" => "required|integer",
@@ -159,7 +159,7 @@ class ProductController extends Controller
   public function update(Request $request, $slug)
   {
     $rules = [
-      "name" => "required",
+      "name" => ["required", 'regex:/^[a-zA-Z0-9 .\-\/+,=_:@%\']+$/'],
       "description" => "required",
       "price" => "required|numeric",
       "stock" => "required|integer",
@@ -225,7 +225,7 @@ class ProductController extends Controller
   public function destroy($slug)
   {
     try {
-    $product = Product::where('slug', $slug)->firstOrFail();
+      $product = Product::where('slug', $slug)->firstOrFail();
       $product->delete();
 
       return back()->with('success', 'Produk berhasil dihapus');
