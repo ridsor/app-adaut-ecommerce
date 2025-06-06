@@ -1,5 +1,6 @@
 @php
     use App\Helpers\OrderHelper;
+    use App\Helpers\Helper;
 @endphp
 
 @extends('layouts.user.app')
@@ -23,7 +24,7 @@
             </nav>
             <form class="form-inline mt-3">
                 <div class="input-group input-group-joined input-group-solid">
-                    <input class="form-control pe-0 " type="search" placeholder="Cari Berdasarkan No. Pesanan"
+                    <input class="form-control pe-0 " type="search" placeholder="No. Pesanan"
                         aria-label="Search" name="mencari" value="{{ request()->query('search') }}" />
                     <div class="input-group-text"><i data-feather="search"></i></div>
                 </div>
@@ -41,27 +42,8 @@
                             <div class="card rounded-0">
                                 <div class="card-body p-2">
                                     <div class="d-flex justify-content-end mb-2">
-                                        @switch($order->status)
-                                            @case('unpaid')
-                                                <span class="badge bg-danger-soft text-warning">Belum Bayar</span>
-                                            @break
-
-                                            @case('packed')
-                                                <span class="badge bg-warning-soft text-info">Dikemas</span>
-                                            @break
-
-                                            @case('submitted')
-                                                <span class="badge bg-info-soft text-info">Dikirim</span>
-                                            @break
-
-                                            @case('failed')
-                                                <span class="badge bg-danger-soft text-danger">Dibatalkan</span>
-                                            @break
-
-                                            @case('completed')
-                                                <span class="badge bg-green-soft text-green">Salesai</span>
-                                            @break
-                                        @endswitch
+                                        <span
+                                            class="badge bg-{{ OrderHelper::getStatusClass($order->status) }}">{{ OrderHelper::getStatusLabel($order->status) }}</span>
                                     </div>
                                     <div class="order-item d-flex flex-column gap-2">
                                         @foreach ($order->order_items as $item)

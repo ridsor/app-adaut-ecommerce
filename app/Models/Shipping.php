@@ -23,6 +23,7 @@ class Shipping extends Model
         'zip_code',
         'address_label',
         'destination_id',
+        'awb'
     ];
 
     public $timestamps = false;

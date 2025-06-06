@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('description', 100);
             $table->bigInteger('cost');
             $table->string('etd', 20)->nullable();
-
+            $table->string('awb')->nullable()->unique();
             $table->string('recipient_name', 50);
             $table->text('address');
             $table->string('note')->nullable();

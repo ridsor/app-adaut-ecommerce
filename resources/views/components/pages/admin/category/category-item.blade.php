@@ -6,8 +6,8 @@
         <div class="col-auto card-icon-aside p-3" style="background: #f9f9f9">
             <div class="ratio ratio-1x1  overflow-hidden" style="width: 112px">
                 <div class="wrapper align-items-center d-flex justify-content-center">
-                    <img src="{{ asset('storage/' . $category->icon) }}" style="background-position: center" alt=""
-                        class="h-100 object-fit-contain" />
+                    <img src="{{ asset('storage/' . $category->icon) }}" style="background-position: center"
+                        alt="" class="h-100 object-fit-contain" />
                 </div>
             </div>
         </div>
@@ -15,7 +15,7 @@
         <div class="col w-100 d-flex align-items-center">
             <div class="row p-2 p-md-3 flex-column flex-md-row flex-grow-1 g-1">
                 <div class="col">
-                    <div class="text-primary fw-semibold">
+                    <div class="text-dark fw-semibold">
                         {{ $category->name }}
                     </div>
                 </div>

@@ -51,7 +51,11 @@
                                 class="h-100 object-fit-contain" />
                         </div>
                         <div class="cart-body" style="flex: 1">
-                            <div class="cart-title" x-text="item.name"></div>
+                            <div class="cart-title">
+                                <span x-text="item.name"
+                                    style="-webkit-line-clamp: 1;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
+                                </span>
+                            </div>
                             <div class="cart-title fw-semibold text-primary mb-2"
                                 x-text="$store.globalState.formatPrice(item.price)"></div>
                             <div class="cart-input d-flex border rounded-2 overflow-hidden" style="width:fit-content">

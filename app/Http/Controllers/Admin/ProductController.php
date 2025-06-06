@@ -94,7 +94,7 @@ class ProductController extends Controller
   {
     $request->validate(
       [
-        "name" => "required",
+        "name" => ["required", 'regex:/^[a-zA-Z0-9 .\-\/+,=_:@%\']+$/'],
         "description" => "required",
         "price" => "required|numeric",
         "stock" => "required|integer",
@@ -106,6 +106,7 @@ class ProductController extends Controller
         'name.required' => 'Nama produk wajib diisi',
         'description.required' => 'Deskripsi produk wajib diisi',
         'price.required' => 'Harga produk wajib diisi',
+        'weight.required' => 'Berat produk wajib diisi',
         'price.numeric' => 'Harga harus berupa angka',
         'stock.required' => 'Stok produk wajib diisi',
         'stock.integer' => 'Stok harus berupa angka bulat',
@@ -159,7 +160,7 @@ class ProductController extends Controller
   public function update(Request $request, $slug)
   {
     $rules = [
-      "name" => "required",
+      "name" => ["required", 'regex:/^[a-zA-Z0-9 .\-\/+,=_:@%\']+$/'],
       "description" => "required",
       "price" => "required|numeric",
       "stock" => "required|integer",
@@ -182,6 +183,7 @@ class ProductController extends Controller
       'price.required' => 'Harga produk wajib diisi',
       'price.numeric' => 'Harga harus berupa angka',
       'stock.required' => 'Stok produk wajib diisi',
+      'weight.required' => 'Berat produk wajib diisi',
       'stock.integer' => 'Stok harus berupa angka bulat',
       'category_id.required' => 'Kategori produk wajib dipilih',
       'image.required' => 'Gambar produk wajib diunggah',

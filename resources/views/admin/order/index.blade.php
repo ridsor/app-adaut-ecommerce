@@ -206,7 +206,7 @@
 
                                                         <a @focus="active = true" @blur="active = false"
                                                             class="btn btn-primary"
-                                                            href="{{ route('admin.order.show', ['order_number' => $order->order_number]) }}">Detail
+                                                            href="{{ route('admin.order.show', ['pesanan' => $order->order_number]) }}">Detail
                                                             Pesanan</a>
                                                         @if ($order->status != 'failed' && $order->status != 'completed' && $order->status != 'unpaid')
                                                             <div class="dropdown" x-data="{ dropdown: false }">
@@ -225,8 +225,10 @@
                                                                 <ul class="dropdown-menu z-3">
                                                                     @if ($order->status != 'submitted')
                                                                         <li>
-                                                                            <button class="dropdown-item"
-                                                                                @click.stop="active = true; handleOrderDelivery('{{ $order->order_number }}')"
+                                                                            <button class="dropdown-item" type="button"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#awbModal"
+                                                                                @click.stop="active = true; handleOrderDelivery('{{ $order->order_number }}','{{ $order->shipping->awb }}')"
                                                                                 @focus="active = true"
                                                                                 @blur="active = false">Atur
                                                                                 Pengiriman</button>
@@ -291,6 +293,41 @@
                 <div id="loadingAnimation"></div>
             </div>
         </div>
+        {{-- {{ dd(session()->all()) }} --}}
+        <!-- Modal -->
+        <form :action="awb.route" method="POST">
+            @csrf
+            @method('PATCH')
+            <div class="modal fade" id="awbModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+                aria-hidden="false">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel">Atur Pengiriman</h5>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="small mb-1" for="awb">Masukan nomor resi pengiriman</label>
+                                <input class="form-control  @if ($errors->awb->has('awb')) is-invalid @endif"
+                                    id="awb" name="awb" type="text"
+                                    :value="('{{ old('awb') }}') ? '{{ old('awb') }}' : awb.value" />
+                                @if ($errors->awb->has('awb'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->awb->get('awb')[0] }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="modal-footer"><button class="btn btn-danger" type="button"
+                                data-bs-dismiss="modal">Batal</button><button class="btn btn-success"
+                                type="submit">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </main>
 @endsection
 
@@ -343,41 +380,14 @@
 
         document.addEventListener('alpine:init', () => {
             window.Alpine.data('data', () => ({
-                async handleOrderDelivery(order_number) {
-                    this.$refs.loading.style.display = 'flex'
-
-                    const payload = {
-                        status: 'submitted',
-                        items: [{
-                            order_number: order_number
-                        }]
-                    };
-
-                    try {
-                        await axios.patch(
-                            '{{ route('api.admin.order.update') }}',
-                            payload, {
-                                headers: {
-                                    Authorization: `Bearer {{ Session::get('token') }}`,
-                                    Accept: 'application/json'
-                                }
-                            }
-                        );
-
-                        this.$refs.loading.style.display = 'none';
-
-                        location.reload();
-                    } catch (error) {
-                        this.$refs.loading.style.display = 'none';
-
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal memperbarui pesanan',
-                            text: error.response?.data?.message ||
-                                'Terjadi kesalahan',
-                        });
-                    }
-
+                awb: {
+                    value: '',
+                    route: ''
+                },
+                async handleOrderDelivery(order_number, awb) {
+                    console.log(this.awb)
+                    this.awb.route = "{{ route('admin.order.index') }}/" + order_number
+                    this.awb.value = awb
                 },
                 async handleOrderPacked(order_number) {
                     this.$refs.loading.style.display = 'flex'
@@ -476,5 +486,12 @@
 
             window.location.href = `${form.action}?${params.toString()}`;
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var myModal = new bootstrap.Modal(document.getElementById("awbModal"));
+            if (@json($errors->awb->isNotEmpty())) {
+                myModal.show();
+            }
+        });
     </script>
 @endpush

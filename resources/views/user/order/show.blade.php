@@ -52,7 +52,7 @@
                                                     {{ Helper::formatCurrency($item->product->price, 0, ',', '.') }}
                                                 </td>
                                                 <td class="text-center">{{ $item->quantity }}</td>
-                                                <td class="text-end">
+                                                <td class="text-end text-nowrap">
                                                     {{ Helper::formatCurrency($item->product->price * $item->quantity, 0, ',', '.') }}
                                                 </td>
                                             </tr>
@@ -86,28 +86,28 @@
                                 <div class="col-6 fw-bold">Tanggal Pesanan</div>
                                 <div class="col-6 text-end">{{ $order->created_at->translatedFormat('d F Y') }}</div>
                             </div>
-                            @if ($order->awb)
+                            @if ($order->shipping->awb)
                                 <div class="row mb-2">
                                     <div class="col-6 fw-bold">No. Resi</div>
-                                    <div class="col-6 text-end">{{ $order->awb }}</div>
+                                    <div class="col-6 text-end">{{ $order->shipping->awb }}</div>
                                 </div>
                             @endif
                             <hr>
                             <div class="row mb-2">
                                 <div class="col-6">Subtotal Produk</div>
-                                <div class="col-6 text-end">
+                                <div class="col-6 text-end text-nowrap">
                                     {{ Helper::formatCurrency($order->total_price, 0, ',', '.') }}
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-6">Subtotal Pengiriman</div>
-                                <div class="col-6 text-end">
+                                <div class="col-6 text-end text-nowrap">
                                     {{ Helper::formatCurrency($order->shipping->cost, 0, ',', '.') }}
                                 </div>
                             </div>
                             <div class="row mb-2">
                                 <div class="col-6 fw-bold">Total Pembayaran</div>
-                                <div class="col-6 text-end fw-bold text-primary">
+                                <div class="col-6 text-end fw-bold text-primary text-nowrap">
                                     {{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</div>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                                         </div>
                                         <div class="mb-0">
                                             <label class="form-label text-muted">Biaya Pengiriman:</label>
-                                            <p class="mb-0 fw-medium text-primary">
+                                            <p class="mb-0 fw-medium text-primary text-nowrap">
                                                 {{ Helper::formatCurrency($order->shipping->cost) }}</p>
                                         </div>
                                     </div>

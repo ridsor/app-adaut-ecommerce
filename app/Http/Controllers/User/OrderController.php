@@ -19,7 +19,7 @@ class OrderController extends Controller
     {
         $orders = Order::search($request->query('search'))->query(
             fn($query) =>
-            $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
+            $query->select(['id', 'order_number', 'user_id', 'status', 'amount'])
                 ->with([
                     'order_items' => function ($query) {
                         $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
@@ -44,7 +44,7 @@ class OrderController extends Controller
     {
         $orders = Order::search($request->query('search'))->query(
             fn($query) =>
-            $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
+            $query->select(['id', 'order_number', 'user_id', 'status', 'amount'])
                 ->with([
                     'order_items' => function ($query) {
                         $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
@@ -68,7 +68,7 @@ class OrderController extends Controller
     {
         $orders = Order::search($request->query('search'))->query(
             fn($query) =>
-            $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
+            $query->select(['id', 'order_number', 'user_id', 'status', 'amount'])
                 ->with([
                     'order_items' => function ($query) {
                         $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
@@ -92,7 +92,7 @@ class OrderController extends Controller
     {
         $orders = Order::search($request->query('search'))->query(
             fn($query) =>
-            $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
+            $query->select(['id', 'order_number', 'user_id', 'status', 'amount'])
                 ->with([
                     'order_items' => function ($query) {
                         $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
@@ -116,7 +116,7 @@ class OrderController extends Controller
     {
         $orders = Order::search($request->query('search'))->query(
             fn($query) =>
-            $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
+            $query->select(['id', 'order_number', 'user_id', 'status', 'amount'])
                 ->with([
                     'order_items' => function ($query) {
                         $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
@@ -140,7 +140,7 @@ class OrderController extends Controller
     {
         $orders = Order::search($request->query('search'))->query(
             fn($query) =>
-            $query->select(['id', 'order_number', 'user_id', 'status', 'awb', 'amount'])
+            $query->select(['id', 'order_number', 'user_id', 'status', 'amount'])
                 ->with([
                     'order_items' => function ($query) {
                         $query->select(['quantity', 'product_id', 'order_id'])->limit(1);

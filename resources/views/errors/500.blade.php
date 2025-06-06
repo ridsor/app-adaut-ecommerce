@@ -21,6 +21,7 @@
 
 <body>
     <main x-data>
+
         <div id="layoutError">
             <div id="layoutError_content">
                 <div class="container-xl px-4 py-5">
@@ -29,9 +30,8 @@
                             <div class="text-center mt-4">
                                 <img class="img-fluid p-4" src="/assets/img/illustrations/500-internal-server-error.svg"
                                     alt="" />
-                                <p class="lead">
-                                    Anda tidak memiliki izin untuk mendapatkan halaman ini dari server.
-                                </p>
+                                <p class="lead">Server mengalami kesalahan internal atau kesalahan konfigurasi dan
+                                    tidak dapat menyelesaikan permintaan Anda.</p>
                                 <a class="text-arrow-icon small text-decoration-none d-flex align-items-center justify-content-center"
                                     style="cursor: pointer;"
                                     @click.prevent="window.history.length > 1 ? window.history.back() : window.location.href='{{ route('home') }}'">

@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-8">
-                    <h2 class="product-name h2 fw-bold">{{ $product->name }}</h2>
+                    <h2 class="product-name h2 fw-semibold mb-2">{{ $product->name }}</h2>
                     <div class="d-flex gap-4 mb-2">
                         <div>
                             <span>Terjual <span
