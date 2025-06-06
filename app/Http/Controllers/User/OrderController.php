@@ -22,7 +22,7 @@ class OrderController extends Controller
             $query->select(['id', 'order_number', 'user_id', 'status', 'amount'])
                 ->with([
                     'order_items' => function ($query) {
-                        $query->select(['quantity', 'product_id', 'order_id'])->limit(1);
+                        $query->select(['quantity', 'product_id', 'order_id']);
                     },
                     'transaction' => function ($query) {
                         $query->select(['order_id', 'url']);

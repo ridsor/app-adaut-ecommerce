@@ -13,7 +13,7 @@ Route::middleware('auth:sanctum', 'verified')->group(function () {
 });
 
 // user
-Route::post("/payments/notifications", PaymentNotification::class);
+Route::post("/payments/notifications", PaymentNotification::class)->name('payments.notifications');
 Route::middleware('auth:sanctum', 'verified')->group(function () {
     Route::post("/product/checkout", [CheckoutController::class, 'productCheckout'])->name('api.product.checkout.store');
     Route::patch("/pesanan/status", [UserOrderConttroller::class, 'update'])->name('api.user.order.update');

@@ -152,8 +152,8 @@ class CheckoutController extends BaseController
         ],
         'additional_info' => [
           "allow_tenor" => [0, 3, 6, 12],
-          "doku_wallet_notify_url" => ((env('APP_ENV') == 'production') ? env('APP_URL') : env('APP_DEV_URL')) . "/api/payments/notifications",
-          "override_notification_url" => ((env('APP_ENV') == 'production') ? env('APP_URL') : env('APP_DEV_URL')) . "/api/payments/notifications",
+          "doku_wallet_notify_url" => (env('APP_ENV') == 'production') ? route('payments.notifications') : env('APP_DEV_URL') . "/api/payments/notifications",
+          "override_notification_url" => (env('APP_ENV') == 'production') ? route('payments.notifications') : env('APP_DEV_URL') . "/api/payments/notifications",
         ]
       ];
 
