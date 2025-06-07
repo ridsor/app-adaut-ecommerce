@@ -92,7 +92,7 @@
                                                 </a>
                                             @break
 
-                                            @case('packed')
+                                            @case('submitted')
                                                 <button class="btn btn-primary"
                                                     @click.stop="handleOrderSuccess('{{ $order->order_number }}')">
                                                     Selesai
