@@ -26,7 +26,7 @@ class ContactController extends Controller
             ],
             [
                 'value' => 'oldest',
-                'text' => 'Terbaru'
+                'text' => 'Terlama'
             ],
         ];
 
