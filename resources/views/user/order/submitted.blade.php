@@ -91,6 +91,13 @@
                                                 </a>
                                             @break
 
+                                            @case('submitted')
+                                                <button class="btn btn-primary"
+                                                    @click.stop="handleOrderSuccess('{{ $order->order_number }}')">
+                                                    Selesai
+                                                </button>
+                                            @break
+
                                             @case('failed')
                                                 <button class="btn btn-primary">
                                                     Beli Lagi
