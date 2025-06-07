@@ -18,7 +18,7 @@
     <div class="col w-100 d-flex align-items-center">
       <div class="row p-1 flex-column flex-md-row flex-grow-1">
         <div class="col">
-          <div class="text-primary fw-semibold">
+          <div class="text-dark fw-semibold">
             <span
               style="-webkit-line-clamp: 1;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden; max-height: 25px">
               {{ $banner->title }}

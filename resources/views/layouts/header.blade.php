@@ -1,5 +1,5 @@
 <header x-ref="header" x-data="header()" :style="`height: ${height}px`" class="w-100">
-    <div class="position-fixed z-3 w-100  bg-white" style="transition: all .3s ease-in-out"
+    <div class="position-fixed w-100  bg-white" style="transition: all .3s ease-in-out; z-index: 1000"
         @scroll.window = "scrolled = (window.pageYOffset > 5)" id="header-content" x-ref="source"
         :class="scrolled ? 'shadow-sm' : ''">
         <div class="container py-2">

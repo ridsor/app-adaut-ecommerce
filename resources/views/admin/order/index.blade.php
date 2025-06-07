@@ -277,6 +277,8 @@
                 {!! $orders->withQueryString()->links('pagination::bootstrap-5') !!}
             </div>
         </div>
+
+        {{-- Loading --}}
         <div id="loading" x-ref="loading"
             style="
             position: fixed; 
@@ -293,7 +295,6 @@
                 <div id="loadingAnimation"></div>
             </div>
         </div>
-        {{-- {{ dd(session()->all()) }} --}}
         <!-- Modal -->
         <form :action="awb.route" method="POST">
             @csrf
