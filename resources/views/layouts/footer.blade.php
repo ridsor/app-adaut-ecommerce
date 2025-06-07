@@ -6,6 +6,13 @@
                     <div class="logo mb-4">
                         <div class="fs-4 fw-bold">ADAUT</div>
                     </div>
+                    <a href="{{ route('contact-us') }}" class="text-decoration-none">
+                        <p>
+                            <span>
+                                Hubungi Kami
+                            </span>
+                        </p>
+                    </a>
                     <p>
                         <i class="fa-solid fa-phone"></i>
                         <span class="ms-1">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\ContactController;
 use App\Http\Controllers\Api\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Api\User\OrderController as UserOrderConttroller;
 use App\Http\Controllers\Api\User\CheckoutController;
@@ -22,4 +23,5 @@ Route::middleware('auth:sanctum', 'verified')->group(function () {
 // admin
 Route::prefix('admin')->middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::patch("/pesanan/status", [AdminOrderController::class, 'update'])->name('api.admin.order.update');
+    Route::patch("/kontak/status", [ContactController::class, 'update'])->name('api.admin.contact.update');
 });

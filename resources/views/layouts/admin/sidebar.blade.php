@@ -17,7 +17,7 @@
                 <div class="nav-link-icon"><i data-feather="package"></i></div>
                 Produk
             </a>
-        <a class="nav-link {{ request()->is('admin/pesanan/*') || request()->is('admin/pesanan') ? 'active' : '' }}"
+            <a class="nav-link {{ request()->is('admin/pesanan/*') || request()->is('admin/pesanan') ? 'active' : '' }}"
                 href="{{ route('admin.order.index') }}">
                 <div class="nav-link-icon"><i data-feather="shopping-bag"></i></div>
                 Pesanan
@@ -53,6 +53,11 @@
                 href="{{ route('admin.address.index') }}">
                 <div class="nav-link-icon"><i data-feather="map-pin"></i></div>
                 Alamat
+            </a>
+            <a class="nav-link {{ request()->is('admin/kontak/*') || request()->is('admin/kontak') ? 'active' : '' }}"
+                href="{{ route('admin.contact.index') }}">
+                <div class="nav-link-icon"><i class="fa-regular fa-address-book"></i></div>
+                Kontak
             </a>
         </div>
         <!-- Sidenav Footer-->
