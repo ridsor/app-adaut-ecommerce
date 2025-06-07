@@ -199,20 +199,20 @@
                     Alpine.store('cart').selected = []
                     const id = window.Alpine.store('cart').add({
                         quantity: this.quantity,
-                        name: '{{ $product->name }}',
-                        product_id: {{ $product->id }},
-                        price: {{ $product->price }},
-                        weight: {{ $product->weight }},
-                        image: '{{ asset('storage/' . $product->image) }}',
+                        name: @json($product->name),
+                        product_id: @json($product->id),
+                        price: @json($product->price),
+                        weight: @json($product->weight),
+                        image: @json(asset('storage/' . $product->image)),
                     })
                     Alpine.store('cart').selectOne({
                         id,
                         quantity: this.quantity,
-                        name: '{{ $product->name }}',
-                        product_id: {{ $product->id }},
-                        price: {{ $product->price }},
-                        weight: {{ $product->weight }},
-                        image: '{{ asset('storage/' . $product->image) }}',
+                        name: @json($product->name),
+                        product_id: @json($product->id),
+                        price: @json($product->price),
+                        weight: @json($product->weight),
+                        image: @json(asset('storage/' . $product->image)),
                     })
 
                     window.location.href = '{{ route('checkout') }}'
@@ -225,11 +225,11 @@
 
                     window.Alpine.store('cart').add({
                         quantity: this.quantity,
-                        name: '{{ $product->name }}',
-                        product_id: {{ $product->id }},
-                        price: {{ $product->price }},
-                        weight: {{ $product->weight }},
-                        image: '{{ asset('storage/' . $product->image) }}',
+                        name: @json($product->name),
+                        product_id: @json($product->id),
+                        price: @json($product->price),
+                        weight: @json($product->weight),
+                        image: @json(asset('storage/' . $product->image)),
                     })
 
                     this.showAnimationAddCart = true;
