@@ -156,6 +156,7 @@
                                     <template x-if="review.data.length > 0">
                                         <template x-for="item in review.data" :key="item.id">
                                             <div class="review-item d-flex flex-column gap-2">
+
                                                 <div class="d-flex gap-2 mb-1">
                                                     <div>
                                                         <div class="image ration ratio-1x1 overflow-hidden"
@@ -585,7 +586,6 @@
                         // Or alternatively, scroll to top of window
                         // window.scrollTo({ top: 0, behavior: 'smooth' });
                     },
-
                 }
             }))
         })
