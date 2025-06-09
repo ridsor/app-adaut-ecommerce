@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <span><span
-                                    x-text="$store.globalState.formatNumberShort({{ $product->review_count ?? 0 }})">0</span>
+                                    x-text="$store.globalState.formatNumberShort({{ $product->reviews_count ?? 0 }})">0</span>
                                 Penilaian</span>
                         </div>
                     </div>
@@ -512,10 +512,6 @@
                                 total: result.meta.total,
                             };
                             this.jumpToPage = result.meta.current_page;
-
-                            setTimeout(() => {
-                                this.scrollToTop();
-                            }, 50);
                         } catch (error) {
                             console.error('Error fetching data:', error);
                         } finally {
@@ -524,6 +520,10 @@
                     },
 
                     setFilter(filter) {
+                        setTimeout(() => {
+                            this.scrollToTop();
+                        }, 50);
+
                         this.meta.filter = {
                             ...this.meta.filter,
                             ...filter,
@@ -532,6 +532,10 @@
                     },
 
                     goToFirstPage() {
+                        setTimeout(() => {
+                            this.scrollToTop();
+                        }, 50);
+
                         if (this.meta.current_page > 1 && !this.loading) {
                             this.meta.current_page = 1;
                             this.fetchData();
@@ -539,6 +543,10 @@
                     },
 
                     prevPage() {
+                        setTimeout(() => {
+                            this.scrollToTop();
+                        }, 50);
+
                         if (this.meta.current_page > 1 && !this.loading) {
                             this.meta.current_page--;
                             this.fetchData();
@@ -546,6 +554,10 @@
                     },
 
                     nextPage() {
+                        setTimeout(() => {
+                            this.scrollToTop();
+                        }, 50);
+
                         if (this.meta.current_page < this.meta.last_page && !this.loading) {
                             this.meta.current_page++;
                             this.fetchData();
@@ -553,6 +565,10 @@
                     },
 
                     goToLastPage() {
+                        setTimeout(() => {
+                            this.scrollToTop();
+                        }, 50);
+
                         if (this.meta.current_page < this.meta.last_page && !this.loading) {
                             this.meta.current_page = this.meta.last_page;
                             this.fetchData();
@@ -560,6 +576,10 @@
                     },
 
                     goToPage(page) {
+                        setTimeout(() => {
+                            this.scrollToTop();
+                        }, 50);
+
                         if (page === '...') return;
 
                         page = parseInt(page);
@@ -570,6 +590,7 @@
                         }
                     },
                     scrollToTop() {
+
                         // Scroll to the table header
                         const header = document.querySelector('#review');
                         if (header) {
@@ -582,9 +603,6 @@
                                 behavior: 'smooth'
                             });
                         }
-
-                        // Or alternatively, scroll to top of window
-                        // window.scrollTo({ top: 0, behavior: 'smooth' });
                     },
                 }
             }))

@@ -69,9 +69,7 @@
                         <div class="card-body">
                             <!-- Form Group (username)-->
                             <div class="mb-3">
-                                <label class="small mb-1" for="username">Nama pengguna (bagaimana nama Anda akan terlihat
-                                    oleh
-                                    pengguna lain di situs)</label>
+                                <label class="small mb-1" for="username">Nama pengguna)</label>
                                 <input class="form-control @error('username') is-invalid @enderror" id="username"
                                     name="username" type="text" placeholder="Masukkan nama pengguna Anda..."
                                     value="{{ old('username', $user->username) }}" />
@@ -83,7 +81,7 @@
                             </div>
                             <!-- Form Group (name)-->
                             <div class="mb-3">
-                                <label class="small mb-1" for="name">Name</label>
+                                <label class="small mb-1" for="name">Nama</label>
                                 <input class="form-control @error('name') is-invalid @enderror" id="name"
                                     name="name" type="text" placeholder="Masukkan nama Anda..."
                                     value="{{ old('name', $user->name) }}" />
