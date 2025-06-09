@@ -69,7 +69,7 @@
                         <div class="card-body px-5 py-4">
                             <div class="small text-center">
                                 Pengguna baru?
-                                <a href="auth-register-social.html">Buat akun!</a>
+                                <a href="{{ route('register') }}">Buat akun!</a>
                             </div>
                         </div>
                     </div>

@@ -21,9 +21,9 @@
                                     {{ Session::get('error') }}
                                 </div>
                             @endif
-                            @if (Session::has('success'))
+                            @if (Session::has('status'))
                                 <div class="alert alert-success" role="alert">
-                                    {{ Session::get('success') }}
+                                    {{ Session::get('status') }}
                                 </div>
                             @endif
                             <!-- Forgot password form-->
@@ -49,7 +49,7 @@
                         <div class="card-body px-5 py-4">
                             <div class="small text-center">
                                 Pengguna baru?
-                                <a href="auth-register-social.html">Buat akun!</a>
+                                <a href="{{ route('register') }}">Buat akun!</a>
                             </div>
                         </div>
                     </div>

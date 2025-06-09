@@ -37,4 +37,11 @@ class Review extends Model
     {
         return $this->hasMany(ReviewMedia::class);
     }
+
+    public function scopeFilter($query, array $filter)
+    {
+        $query->when($filter['rating'] ?? false, function ($query, $rating) {
+            $query->where('rating', $rating);
+        });
+    }
 }

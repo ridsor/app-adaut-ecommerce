@@ -58,7 +58,7 @@
                                                 </div>
                                                 <div class="review-date">
                                                     <span>
-                                                        {{ $item->product->reviews[0]->created_at->subDays(1)->diffForHumans() }}
+                                                        {{ $item->product->reviews[0]->created_at->diffForHumans() }}
                                                     </span>
                                                 </div>
                                             </div>
