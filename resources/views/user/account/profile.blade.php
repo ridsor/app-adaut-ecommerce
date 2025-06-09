@@ -73,7 +73,7 @@
                             </div>
                             <!-- Form Group (name)-->
                             <div class="mb-3">
-                                <label class="small mb-1" for="name">Name</label>
+                            <label class="small mb-1" for="name">Nama</label>
                                 <input class="form-control @error('name') is-invalid @enderror" id="name"
                                     name="name" type="text" placeholder="Masukkan nama Anda..."
                                     value="{{ old('name', $user->name) }}" />

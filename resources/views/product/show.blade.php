@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <span><span
-                                    x-text="$store.globalState.formatNumberShort({{ $product->review_count ?? 0 }})">0</span>
+                                    x-text="$store.globalState.formatNumberShort({{ $product->reviews_count ?? 0 }})">0</span>
                                 Penilaian</span>
                         </div>
                     </div>

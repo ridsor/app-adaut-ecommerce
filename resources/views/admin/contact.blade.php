@@ -73,6 +73,7 @@
                     </div>
                 </form>
             </div>
+            
             @if (count($contacts) > 0)
                 @foreach ($contacts as $contact)
                     <x-pages.admin.contact.contact-item :contact="$contact" />

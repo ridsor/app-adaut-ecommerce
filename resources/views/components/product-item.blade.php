@@ -39,7 +39,7 @@
                         style="width: 13px; height: 13px; transform: translateY(-0.5px)">
                     <span class="fw-bold">{{ round($product->reviews_avg_rating, 1) ?? 0 }}</span>
                     <span>(<span
-                            x-text="$store.globalState.formatNumberShort({{ $product->review_count ?? 0 }})">0</span>)</span>
+                            x-text="$store.globalState.formatNumberShort({{ $product->reviews_count ?? 0 }})">0</span>)</span>
                 </div>
             </div>
             <div x-data class="product-price fw-semibold">
