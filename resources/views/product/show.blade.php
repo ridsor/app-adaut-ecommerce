@@ -155,7 +155,7 @@
                                 <div class="d-flex flex-column gap-3">
                                     <template x-if="review.data.length > 0">
                                         <template x-for="item in review.data" :key="item.id">
-                                            <div class="review-item">
+                                            <div class="review-item d-flex flex-column gap-2">
                                                 <div class="d-flex gap-2 mb-1">
                                                     <div>
                                                         <div class="image ration ratio-1x1 overflow-hidden"
@@ -179,7 +179,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="review-rating mb-1">
+                                                <div class="review-rating">
                                                     <template x-for="i in 5">
                                                         <img :src="i <= item.rating ? '/icons/rate.svg' : '/icons/nonrate.svg'"
                                                             alt="star" style="width: 20px; height: 20px;">
@@ -188,16 +188,15 @@
                                                 <div class="rating-comment">
                                                     <span x-text="item.comment"></span>
                                                 </div>
-                                                <div class="d-flex gap-2 flex-wrap box-container">
-                                                    <template x-for="media in item.review_media">
+                                                <div class="d-flex gap-2 flex-wrap box-container" x-init="initLightbox()"
+                                                    x-data="lightbox">
+                                                    <template x-for="media in item.review_media" :key="media.file_path">
                                                         <div class="box">
                                                             <div class="inner">
-                                                                <a @click.stop :href="'/storage/' + media.file_path"
+                                                                <a :href="'/storage/' + media.file_path"
                                                                     class="reviewGlightbox" data-type="image"
-                                                                    data-effect="fade">
-                                                                    <div class="review-image"
-                                                                        :href="'/storage/' + media.file_path"
-                                                                        style="width: 70px; height: 70px">
+                                                                    data-effect="fade" @click.stop>
+                                                                    <div style="width: 100px; height: 100px;">
                                                                         <img :src="'/storage/' + media.file_path"
                                                                             alt=""
                                                                             style="object-position: center; object-fit: cover"
@@ -350,6 +349,20 @@
             autoplay: true,
             path: '/assets/animations/loading.json'
         })
+
+        function lightbox() {
+            return {
+                glightbox: null,
+                initLightbox() {
+                    this.$nextTick(() => {
+                        if (this.glightbox) this.glightbox.destroy(); // Bersihkan instance lama
+                        this.glightbox = GLightbox({
+                            selector: '.reviewGlightbox'
+                        });
+                    });
+                }
+            };
+        }
 
         document.addEventListener('alpine:init', () => {
             const isValidUrl = url => !!url && !url.startsWith('data:') && (() => {
@@ -572,14 +585,9 @@
                         // Or alternatively, scroll to top of window
                         // window.scrollTo({ top: 0, behavior: 'smooth' });
                     },
+
                 }
             }))
         })
-
-        const lightbox = GLightbox();
-
-        const lightboxReview = GLightbox({
-            selector: '.reviewGlightbox'
-        });
     </script>
 @endpush
