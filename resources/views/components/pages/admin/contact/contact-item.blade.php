@@ -39,6 +39,7 @@
                     </div>
                     <div class="text-dark">
                         <div class="text-dark fw-semibold">Subjek</div>
+                    <div class="text-dark fw-semibold">
                         <span>
                             {{ $contact->subject }}
                         </span>

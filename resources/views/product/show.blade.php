@@ -90,70 +90,164 @@
                         {!! Str::markdown($product->description) !!}
                     </div>
                 </div>
-                <div class="product-review" style="max-width: 800px">
-                    <div class="fw-semibold mb-3 h4">Ulasan</div>
-                    <div class="review-list d-flex flex-column gap-3">
-                        @if (count($product->reviews) > 0)
-                            @foreach ($product->reviews as $review)
-                                <div class="review-item">
-                                    <div class="d-flex gap-2 mb-1">
-                                        <div class="image ration ratio-1x1 overflow-hidden"
-                                            style="width: 50px; border-radius: 100%">
-                                            <img src="{{ $user?->profile->image
-                                                ? (filter_var($user->profile->image, FILTER_VALIDATE_URL)
-                                                    ? $user->profile->image
-                                                    : asset('storage/' . $user->profile->image))
-                                                : '/assets/img/user-placeholder.svg' }}"
-                                                alt="" class="object-fit-cover w-100 h-100"
-                                                style="background-position: center">
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                            <div class="review-name fw-semibold">
-                                                {{ $review->user->username }}
-                                            </div>
-                                            <div class="review-date">
-                                                <span>
-                                                    {{ $review->created_at->diffForHumans() }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="review-rating mb-1">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <img src="{{ $i <= $review->rating ? '/icons/rate.svg' : '/icons/nonrate.svg' }}"
-                                                alt="star" style="width: 20px; height: 20px;">
-                                        @endfor
-                                    </div>
-                                    <div class="rating-comment mb-1">
-                                        <p>{{ $review->comment }}</p>
-                                    </div>
-                                    <div class="d-flex gap-2 flex-wrap box-container">
-                                        @foreach ($review->review_media as $index => $media)
-                                            <div class="box">
-                                                <div class="inner">
-                                                    <a href="{{ asset('storage/' . $media->file_path) }}"
-                                                        class="reviewGlightbox" data-type="image" data-effect="fade">
-                                                        <div class="review-image"
-                                                            href="{{ asset('storage/' . $media->file_path) }}"
-                                                            style="width: 100px; height: 100px">
-                                                            <img src="{{ asset('storage/' . $media->file_path) }}"
-                                                                alt=""
-                                                                style="object-position: center; object-fit: cover"
-                                                                class="w-100 h-100" />
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                <div class="mb-3 card rounded-0">
+                    <div class="card-body shadow-md p-0">
+                        <div class="fs-6 p-2">Penilaian Produk</div>
+                        <div class="shadow-sm bg-primary-subtle mx-0 p-3 mb-3 row gap-3 align-items-center">
+                            <div
+                                class="text-primary text-semibold fs-4 mb-1 d-flex align-items-center flex-column col-12 col-lg-auto">
+                                <div>{{ round($product->reviews_avg_rating, 1) ?? 0 }} / 5</div>
+                                <div class="review-rating text-nowrap">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <img src="/icons/rate.svg" alt="star" style="width: 20px; height: 20px;">
+                                    @endfor
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button class="btn btn-outline-dark border-secondary fs-responsive"
+                                        @click="review.setFilter({rating: ''})"
+                                        :disabled="review.meta.filter.rating === ''">
+                                        Semua
+                                    </button>
+                                    <button class="btn btn-outline-dark border-secondary fs-responsive"
+                                        @click="review.setFilter({rating: '5'})"
+                                        :disabled="review.meta.filter.rating === '5'">
+                                        5 Bintang
+                                    </button>
+                                    <button class="btn btn-outline-dark border-secondary fs-responsive"
+                                        :disabled="review.meta.filter.rating === '4'"
+                                        @click="review.setFilter({rating: '4'})">
+                                        4 Bintang
+                                    </button>
+                                    <button class="btn btn-outline-dark border-secondary fs-responsive"
+                                        :disabled="review.meta.filter.rating === '3'"
+                                        @click="review.setFilter({rating: '3'})">
+                                        3 Bintang
+                                    </button>
+                                    <button class="btn btn-outline-dark border-secondary fs-responsive"
+                                        :disabled="review.meta.filter.rating === '2'"
+                                        @click="review.setFilter({rating: '2'})">
+                                        2 Bintang
+                                    </button>
+                                    <button class="btn btn-outline-dark border-secondary fs-responsive"
+                                        :disabled="review.meta.filter.rating === '1'"
+                                        @click="review.setFilter({rating: '1'})">
+                                        1 Bintang
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overflow-hidden p-2 mb-3" x-init="review.fetchData()" id="review">
+                            <!-- Loading Overlay -->
+                            <div x-show="review.loading" x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                                x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
+                                x-transition:leave-end="opacity-0" class="loading-overlay">
+                                <div class="loading-content d-flex justify-content-center align-items-center"
+                                    style="height: 500px">
+                                    <div style="width: 200px; height: 200px">
+                                        <div id="review_loading"></div>
                                     </div>
                                 </div>
-                            @endforeach
-                        @else
-                            <div>
-                                <div class="lead">Belum ada ulasan untuk produk ini</div>
-                                <p>Beli produk ini dan jadilah yang pertama memberikan ulasan</p>
                             </div>
-                        @endif
+                            <div x-show="!review.loading" class="content">
+                                <div class="d-flex flex-column gap-3">
+                                    <template x-if="review.data.length > 0">
+                                        <template x-for="item in review.data" :key="item.id">
+                                            <div class="review-item">
+                                                <div class="d-flex gap-2 mb-1">
+                                                    <div>
+                                                        <div class="image ration ratio-1x1 overflow-hidden"
+                                                            style="width: 50px; border-radius: 100%">
+                                                            <img :src="item.user.profile?.image ?
+                                                                (isValidUrl(item.user.profile.image) ?
+                                                                    item.user.profile.image :
+                                                                    ('/storage/' + item.user.profile.image)) :
+                                                                '/assets/img/user-placeholder.svg'"
+                                                                alt="" class="object-fit-cover w-100 h-100"
+                                                                style="background-position: center">
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-column">
+                                                        <div class="review-name fw-semibold">
+                                                            <span x-text="item.user.username"></span>
+                                                        </div>
+                                                        <div class="review-date">
+                                                            <span x-text="dayjs(item.created_at).fromNow()">
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="review-rating mb-1">
+                                                    <template x-for="i in 5">
+                                                        <img :src="i <= item.rating ? '/icons/rate.svg' : '/icons/nonrate.svg'"
+                                                            alt="star" style="width: 20px; height: 20px;">
+                                                    </template>
+                                                </div>
+                                                <div class="rating-comment">
+                                                    <span x-text="item.comment"></span>
+                                                </div>
+                                                <div class="d-flex gap-2 flex-wrap box-container">
+                                                    <template x-for="media in item.review_media">
+                                                        <div class="box">
+                                                            <div class="inner">
+                                                                <a @click.stop :href="'/storage/' + media.file_path"
+                                                                    class="reviewGlightbox" data-type="image"
+                                                                    data-effect="fade">
+                                                                    <div class="review-image"
+                                                                        :href="'/storage/' + media.file_path"
+                                                                        style="width: 70px; height: 70px">
+                                                                        <img :src="'/storage/' + media.file_path"
+                                                                            alt=""
+                                                                            style="object-position: center; object-fit: cover"
+                                                                            class="w-100 h-100" />
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+                                    <template x-if="!(review.data.length > 0)">
+                                        <div class="py-5">
+                                            <div class="lead">Belum ada ulasan untuk produk ini</div>
+                                            <p>Beli produk ini dan jadilah yang pertama memberikan ulasan</p>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div class="pagination"
+                                x-show="(review.data.length > 0) & (review.meta.total > review.meta.per_page)">
+                                <!-- Previous Page Button -->
+                                <button @click="review.prevPage()"
+                                    :disabled="review.meta.current_page === 1 || review.loading" class="pagination-button"
+                                    title="Previous Page">
+                                    <i class="fas fa-angle-left"></i>
+                                </button>
+
+                                <!-- Page Number Buttons -->
+                                <template x-for="page in review.visiblePages" :key="page">
+                                    <button @click="review.goToPage(page)"
+                                        :class="{
+                                            'active': page === review.meta.current_page,
+                                            'ellipsis': page === '...'
+                                        }"
+                                        :disabled="page === '...' || review.loading" class="pagination-button"
+                                        x-text="page"></button>
+                                </template>
+
+                                <!-- Next Page Button -->
+                                <button @click="review.nextPage()"
+                                    :disabled="review.meta.current_page === review.meta.last_page || review.loading"
+                                    class="pagination-button" title="Next Page">
+                                    <i class="fas fa-angle-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -172,14 +266,102 @@
 
 @push('head')
     <link rel="stylesheet" href="/assets/css/glightbox.min.css" />
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .pagination-button:hover:not(:disabled) {
+            background-color: #f0f0f0;
+        }
+
+        .pagination-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-button.active {
+            background-color: #0061f2;
+            color: white;
+            border-color: #0061f2;
+        }
+
+        .pagination-info {
+            margin: 0 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-input {
+            width: 50px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .go-button {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .pagination {
+                /* flex-direction: column; */
+                gap: 10px;
+            }
+
+            .pagination-group {
+                display: flex;
+                gap: 5px;
+            }
+        }
+    </style>
 @endpush
 
 @push('scripts')
     <script src="/assets/js/glightbox.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js'></script>
     <script>
+        const animation = bodymovin.loadAnimation({
+            container: document.getElementById('review_loading'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '/assets/animations/loading.json'
+        })
+
         document.addEventListener('alpine:init', () => {
+            const isValidUrl = url => !!url && !url.startsWith('data:') && (() => {
+                try {
+                    return !!new URL(url)
+                } catch {
+                    return false
+                }
+            })();
+
             window.Alpine.data('productdetail', () => ({
+                isValidUrl,
                 no_stock: @json($no_stock),
                 quantity: 1,
                 update(value) {
@@ -248,6 +430,148 @@
                             animation.destroy();
                         }, 200);
                     });
+                },
+
+                review: {
+                    data: [],
+                    meta: {
+                        current_page: 1,
+                        last_page: 1,
+                        per_page: 2,
+                        total: 0,
+                        filter: {
+                            rating: ''
+                        }
+                    },
+                    loading: false,
+                    jumpToPage: 1,
+
+                    get visiblePages() {
+                        const current = this.meta.current_page;
+                        const last = this.meta.last_page;
+                        const delta = 2; // Number of pages to show around current page
+                        const range = [];
+
+                        // Always show first page
+                        range.push(1);
+
+                        // Show pages around current page
+                        for (let i = Math.max(2, current - delta); i <= Math.min(last - 1, current +
+                                delta); i++) {
+                            range.push(i);
+                        }
+
+                        // Always show last page
+                        if (last > 1) {
+                            range.push(last);
+                        }
+
+                        // Add ellipsis where gaps exist
+                        const pagesWithDots = [];
+                        let prev = null;
+
+                        for (const page of range) {
+                            if (prev !== null && page - prev > 1) {
+                                pagesWithDots.push('...');
+                            }
+                            pagesWithDots.push(page);
+                            prev = page;
+                        }
+
+                        return pagesWithDots;
+                    },
+
+                    async fetchData() {
+                        this.loading = true;
+                        try {
+                            const response = await fetch(
+                                `{{ route('api.product.review', ['product' => $product->slug]) }}?page=${this.meta.current_page}&per_page=${this.meta.per_page}&rating=${this.meta.filter.rating}`
+                            );
+                            const result = await response.json();
+
+                            this.data = result.data;
+                            this.meta = {
+                                ...this.meta,
+                                current_page: result.meta.current_page,
+                                last_page: result.meta.last_page,
+                                per_page: result.meta.per_page,
+                                total: result.meta.total,
+                            };
+                            this.jumpToPage = result.meta.current_page;
+
+                            setTimeout(() => {
+                                this.scrollToTop();
+                            }, 50);
+                        } catch (error) {
+                            console.error('Error fetching data:', error);
+                        } finally {
+                            this.loading = false;
+                        }
+                    },
+
+                    setFilter(filter) {
+                        this.meta.filter = {
+                            ...this.meta.filter,
+                            ...filter,
+                        }
+                        this.fetchData();
+                    },
+
+                    goToFirstPage() {
+                        if (this.meta.current_page > 1 && !this.loading) {
+                            this.meta.current_page = 1;
+                            this.fetchData();
+                        }
+                    },
+
+                    prevPage() {
+                        if (this.meta.current_page > 1 && !this.loading) {
+                            this.meta.current_page--;
+                            this.fetchData();
+                        }
+                    },
+
+                    nextPage() {
+                        if (this.meta.current_page < this.meta.last_page && !this.loading) {
+                            this.meta.current_page++;
+                            this.fetchData();
+                        }
+                    },
+
+                    goToLastPage() {
+                        if (this.meta.current_page < this.meta.last_page && !this.loading) {
+                            this.meta.current_page = this.meta.last_page;
+                            this.fetchData();
+                        }
+                    },
+
+                    goToPage(page) {
+                        if (page === '...') return;
+
+                        page = parseInt(page);
+                        if (page >= 1 && page <= this.meta.last_page && page !== this.meta
+                            .current_page && !this.loading) {
+                            this.meta.current_page = page;
+                            this.fetchData();
+                        }
+                    },
+                    scrollToTop() {
+                        // Scroll to the table header
+                        const header = document.querySelector('#review');
+                        if (header) {
+                            const elementPosition = header.getBoundingClientRect().top + window
+                                .pageYOffset;
+                            const offsetPosition = elementPosition - 100;
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+
+                        // Or alternatively, scroll to top of window
+                        // window.scrollTo({ top: 0, behavior: 'smooth' });
+                    },
                 }
             }))
         })
