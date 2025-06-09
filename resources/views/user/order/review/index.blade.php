@@ -78,9 +78,7 @@
                                                     <div class="inner">
                                                         <a @click.stop href="{{ asset('storage/' . $media->file_path) }}"
                                                             class="reviewGlightbox" data-type="image" data-effect="fade">
-                                                            <div class="review-image"
-                                                                href="{{ asset('storage/' . $media->file_path) }}"
-                                                                style="width: 100px; height: 100px">
+                                                            <div class="review-image" style="width: 100px; height: 100px">
                                                                 <img src="{{ asset('storage/' . $media->file_path) }}"
                                                                     alt=""
                                                                     style="object-position: center; object-fit: cover"
