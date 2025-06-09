@@ -1,7 +1,12 @@
 import axios from "axios";
 import Alpine from "alpinejs";
 import persist from "@alpinejs/persist";
-
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
+import "dayjs/locale/id";
+dayjs.locale("id");
+window.dayjs = dayjs;
 window.axios = axios;
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 window.axios.defaults.withCredentials = true;
