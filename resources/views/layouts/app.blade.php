@@ -10,22 +10,35 @@
     <title>{{ $title ?? config('app.name') }}</title>
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png" />
 
-    <!-- Fonts -->
+    <!-- Vendor CSS Files -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <script src="https://kit.fontawesome.com/0c8762722d.js" crossorigin="anonymous"></script>
 
     <!-- CSS -->
+    <link href="/assets/css/aos.css" rel="stylesheet" />
+    <link href="/assets/css/invent.css" rel="stylesheet" />
+    <link href="/assets/css/invent-bootstrap.css" rel="stylesheet" />
     @stack('head')
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 
-    @vite(['resources/js/app.js', 'resources/css/app.css', 'resources/js/bootstrap.js'])
+    <!-- =======================================================
+  * Template Name: Invent
+  * Template URL: https://bootstrapmade.com/invent-bootstrap-business-template/
+  * Updated: May 12 2025 with Bootstrap v5.3.6
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
-<body>
+<body class="index-page adaut">
     @include('layouts.header')
     @yield('content')
     @include('layouts.footer')
 
     {{-- JS --}}
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+        <i class="fa-solid fa-arrow-up"></i></a>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         if (@json(Session::has('success'))) {
@@ -57,6 +70,8 @@
         }
     </script>
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/aos.js"></script>
+    <script src="/assets/js/invent.js"></script>
     @stack('scripts')
 </body>
 

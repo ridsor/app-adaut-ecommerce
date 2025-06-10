@@ -1,7 +1,7 @@
 @props(['categories' => []])
 
 <section>
-    <div class="container py-5">
+    <div class="container py-5" data-aos="fade-up" data-aos-delay="300">
         <div class="swiper" id="category_swiper">
             <div class="swiper-wrapper w-100 h-100 py-5">
                 @foreach ($categories as $category)

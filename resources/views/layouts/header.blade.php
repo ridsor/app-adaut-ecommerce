@@ -1,4 +1,4 @@
-<header x-ref="header" x-data="header()" :style="`height: ${height}px`" class="w-100">
+<header x-ref="header" x-data="header()" :style="`height: ${height}px`" class="w-100" id="header">
     <div class="position-fixed w-100  bg-white" style="transition: all .3s ease-in-out; z-index: 1000"
         @scroll.window = "scrolled = (window.pageYOffset > 5)" id="header-content" x-ref="source"
         :class="scrolled ? 'shadow-sm' : ''">
@@ -7,8 +7,12 @@
                 <div class="right">
                     <div class="d-flex align-items-center">
                         <div class="px-2">
-                            <a href="{{ route('home') }}" class="text-decoration-none">
-                                <span class="fs-4 fw-bold">{{ config('app.name') }}</span>
+                            <a href="{{ route('home') }}"
+                                class="logo d-flex align-items-center me-auto me-xl-0 text-decoration-none">
+                                <!-- Uncomment the line below if you also wish to use an image logo -->
+                                <!-- <img src="assets/img/logo.webp" alt=""> -->
+                                <h1 class="sitename">Adaut</h1>
+                                <span>.</span>
                             </a>
                         </div>
                     </div>
