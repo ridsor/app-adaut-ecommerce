@@ -1,78 +1,95 @@
-<section class="bg-primary-subtle">
-  <div class="container py-5" x-data="banner()">
-    <div class="swiper" id="banner_swiper" x-ref="source">
-      <div class="swiper-wrapper w-100">
-        @if (count($banners) > 0)
-          @foreach ($banners as $banner)
-            <div class="swiper-slide" :style="`height: ${height}px`">
-              <div class="row w-100 h-100 p-0 m-0 g-3">
-                <div class="col-md-8 order-2 order-md-1">
-                  <div class="d-flex h-100 align-items-center">
-                    <div class="p-lg-5 pb-5 p-2">
-                      <h1 class="display-5 fw-medium mb-2">{{ $banner->title }}</h1>
-                      <p class="fs-6 text-secondary lh-lg">
-                        {{ $banner->description }}
-                      </p>
-                      @if ($banner->button_text)
-                        <a class="btn btn-outline-primary py-3 px-3 mt-4"
-                          href="{{ $banner->button_link }}">{{ $banner->button_text }}</a>
-                      @endif
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 pe-none order-1 order-md-2 justify-center">
-                  <div class="d-flex h-100 w-100 align-items-center p-2 p-md-0 ratio ratio-1x1">
-                    <img src="{{ asset("storage/" . $banner->image) }}" alt="" alt=""
-                      class="h-100 object-fit-contain" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          @endforeach
-        @else
-          <div class="swiper-slide" :style="`height: ${height}px`">
-            <div class="d-flex h-100 align-items-center">
-              <div class="p-lg-5 pb-5 p-2">
-                <h1 class="display-5 fw-medium mb-2">TEMUKAN KEBAHAGIAAN BELANJA</h1>
-                <p class="fs-6 text-secondary lh-lg">
-                  Produk berkualitas dengan pelayanan terbaik
-                </p>
-                <a class="btn btn-outline-primary py-3 px-3 mt-4" href="#daftar_produk">Mulai
-                  Belanja</a>
-              </div>
-            </div>
-          </div>
-        @endif
-      </div>
-      <div class="swiper-pagination" id="banner_swiper_pagination"></div>
-    </div>
-  </div>
-</section>
-@push("scripts")
-  <script>
-    var swiper = new Swiper('#banner_swiper', {
-      pagination: {
-        el: "#banner_swiper_pagination",
-        clickable: true,
-        dynamicBullets: true,
-      },
-      autoplay: {
-        // delay: 3000,
-        disableOnInteraction: false,
-      },
-      // loop: true,
-    });
+<section id="hero" class="hero section">
+    <div class="container" x-data="banner()" data-aos="fade-up" data-aos-delay="100">
+        <div class="swiper" id="banner_swiper" x-ref="source">
+            <div class="swiper-wrapper w-100">
+                <div class="swiper-slide px-2" :style="`height: ${height}px`" role="group"
+                    aria-label="1 / 1" style="height: 376.390625px">
 
-    const banner = function() {
-      return {
-        height: "auto",
-        init() {
-          const observer = new ResizeObserver(entries => {
-            this.height = entries[0].contentRect.height;
-          });
-          observer.observe(this.$refs.source);
+                    <div class="row align-items-center mb-5">
+                        <div class="col-lg-6 mb-4 mb-lg-0">
+
+                            <h1 class="hero-title mb-4">
+                                Belanja Produk Lokal Tanpa Batas, Kapan Saja Dimana Saja
+                            </h1>
+
+                            <p class="hero-description mb-4">
+                                Temukan berbagai produk UMKM lokal terbaik mulai dari makanan, fashion, hingga kerajinan
+                                tangan. Belanja mudah dan aman dengan teknologi terkini.
+                            </p>
+
+                            <div class="cta-wrapper">
+                                <a href="https://umkm.adaut.com/#daftar_produk" class="btn btn-primary">Telusuri</a>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="hero-image">
+                                <img src="http://localhost:8000/storage/gambar/spanduk/2DrL5nKu24aLq2Twl0FhJO2ATOZRzebevTQaaha1.jpg"
+                                    alt="Business Growth" class="img-fluid" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @foreach ($banners as $banner)
+                    <div class="swiper-slide px-3" :style="`height: ${height}px`">
+                        <div class="row align-items-center mb-5">
+                            <div class="col-lg-6 mb-4 mb-lg-0">
+
+                                <h1 class="hero-title mb-4">
+                                    {{ $banner->title }}
+                                </h1>
+
+                                <p class="hero-description mb-4">
+                                    {{ $banner->description }}
+                                </p>
+
+                                @if ($banner->button_text)
+                                    <div class="cta-wrapper">
+                                        <a href="{{ $banner->button_link }}"
+                                            class="btn btn-primary">{{ $banner->button_text }}</a>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="hero-image">
+                                    <img src="{{ asset('storage/' . $banner->image) }}" alt="Business Growth"
+                                        class="img-fluid" loading="lazy" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <div class="swiper-pagination" id="banner_swiper_pagination"></div>
+        </div>
+    </div>
+</section>
+@push('scripts')
+    <script>
+        var swiper = new Swiper('#banner_swiper', {
+            pagination: {
+                el: "#banner_swiper_pagination",
+                clickable: true,
+                dynamicBullets: true,
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            loop: true,
+        });
+
+        const banner = function() {
+            return {
+                height: "auto",
+                init() {
+                    const observer = new ResizeObserver(entries => {
+                        this.height = entries[0].contentRect.height;
+                    });
+                    observer.observe(this.$refs.source);
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
 @endpush
