@@ -1,6 +1,6 @@
-<footer class="footer light-background py-5" id="footer">
+<footer class="footer light-background pt-5" id="footer">
     <div class="container">
-        <div class="mb-5">
+        <div class="mb-4">
             <div class="row d-flex justify-content-between flex-wrap">
                 <div class="col-sm-6 col-lg-4">
                     <div class="mb-4">
@@ -96,8 +96,9 @@
                 </div>
             </div>
         </div>
-        <div class="text-center">
-            © 2025 Adaut. All rights reserved.
+        <div class="container copyright text-center mt-4">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">Adaut</strong> <span>All Rights
+                    Reserved</span></p>
         </div>
     </div>
 </footer>

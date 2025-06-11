@@ -25,8 +25,8 @@ class HomeController extends Controller
             ], 'quantity')
             ->withCount('reviews')->withAvg('reviews', 'rating')
             ->latest()
-            ->limit(10)->get();
-        $categories = Category::select('name', 'icon', 'id', 'slug')->get();
+            ->limit(8)->get();
+        $categories = Category::select(['name', 'id', 'slug', 'icon'])->withCount('products')->get();
         $banners = Banner::select('title', 'description', 'button_text', 'button_link', 'image')->latest()->get();
         $shop = User::where('role', 'admin')->first();
 

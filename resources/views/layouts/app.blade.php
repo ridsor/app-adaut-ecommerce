@@ -17,7 +17,8 @@
     <!-- CSS -->
     <link href="/assets/css/aos.css" rel="stylesheet" />
     <link href="/assets/css/invent.css" rel="stylesheet" />
-    <link href="/assets/css/invent-bootstrap.css" rel="stylesheet" />
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     @stack('head')
     @vite(['resources/js/app.js', 'resources/css/app.css'])
 
@@ -38,7 +39,7 @@
     {{-- JS --}}
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
-        <i class="fa-solid fa-arrow-up"></i></a>
+        <i class="bi bi-arrow-up-short"></i></a>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         if (@json(Session::has('success'))) {
