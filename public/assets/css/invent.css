@@ -235,6 +235,7 @@ h6 {
 
 .scrolled .header {
     box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.1);
+    padding: 8px 0;
 }
 
 /* Global Header on Scroll
@@ -1036,7 +1037,29 @@ section,
     justify-content: center;
 }
 
+.product .read-more {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    font-family: var(--heading-font);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 12px 24px;
+    border-radius: 1.5rem;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .about .content .read-more i {
+    font-size: 18px;
+    margin-left: 5px;
+    line-height: 0;
+    transition: 0.3s;
+}
+
+.product .read-more i {
     font-size: 18px;
     margin-left: 5px;
     line-height: 0;
@@ -1052,8 +1075,34 @@ section,
     margin-left: 10px;
 }
 
+.product .read-more:hover {
+    background: color-mix(in srgb, var(--accent-color), transparent 20%);
+    padding-right: 19px;
+}
+
+.product .read-more:hover i {
+    margin-left: 10px;
+}
+
 .about .about-images img {
     border-radius: 10px;
+}
+
+/*--------------------------------------------------------------
+# Category
+--------------------------------------------------------------*/
+
+.category-card {
+    background-color: color-mix(in srgb, var(--accent-color), transparent 95%);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.category-card .category-title {
+    font-size: 0.9rem;
+}
+.category-card .category-count {
+    font-size: 0.8rem;
 }
 
 /*--------------------------------------------------------------
@@ -1229,6 +1278,10 @@ section,
 /*--------------------------------------------------------------
 # Services Section
 --------------------------------------------------------------*/
+.services .section {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
 .services .service-item {
     display: flex;
     background-color: var(--surface-color);

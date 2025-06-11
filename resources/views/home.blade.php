@@ -40,6 +40,7 @@
 @section('content')
     <main>
         <x-pages.home.banner :banners="$banners" />
+        <x-pages.home.service />
         <x-pages.home.category :categories="$categories" />
         <x-pages.home.product :products="$products" type="slider" name="Produk terlaris" />
         <x-pages.home.product :products="$products" name="Produk terbaru" />
