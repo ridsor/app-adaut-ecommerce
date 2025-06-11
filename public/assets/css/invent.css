@@ -795,6 +795,10 @@ section,
     margin-bottom: 0;
 }
 
+#daftar-produk {
+    background-color: color-mix(in srgb, var(--accent-color), transparent 95%);
+}
+
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/

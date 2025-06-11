@@ -5,7 +5,7 @@
 @endphp
 
 <a x-data class="product-item text-decoration-none" href="{{ route('product.detail', ['slug' => $product->slug]) }}">
-    <div class="d-flex flex-column justify-content-center rounded-3 border">
+    <div class="d-flex flex-column justify-content-center rounded-3 border bg-white">
         <div class="position-relative">
             <div class="{{ $product->stock > 0 ? 'd-none' : '' }}">
                 <div
