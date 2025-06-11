@@ -5,13 +5,13 @@
 
 @if ($type === 'slider')
     <section class="product">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Best Sellers</h2>
+            <p>Temukan produk terpopuler kami yang dicintai oleh pelanggan di seluruh dunia. Kualitas premium, nilai
+                luar biasa, dan gaya yang sedang tren di satu tempat</p>
+        </div><!-- End Section Title -->
         <div class="container">
             <!-- Section Title -->
-            <div class="container section-title" data-aos="fade-up">
-                <h2>Best Sellers</h2>
-                <p>Temukan produk terpopuler kami yang dicintai oleh pelanggan di seluruh dunia. Kualitas premium, nilai
-                    luar biasa, dan gaya yang sedang tren di satu tempat</p>
-            </div><!-- End Section Title -->
             <div class="d-flex justify-content-between gap-2 mb-3">
                 <div class="d-flex" style="gap: 8px" data-aos="fade-right" data-aos-delay="100">
                     <div id="{{ $id }}_product_button_prev">
@@ -58,6 +58,10 @@
     </section>
 @else
     <section id="daftar-produk" class="product">
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Produk Terbaru</h2>
+        </div><!-- End Section Title -->
         <div class="container">
             <div class="row px-3 g-4 px-md-0">
                 @if (count($products) > 0)
