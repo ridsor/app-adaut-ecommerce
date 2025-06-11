@@ -1,10 +1,16 @@
-<footer>
+<footer class="footer light-background pt-5" id="footer">
     <div class="container">
-        <div class="py-5">
+        <div class="mb-4">
             <div class="row d-flex justify-content-between flex-wrap">
                 <div class="col-sm-6 col-lg-4">
-                    <div class="logo mb-4">
-                        <div class="fs-4 fw-bold">ADAUT</div>
+                    <div class="mb-4">
+                        <a href="{{ route('home') }}"
+                            class="logo d-flex align-items-center me-auto me-xl-0 text-decoration-none">
+                            <!-- Uncomment the line below if you also wish to use an image logo -->
+                            <!-- <img src="assets/img/logo.webp" alt=""> -->
+                            <h1 class="sitename">Adaut</h1>
+                            <span>.</span>
+                        </a>
                     </div>
                     <a href="{{ route('contact-us') }}" class="text-decoration-none">
                         <p>
@@ -90,8 +96,9 @@
                 </div>
             </div>
         </div>
-        <p class="text-center">
-            © 2025 Adaut. All rights reserved.
-        </p>
+        <div class="container copyright text-center mt-4">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">Adaut</strong> <span>All Rights
+                    Reserved</span></p>
+        </div>
     </div>
 </footer>
