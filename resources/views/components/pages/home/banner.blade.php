@@ -6,20 +6,22 @@
 
                     <div class="row align-items-center mb-5">
                         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-delay="100">
+                            <div class="d-flex flex-column gap-4">
+                                <h1 class="hero-title mb-0">
+                                    Belanja Produk Lokal Tanpa Batas, Kapan Saja Dimana Saja
+                                </h1>
 
-                            <h1 class="hero-title mb-4">
-                                Belanja Produk Lokal Tanpa Batas, Kapan Saja Dimana Saja
-                            </h1>
+                                <p class="hero-description mb-0">
+                                    Temukan berbagai produk UMKM lokal terbaik mulai dari makanan, fashion, hingga
+                                    kerajinan
+                                    tangan. Belanja mudah dan aman dengan teknologi terkini.
+                                </p>
 
-                            <p class="hero-description mb-4">
-                                Temukan berbagai produk UMKM lokal terbaik mulai dari makanan, fashion, hingga kerajinan
-                                tangan. Belanja mudah dan aman dengan teknologi terkini.
-                            </p>
-
-                            <div class="cta-wrapper">
-                                <a href="{{ route('home') }}/#daftar-produk" class="btn btn-primary">
-                                    Belanja Sekarang
-                                </a>
+                                <div class="cta-wrapper">
+                                    <a href="{{ route('home') }}/#daftar-produk" class="btn btn-primary">
+                                        Belanja Sekarang
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -35,21 +37,22 @@
                     <div class="swiper-slide px-3" :style="`height: ${height}px`">
                         <div class="row align-items-center mb-5">
                             <div class="col-lg-6 mb-4 mb-lg-0">
+                                <div class="d-flex flex-column gap-4">
+                                    <h1 class="hero-title mb-0">
+                                        {{ $banner->title }}
+                                    </h1>
 
-                                <h1 class="hero-title mb-4">
-                                    {{ $banner->title }}
-                                </h1>
+                                    <p class="hero-description mb-0">
+                                        {{ $banner->description }}
+                                    </p>
 
-                                <p class="hero-description mb-4">
-                                    {{ $banner->description }}
-                                </p>
-
-                                @if ($banner->button_text)
-                                    <div class="cta-wrapper">
-                                        <a href="{{ $banner->button_link }}"
-                                            class="btn btn-primary">{{ $banner->button_text }}</a>
-                                    </div>
-                                @endif
+                                    @if ($banner->button_text)
+                                        <div class="cta-wrapper">
+                                            <a href="{{ $banner->button_link }}"
+                                                class="btn btn-primary">{{ $banner->button_text }}</a>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
 
                             <div class="col-lg-6">
