@@ -26,6 +26,7 @@
                         <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
                             <div class="hero-image">
                                 <img src="/storage/gambar/spanduk/2DrL5nKu24aLq2Twl0FhJO2ATOZRzebevTQaaha1.jpg"
+
                                     alt="Business Growth" class="img-fluid" loading="lazy">
                             </div>
                         </div>
