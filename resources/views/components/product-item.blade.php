@@ -12,7 +12,7 @@
                     class="isEmpity position-absolute top-0 start-0 end-0 bottom-0 d-flex justify-content-center align-items-center">
                     <div class="rounded-circle p-5 d-flex justify-content-center align-items-center"
                         style="background-color: rgba(0,0,0,.5); aspect-ratio: 1/1; z-index: 2">
-                        <span class="text-white">Habis</span>b
+                        <span class="text-white">Habis</span>
                     </div>
                 </div>
             </div>
