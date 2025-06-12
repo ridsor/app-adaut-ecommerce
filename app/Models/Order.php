@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Searchable;
@@ -65,8 +64,8 @@ class Order extends Model
     static public function scopeFilters($query, array $filters)
     {
         // sort
-        $query->when($filters['sort'] ?? true, function ($query, $sort) {
-            if ($sort === 'oldest') {
+        $query->when($filters['sort'] ?? 'latest', function ($query, $sort) {
+            if ($sort == 'oldest') {
                 $query->oldest();
             } else if ($sort == "lowest_price") {
                 $query->orderBy('amount', 'asc');

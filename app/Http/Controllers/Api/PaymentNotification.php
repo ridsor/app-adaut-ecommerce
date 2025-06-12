@@ -34,15 +34,15 @@ class PaymentNotification extends BaseController
                 'amount' => $amount,
             ]);
 
-            if ($status === 'SUCCESS') {
+            if (strcasecmp($status, 'SUCCESS') == 0) {
                 $transaction->order()->update([
                     'status' => 'packed',
                 ]);
-            } else if ($status === 'FAILED') {
+            } else if (strcasecmp($status, 'FAILED') == 0) {
                 $transaction->order()->update([
                     'status' => 'failed',
                 ]);
-            } else if ($status === 'EXPIRED') {
+            } else if (strcasecmp($status, 'EXPIRED') == 0) {
                 $transaction->order()->update([
                     'status' => 'failed',
                 ]);

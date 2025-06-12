@@ -9,7 +9,7 @@
                         <div class="col-auto mt-4">
                             <h1 class="page-header-title fs-1">
                                 <div class="page-header-icon"><i data-feather="file"></i></div>
-                                {{ $total_items }} Total Kontak
+                                {{ $contacts->total() }} Total Kontak
                             </h1>
                             <div class="page-header-subtitle">Lihat dan perbarui daftar kontak Anda di sini.
                             </div>
@@ -73,7 +73,7 @@
                     </div>
                 </form>
             </div>
-            
+
             @if (count($contacts) > 0)
                 @foreach ($contacts as $contact)
                     <x-pages.admin.contact.contact-item :contact="$contact" />

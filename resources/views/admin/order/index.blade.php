@@ -14,7 +14,7 @@
                         <div class="col-auto mt-4">
                             <h1 class="page-header-title fs-1">
                                 <div class="page-header-icon"><i data-feather="file"></i></div>
-                                {{ $total_items }} Total Pesanan
+                                {{ $orders->total() }} Total Pesanan
                             </h1>
                             <div class="page-header-subtitle">Lihat dan perbarui daftar pesanan Anda di sini.
                             </div>

@@ -17,8 +17,6 @@ class ContactController extends Controller
     {
         $contacts = Contact::search($request->query('search'))->filter(request(['sort', 'status']))->paginate(10);
 
-        $total_items = Contact::count();
-
         $sort = [
             [
                 'value' => 'latest',
@@ -44,7 +42,6 @@ class ContactController extends Controller
         return view('admin.contact', [
             'title' => 'Kontak',
             'contacts' => $contacts,
-            'total_items' => $total_items,
             'sort' => $sort,
             'status' => $status,
         ]);

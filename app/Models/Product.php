@@ -89,23 +89,23 @@ class Product extends Model
 
     static public function scopeFilters($query, array $filters)
     {
-        $query->when($filters['sort'] ?? true, function ($query, $sort) {
-            if ($sort === 'oldest') {
+        $query->when($filters['sort'] ?? 'latest', function ($query, $sort) {
+            if ($sort == 'oldest') {
                 $query->oldest();
-            } elseif ($sort === 'bestsellers') {
+            } elseif ($sort == 'bestsellers') {
                 $query->withSum([
                     'order_items as total_sold'
                 ], 'quantity')
                     ->orderBy('total_sold', 'desc');
-            } elseif ($sort === 'asc') {
+            } elseif ($sort == 'asc') {
                 $query->orderBy('name', 'asc');
-            } elseif ($sort === 'desc') {
+            } elseif ($sort == 'desc') {
                 $query->orderBy('name', 'desc');
-            } elseif ($sort === 'highest_price') {
+            } elseif ($sort == 'highest_price') {
                 $query->orderBy('price', 'desc');
-            } elseif ($sort === 'lowest_price') {
+            } elseif ($sort == 'lowest_price') {
                 $query->orderBy('price', 'asc');
-            } elseif ($sort === 'review') {
+            } elseif ($sort == 'review') {
                 $query->orderBy('reviews_avg_rating', 'desc');
             } else {
                 $query->latest();
@@ -136,7 +136,7 @@ class Product extends Model
 
         // availability
         $query->when($filters['availability'] ?? false, function ($query, $availability) {
-            if ($availability === 'stock') {
+            if ($availability == 'stock') {
                 $query->where('stock', '>', 0);
             }
         });

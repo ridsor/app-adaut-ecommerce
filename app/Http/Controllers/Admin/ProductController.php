@@ -56,13 +56,11 @@ class ProductController extends Controller
         "text" => "Terlaris",
       ],
     ];
-    $total_items = Product::count();
     return view('admin.product.index', [
       'title' => "Produk",
       "products" => $products,
       'categories' => $categories,
       'sort' => $sort,
-      "total_items" => $total_items
     ]);
   }
 
