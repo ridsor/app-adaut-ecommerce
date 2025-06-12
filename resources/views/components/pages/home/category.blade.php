@@ -13,7 +13,7 @@
                                     style="width: 100px">
                             </div>
                             <h3 class="category-title text-primary mb-1">{{ $category->name }}</h3>
-                            <p class="category-count mb-0">{{ $category->products_count }} Products</p>
+                            <p class="category-count mb-0">{{ $category->products_count }} Produk</p>
                             <a href="{{ route('search') }}?categories[]={{ $category->slug }}"
                                 class="stretched-link"></a>
                         </div>

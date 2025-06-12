@@ -84,7 +84,11 @@ class ReviewController extends Controller
             'deletedFiles.*' => 'nullable|exists:review_media,id'
         ];
 
-        $validated = $request->validate($rules);
+        $validated = $request->validate($rules, [
+            'comment' => "Komentar wajib di isi.",
+            'photos.*.max' => 'Setiap foto maksimal berukuran 1MB.',
+            'photos.*.mimes' => 'Format foto harus jpeg, png, atau jpg',
+        ]);
 
         try {
             $order = Order::select('id')->where('user_id', $request->user()->id)->where('order_number', $order_number)->where('status', 'completed')->firstOrFail();
