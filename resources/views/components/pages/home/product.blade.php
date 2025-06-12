@@ -72,7 +72,7 @@
                         </div>
                     @endforeach
                     <div class="d-flex justify-content-center" data-aos="fade-up">
-                        <a href="{{ route('search') }}" class="read-more"><span>Liat Semua</span><i
+                        <a href="{{ route('search') }}" class="read-more"><span>Lihat Semua</span><i
                                 class="bi bi-arrow-right"></i></a>
                     </div>
                 @else
