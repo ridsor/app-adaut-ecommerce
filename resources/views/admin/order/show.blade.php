@@ -30,7 +30,7 @@
                                         @foreach ($order->order_items as $item)
                                             <tr>
                                                 <td>
-                                                    <div class="d-flex align-items-center">
+                                                    <div class="d-flex">
                                                         <div class="me-3">
                                                             <div class="product-image ratio ratio-1x1 overflow-hidden"
                                                                 style="width: 60px">
@@ -40,15 +40,11 @@
                                                             </div>
                                                         </div>
                                                         <div>
-                                                            <h6 class="mb-0">{{ $item->product->name }}</h6>
-                                                            @if ($item->note)
-                                                                <small class="text-muted">Catatan:
-                                                                    {{ $item->note }}</small>
-                                                            @endif
+                                                            <h6 class="mb-0 text-nowrap">{{ $item->product->name }}</h6>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td class="text-end" style="white-space: nowrap">
+                                                <td class="text-end text-nowrap">
                                                     {{ Helper::formatCurrency($item->product->price, 0, ',', '.') }}
                                                 </td>
                                                 <td class="text-center">{{ $item->quantity }}</td>
