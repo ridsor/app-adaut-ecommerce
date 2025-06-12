@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Api\BaseController;
+use App\Mail\AdminOrderMail;
+use App\Mail\UserOrderMail;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends BaseController
 {
@@ -185,6 +189,11 @@ class CheckoutController extends BaseController
         'invoice' => $invoice,
         'url' => $paymentUrl,
       ]);
+
+      $admin = User::where('role', 'admin')->first();
+      Mail::to($admin->email)->queue(new AdminOrderMail($order->id));
+
+      Mail::to($request->user()->email)->queue(new UserOrderMail($order->id));
 
       DB::commit();
       return $this->sendResponse("Checkout Berhasil", $paymentUrl);

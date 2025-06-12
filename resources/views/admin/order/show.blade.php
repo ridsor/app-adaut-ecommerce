@@ -6,7 +6,7 @@
     @endphp
 
     @section('content')
-        <x-header :title="$header_title ?? null" :url="$header_url ?? null" />
+        <x-header :title="$header_title ?? null" />
         <div class="container-xl p-0 px-md-2">
             <div class="row flex-wrap">
                 <!-- Order Items -->

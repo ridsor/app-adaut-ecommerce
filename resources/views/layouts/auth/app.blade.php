@@ -25,7 +25,8 @@
             <footer class="footer-admin mt-auto footer-dark ">
                 <div class="container-xl px-4">
                     <div class="row">
-                        <div class="small text-white text-center">© 2025 Adaut. All rights reserved.</div>
+                        <div class="small text-white text-center">© <span>{{ date('Y') }}</span> Adaut. All rights
+                            reserved.</div>
                     </div>
                 </div>
             </footer>
