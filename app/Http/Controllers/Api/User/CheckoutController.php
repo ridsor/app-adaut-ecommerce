@@ -133,7 +133,7 @@ class CheckoutController extends BaseController
           'line_items' => $line_items
         ],
         "payment" => [
-          "payment_due_date" => 60
+          "payment_due_date" => 1
         ],
         'customer' => [
           'id' => $request->user()->id,
@@ -190,10 +190,10 @@ class CheckoutController extends BaseController
         'url' => $paymentUrl,
       ]);
 
+      Mail::to($request->user())->queue(new UserOrderMail($order));
       $admin = User::where('role', 'admin')->first();
-      Mail::to($admin->email)->queue(new AdminOrderMail($order->id));
+      Mail::to($admin)->queue(new AdminOrderMail($order));
 
-      Mail::to($request->user()->email)->queue(new UserOrderMail($order->id));
 
       DB::commit();
       return $this->sendResponse("Checkout Berhasil", $paymentUrl);

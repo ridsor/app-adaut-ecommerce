@@ -53,6 +53,13 @@ class Order extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function getTotalPriceAttribute()
+    {
+        return $this->order_items->sum(function ($item) {
+            return $item->quantity * optional($item->product)->price;
+        });
+    }
+
     #[SearchUsingFullText(['order_number'])]
     public function toSearchableArray(): array
     {

@@ -2,151 +2,155 @@
     use App\Helpers\Helper;
 @endphp
 
+
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="id">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="author" content="Ryan Syukur" />
-    <title>{{ $title ?? config('app.name') }}</title>
-    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <script src="https://kit.fontawesome.com/0c8762722d.js" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link href="/assets/css/styles.css" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Invoice Email</title>
 </head>
 
-<body>
-    <main>
-        <!-- Invoice-->
-        <div class="invoice">
-            <div class="card-header p-4 p-md-5 border-bottom-0 bg-gradient-primary-to-secondary text-white-50">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-12 col-lg-auto mb-5 mb-lg-0 text-center text-lg-start">
-                        <!-- Invoice branding-->
-                        <img class="invoice-brand-img rounded-circle mb-4" src="/assets/img/logo.svg" alt="" />
-                        <div class="h2 text-white mb-0">{{ env('APP_NAME') }}</div>
-                    </div>
-                    <div class="col-12 col-lg-auto text-center text-lg-end">
-                        <!-- Invoice details-->
-                        <div class="h3 text-white">Invoice</div>
-                        {{ $order->transaction->invoice }}
-                        <br />
-                        {{ $order->transaction->created_at->translatedFormat('d-m-Y H:i:s') }}
-                    </div>
-                </div>
-            </div>
-            <div class="card-body p-4 p-md-5">
-                <div class="text-dark mb-4">
-                    Dear {{ $order->user->name }},
-                    <br />
-                    Pesanan Anda dengan nomor transaksi <span class="fw-bold">#{{ $order->transaction->invoice }}</span>
-                    sudah berhasil dilakukan
-                    pada tanggal
-                    {{ $order->transaction->created_at->translatedFormat('d-m-Y H:i:s') }}. Mohon lakukan pembayaran
-                    sejumlah <span class="fw-bold">{{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</span>
-                    dalam jangka waktu kurang dari 1 jam. Jika tidak, pesanan Anda akan dibatalkan.
-                    <br />
-                    Silahkan Klik link di bawah ini untuk melakukan pembayaran :
-                    <div class="py-4 text-center">
-                        <a href="{{ $order->transaction->url }}" class="fs-1 text-decoration-none">
-                            Bayar Sekarang
-                        </a>
-                    </div>
-                </div>
-                <!-- Invoice table-->
-                <div class="mb-2">
-                    <span class="h2 text-dark">Rincian Pesanan</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-borderless mb-0">
-                        <thead class="border-bottom">
-                            <tr class="small text-uppercase text-muted">
-                                <th scope="col">Produk</th>
-                                <th class="text-end" scope="col">Harga</th>
-                                <th class="text-end" scope="col">Jumlah</th>
-                                <th class="text-end" scope="col">Subtotal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Invoice item -->
-                            @foreach ($order->order_items as $item)
-                                <tr class="border-bottom">
-                                    <td>
-                                        <div class="d-flex">
-                                            <div class="me-3">
-                                                <div class="product-image ratio ratio-1x1 overflow-hidden"
-                                                    style="width: 60px">
-                                                    <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                        alt="" style="background-position: center"
-                                                        class="h-100 object-fit-contain" />
-                                                </div>
+<body style="margin:0; padding:0; font-family:Arial, sans-serif;">
+    <center>
+        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="padding: 40px 0;">
+            <tr>
+                <td align="center">
+                    <table role="presentation" cellpadding="0" cellspacing="0" width="620"
+                        style="background-color:#ffffff; border-radius:8px; overflow:hidden;">
+                        <!-- HEADER -->
+                        <tr>
+                            <td style="background-color:#2563eb; padding:24px 32px; color:#ffffff;">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td align="left" style="vertical-align:middle;">
+                                            <table cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td style="padding-right: 16px;">
+                                                        <img src="/assets/img/favicon.png" alt="logo" width="48"
+                                                            style="display:block" />
+                                                    </td>
+                                                    <td style="font-size:18px; font-weight:600; color:#ffffff;">Adaut
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td align="right" style="font-size:12px; opacity:0.8;">
+                                            <div style="font-size:28px; font-weight:700; margin-bottom: 8px">Invoice
                                             </div>
-                                            <div>
-                                                <h6 class="mb-0 text-nowrap fw-bold">{{ $item->product->name }}</h6>
+                                            <div style="margin-bottom: 8px">{{ $order->transaction->invoice }}</div>
+                                            <div>{{ $order->transaction->created_at->translatedFormat('d-m-Y H:i:s') }}
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-end text-nowrap fw-bold">
-                                        {{ Helper::formatCurrency($item->product->price, 0, ',', '.') }}
-                                    </td>
-                                    <td class="text-center">{{ $item->quantity }}</td>
-                                    <td class="text-end text-nowrap fw-bold">
-                                        {{ Helper::formatCurrency($item->product->price * $item->quantity, 0, ',', '.') }}
-                                    </td>
-                                </tr>
-                            @endforeach
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
 
-                            <!-- Invoice subtotal-->
-                            <tr>
-                                <td class="text-end pb-0" colspan="3">
-                                    <div class="text-uppercase small fw-700 text-muted">Subtotal:</div>
-                                </td>
-                                <td class="text-end pb-0">
-                                    <div class="h5 mb-0 fw-700">
-                                        {{ Helper::formatCurrency($order->total_price, 0, ',', '.') }}</div>
-                                </td>
-                            </tr>
-                            <!-- Invoice tax column-->
-                            <tr>
-                                <td class="text-end pb-0" colspan="3">
-                                    <div class="text-uppercase small fw-700 text-muted">Subtotal pengiriman:</div>
-                                </td>
-                                <td class="text-end pb-0">
-                                    <div class="h5 mb-0 fw-700">
-                                        {{ Helper::formatCurrency($order->shipping->cost, 0, ',', '.') }}</div>
-                                </td>
-                            </tr>
-                            <!-- Invoice total-->
-                            <tr>
-                                <td class="text-end pb-0" colspan="3">
-                                    <div class="text-uppercase small fw-700 text-muted">Total Pembayaran:</div>
-                                </td>
-                                <td class="text-end pb-0">
-                                    <div class="h5 mb-0 fw-700 text-green">
-                                        {{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</div>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <!-- BODY -->
+                        <tr>
+                            <td style="padding:32px; font-size:14px; color:#333333;">
+                                <p style="margin:0 0 16px;">Dear <strong>{{ $order->user->name }}</strong>,</p>
+                                <p style="margin:0 0 16px;">
+                                    Pesanan Anda dengan nomor transaksi
+                                    <strong>{{ $order->transaction->invoice }}</strong>
+                                    sudah berhasil dilakukan pada tanggal
+                                    {{ $order->transaction->created_at->translatedFormat('d-m-Y H:i:s') }}.
+                                    Mohon lakukan pembayaran sejumlah
+                                    <strong>{{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</strong> dalam
+                                    waktu kurang dari 1 jam.
+                                </p>
+                                <p style="margin:0 0 24px;">Klik tombol di bawah untuk melakukan pembayaran:</p>
+
+                                <p style="text-align:center;">
+                                    <a href="{{ route('user.order.show', ['order_number' => $order->order_number]) }}"
+                                        style="background-color:#2563eb; color:#ffffff; text-decoration:none; padding:12px 24px; border-radius:4px; display:inline-block; font-weight:600;">
+                                        Bayar Sekarang
+                                    </a>
+                                </p>
+
+                                <!-- Order Details -->
+                                <h3 style="margin-top:40px; font-size:16px; font-weight:700;">RINCIAN PESANAN</h3>
+                                <table width="100%" cellpadding="0" cellspacing="0"
+                                    style="font-size:14px; margin-top:12px;">
+                                    <thead>
+                                        <tr style="background-color:#f3f4f6; text-align:left;">
+                                            <th style="padding:8px;">Produk</th>
+                                            <th style="padding:8px; text-align:right;">Harga</th>
+                                            <th style="padding:8px; text-align:right;">Jumlah</th>
+                                            <th style="padding:8px; text-align:right;">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($order->order_items as $item)
+                                            <tr style="border-bottom:1px solid #e5e7eb;">
+                                                <td style="padding:12px;">
+                                                    <table cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td style="padding-right:12px;">
+                                                                <img src="{{ asset('storage/' . $item->product->image) }}"
+                                                                    alt=""
+                                                                    style="width:56px; height:56px; border-radius:4px; object-fit:cover;" />
+                                                            </td>
+                                                            <td style="vertical-align:middle;">
+                                                                {{ $item->product->name }}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td style="text-align:right; padding:12px;">
+                                                    {{ Helper::formatCurrency($item->product->price, 0, ',', '.') }}
+                                                </td>
+                                                <td style="text-align:right; padding:12px;">
+                                                    {{ $item->quantity }}
+                                                </td>
+                                                <td style="text-align:right; padding:12px;">
+                                                    {{ Helper::formatCurrency($item->product->price * $item->quantity, 0, ',', '.') }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                <!-- Price Summary -->
+                                <table width="100%" cellpadding="0" cellspacing="0"
+                                    style="margin-top:32px; font-size:14px; color:#6b7280;">
+                                    <tr>
+                                        <td style="padding:6px 0;">Subtotal:</td>
+                                        <td style="padding:6px 0; text-align:right;">
+                                            {{ Helper::formatCurrency($order->total_price, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:6px 0;">Subtotal Pengiriman:</td>
+                                        <td style="padding:6px 0; text-align:right;">
+                                            {{ Helper::formatCurrency($order->shipping->cost, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:6px 0; font-weight:700; color:#111827;">Total Pembayaran:
+                                        </td>
+                                        <td style="padding:6px 0; text-align:right; font-weight:700; color:#22c55e;">
+                                            {{ Helper::formatCurrency($order->amount, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <!-- FOOTER -->
+                        <tr>
+                            <td align="center" style="font-size:12px; color:#9ca3af; padding:24px;">
+                                Adaut &copy; 2025
+                            </td>
+                        </tr>
+
                     </table>
-                </div>
-            </div>
-            <div class="card-footer p-4 p-lg-5 border-top">
-                <div class="d-flex flex-column text-center">
-                    <span class="fw-bold">Adaut</span>
-                    <span>{{ date('Y') }}</span>
-                </div>
-            </div>
-        </div>
-    </main>
-    {{-- JS --}}
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+                </td>
+            </tr>
+        </table>
+    </center>
 </body>
 
 </html>

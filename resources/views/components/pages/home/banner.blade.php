@@ -1,8 +1,8 @@
 <section id="hero" class="hero section">
-    <div class="container" x-data="banner()">
-        <div class="swiper" id="banner_swiper" x-ref="source">
+    <div class="container">
+        <div class="swiper" id="banner_swiper">
             <div class="swiper-wrapper w-100">
-                <div class="swiper-slide px-2" :style="`height: ${height}px`" style="height: 376.390625px">
+                <div class="swiper-slide px-2">
 
                     <div class="row align-items-center mb-5">
                         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-delay="100">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 @foreach ($banners as $banner)
-                    <div class="swiper-slide px-3" :style="`height: ${height}px`">
+                    <div class="swiper-slide px-3">
                         <div class="row align-items-center mb-5">
                             <div class="col-lg-6 mb-4 mb-lg-0">
                                 <div class="d-flex flex-column gap-4">
@@ -84,17 +84,5 @@
             },
             loop: true,
         });
-
-        const banner = function() {
-            return {
-                height: "auto",
-                init() {
-                    const observer = new ResizeObserver(entries => {
-                        this.height = entries[0].contentRect.height;
-                    });
-                    observer.observe(this.$refs.source);
-                }
-            }
-        }
     </script>
 @endpush

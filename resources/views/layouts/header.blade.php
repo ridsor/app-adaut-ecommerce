@@ -118,14 +118,12 @@
                                         </span>
 
                                     </a></li>
-
                             </ul>
                         </div>
                     @endauth
                 </div>
             </div>
         </div>
-
     </div>
 
     @auth

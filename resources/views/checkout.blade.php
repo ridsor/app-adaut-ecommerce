@@ -19,7 +19,8 @@
             <div class="card-body">
                 <div class="shpiing-address">
                     @if ($user->address)
-                        <a class="text-dark text-decoration-none" href="{{ route('user.account.address.index') }}?callbackUrl={{ route('checkout') }}">
+                        <a class="text-dark text-decoration-none"
+                            href="{{ route('user.account.address.index') }}?callbackUrl={{ route('checkout') }}">
                             <div class="content">
                                 <div class="d-flex gap-2 mb-1 fs-responsive">
                                     <span>{{ $user->address->name }}</span>
@@ -39,7 +40,8 @@
                             <p class="fs-responsive">Anda belum belum memiliki alamat pengiriman, mohon tambahkan
                                 alamat baru.
                             </p>
-                            <a href="{{ route('user.account.address.index') }}?callbackUrl={{ route('checkout') }}" class="btn btn-primary">
+                            <a href="{{ route('user.account.address.index') }}?callbackUrl={{ route('checkout') }}"
+                                class="btn btn-primary">
                                 <span class="me-3">Tambahkan Alamat</span>
                                 <i data-feather="plus"></i>
                             </a>
@@ -233,7 +235,7 @@
             right: 0; 
             background-color: rgba(0,0,0,.5); 
             z-index: 2; 
-            display: none; 
+            display: flex; 
             justify-content: center; 
             align-items: center;">
             <div style="width: 200px; height: 200px">
@@ -258,8 +260,8 @@
         document.addEventListener('alpine:init', () => {
             window.Alpine.data('checkout', () => ({
                 isSubmit: false,
-                init() {
-                    this.shipping.loadMethods();
+                async init() {
+                    await this.shipping.loadMethods();
                     this.$refs.loading.style.display = 'none'
                 },
                 data: {
