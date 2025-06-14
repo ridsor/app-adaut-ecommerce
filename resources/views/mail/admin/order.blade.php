@@ -47,8 +47,8 @@
                                             <table cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td style="padding-right: 16px;">
-                                                        <img src="/assets/img/favicon.png" alt="logo" width="48"
-                                                            style="display:block" />
+                                                        <img src="{{ env('APP_URL') }}/assets/img/favicon.png"
+                                                            alt="logo" width="48" style="display:block" />
                                                     </td>
                                                     <td style="font-size:18px; font-weight:600; color:#ffffff;">Adaut
                                                     </td>
