@@ -1,8 +1,8 @@
-<section id="hero" class="hero section">
+<section id="hero" class="hero section background-with-opacity">
     <div class="container">
         <div class="swiper" id="banner_swiper">
             <div class="swiper-wrapper w-100">
-                <div class="swiper-slide px-2">
+                <div class="swiper-slide p-3">
 
                     <div class="row align-items-center mb-5">
                         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right" data-aos-delay="100">
@@ -28,14 +28,13 @@
                         <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
                             <div class="hero-image">
                                 <img src="/storage/gambar/spanduk/2DrL5nKu24aLq2Twl0FhJO2ATOZRzebevTQaaha1.jpg"
-
                                     alt="Business Growth" class="img-fluid" loading="lazy">
                             </div>
                         </div>
                     </div>
                 </div>
                 @foreach ($banners as $banner)
-                    <div class="swiper-slide px-3">
+                    <div class="swiper-slide p-3">
                         <div class="row align-items-center mb-5">
                             <div class="col-lg-6 mb-4 mb-lg-0">
                                 <div class="d-flex flex-column gap-4">
