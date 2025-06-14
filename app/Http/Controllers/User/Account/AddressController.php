@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User\Account;
 use App\Http\Controllers\Controller;
 use App\Rules\MultiCountryPhoneNumber;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AddressController extends Controller
 {

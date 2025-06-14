@@ -4,13 +4,10 @@
             <div class="row d-flex justify-content-between flex-wrap">
                 <div class="col-sm-6 col-lg-4">
                     <div class="mb-4">
-                        <a href="{{ route('home') }}"
-                            class="logo d-flex align-items-center me-auto me-xl-0 text-decoration-none">
+                        <div class="logo d-flex align-items-center me-auto me-xl-0 text-decoration-none">
                             <!-- Uncomment the line below if you also wish to use an image logo -->
-                            <!-- <img src="assets/img/logo.webp" alt=""> -->
-                            <h1 class="sitename">Adaut</h1>
-                            <span>.</span>
-                        </a>
+                            <img src="/assets/img/logo.png" alt="Logo">
+                        </div>
                     </div>
                     <a href="{{ route('contact-us') }}" class="text-decoration-none">
                         <p>

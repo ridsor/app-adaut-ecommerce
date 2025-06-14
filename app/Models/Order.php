@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Searchable;
@@ -54,6 +53,22 @@ class Order extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function restoringProductStock()
+    {
+        foreach ($this->order_items as $item) {
+            $product = $item->product;
+
+            $product->increment('stock', (int) $item->quantity);
+        }
+    }
+
+    public function getTotalPriceAttribute()
+    {
+        return $this->order_items->sum(function ($item) {
+            return $item->quantity * optional($item->product)->price;
+        });
+    }
+
     #[SearchUsingFullText(['order_number'])]
     public function toSearchableArray(): array
     {
@@ -65,8 +80,8 @@ class Order extends Model
     static public function scopeFilters($query, array $filters)
     {
         // sort
-        $query->when($filters['sort'] ?? true, function ($query, $sort) {
-            if ($sort === 'oldest') {
+        $query->when($filters['sort'] ?? 'latest', function ($query, $sort) {
+            if ($sort == 'oldest') {
                 $query->oldest();
             } else if ($sort == "lowest_price") {
                 $query->orderBy('amount', 'asc');

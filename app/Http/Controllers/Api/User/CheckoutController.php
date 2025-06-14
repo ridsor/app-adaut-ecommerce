@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Exceptions\CustomException;
 use App\Http\Controllers\Api\BaseController;
+use App\Mail\AdminOrderMail;
+use App\Mail\UserOrderMail;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class CheckoutController extends BaseController
 {
@@ -129,7 +134,7 @@ class CheckoutController extends BaseController
           'line_items' => $line_items
         ],
         "payment" => [
-          "payment_due_date" => 60
+          "payment_due_date" => env('DOKU_PAYMENT_DUE_DATE', 30),
         ],
         'customer' => [
           'id' => $request->user()->id,
@@ -178,13 +183,20 @@ class CheckoutController extends BaseController
       if (!$doku->successful()) {
         throw new Exception("Gagal menghubungi Doku API: " . $doku->body());
       }
+      $doku_json = $doku->json();
+      $paymentUrl = $doku_json['response']['payment']['url'];
 
-      $paymentUrl = $doku->json()['response']['payment']['url'];
-
+      $expiredAt = Carbon::createFromFormat('YmdHis', $doku_json['response']['payment']['expired_date']);
       $order->transaction()->create([
         'invoice' => $invoice,
         'url' => $paymentUrl,
+        'expired_at' => $expiredAt
       ]);
+
+      Mail::to($request->user())->queue(new UserOrderMail($order));
+      $admin = User::where('role', 'admin')->first();
+      Mail::to($admin)->queue(new AdminOrderMail($order));
+
 
       DB::commit();
       return $this->sendResponse("Checkout Berhasil", $paymentUrl);

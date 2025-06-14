@@ -6,9 +6,7 @@
                     <a href="{{ route('home') }}"
                         class="logo d-flex align-items-center me-auto me-xl-0 text-decoration-none">
                         <!-- Uncomment the line below if you also wish to use an image logo -->
-                        <!-- <img src="assets/img/logo.webp" alt=""> -->
-                        <h1 class="sitename">Adaut</h1>
-                        <span>.</span>
+                        <img src="/assets/img/logo.png" alt="Logo">
                     </a>
                 </div>
             </div>
@@ -56,12 +54,15 @@
                             <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <x-icon>
-                                    <img src="{{ Auth::user()->profile?->image
-                                        ? (filter_var(Auth::user()->profile->image, FILTER_VALIDATE_URL)
-                                            ? Auth::user()->profile->image
-                                            : asset('storage/' . Auth::user()->profile->image))
-                                        : '/assets/img/user-placeholder.svg' }}"
-                                        alt="Profile" width="32" height="32" class="rounded-circle">
+                                    <div style="background-color: #f9f9f9" class="rounded-circle overflow-hidden">
+                                        <img src="{{ Auth::user()->profile?->image
+                                            ? (filter_var(Auth::user()->profile->image, FILTER_VALIDATE_URL)
+                                                ? Auth::user()->profile->image
+                                                : asset('storage/' . Auth::user()->profile->image))
+                                            : '/assets/img/user-placeholder.svg' }}"
+                                            alt="Profile" width="32" height="32"
+                                            style="object-fit: contain">
+                                    </div>
                                 </x-icon>
                             </a>
                             <ul class="dropdown-menu text-small" style="">
@@ -118,14 +119,12 @@
                                         </span>
 
                                     </a></li>
-
                             </ul>
                         </div>
                     @endauth
                 </div>
             </div>
         </div>
-
     </div>
 
     @auth

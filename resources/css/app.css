@@ -1,10 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 /* Untuk browser berbasis WebKit seperti Chrome, Safari */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0 !important;
+}
+
+.is-invalid input {
+    border-color: rgb(220, 53, 69);
+}
+
+* {
+    font-family: "Roboto", sans-serif;
 }
 
 /* Untuk Firefox */

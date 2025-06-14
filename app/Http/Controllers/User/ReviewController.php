@@ -42,7 +42,6 @@ class ReviewController extends Controller
         return view('user.order.review.index', [
             'title' => 'Penilaian Produk',
             'order_review' => $order_review,
-            "header_url" => route('user.order.index'),
             'user' => $request->user()
         ]);
     }

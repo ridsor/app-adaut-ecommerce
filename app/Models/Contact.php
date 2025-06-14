@@ -23,9 +23,8 @@ class Contact extends Model
 
     public function scopeFilter($query, array $filters)
     {
-
         // sort
-        $query->when($filters['sort'] ?? false, function ($query, $sort) {
+        $query->when($filters['sort'] ?? 'latest', function ($query, $sort) {
             if ($sort == 'oldest') {
                 $query->oldest();
             } else {

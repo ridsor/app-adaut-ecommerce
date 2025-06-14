@@ -159,7 +159,12 @@ h6 {
 }
 
 .header .logo img {
-    max-height: 36px;
+    max-height: 50px;
+    margin-right: 8px;
+}
+
+.footer .logo img {
+    max-height: 50px;
     margin-right: 8px;
 }
 
@@ -177,12 +182,12 @@ h6 {
     padding-left: 3px;
 }
 
-.adaut .logo {
+.footer .logo {
     line-height: 1;
 }
 
-.adaut .logo img {
-    max-height: 36px;
+.footer .logo img {
+    max-height: 50px;
     margin-right: 8px;
 }
 
@@ -806,8 +811,27 @@ section,
     padding-top: 140px;
     position: relative;
     overflow: hidden;
-    background-color: color-mix(in srgb, var(--accent-color), transparent 95%);
+    background-color: white;
     padding-bottom: 80px;
+}
+
+.hero.background-with-opacity::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/assets/img/backgroud_adaut.JPG");
+    background-size: cover;
+    background-position: center;
+    opacity: .15;
+    z-index: -1;
+}
+
+.hero.background-with-opacity {
+    position: relative;
+    z-index: 1;
 }
 
 .hero .badge-wrapper .d-inline-flex {

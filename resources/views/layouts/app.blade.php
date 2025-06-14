@@ -40,36 +40,6 @@
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
         <i class="bi bi-arrow-up-short"></i></a>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        if (@json(Session::has('success'))) {
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "{{ Session::get('success') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-        if (@json(Session::has('info'))) {
-            Swal.fire({
-                position: "top-end",
-                icon: "info",
-                title: "{{ Session::get('info') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-        if (@json(Session::has('error'))) {
-            Swal.fire({
-                position: "top-end",
-                icon: "error",
-                title: "{{ Session::get('error') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-    </script>
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/aos.js"></script>
     <script src="/assets/js/invent.js"></script>

@@ -8,7 +8,6 @@ use App\Models\Order;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
@@ -22,7 +21,6 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $total_items = Order::count();
         $status = Order::select(['status', DB::raw('count(*) as total')])
             ->groupBy('status')
             ->get();
@@ -69,7 +67,6 @@ class OrderController extends Controller
 
         return view('admin.order.index', [
             'title' => 'Pesanan',
-            'total_items' => $total_items,
             'sort' => $sort,
             'status' => $status,
             'courir' => $courir,
@@ -119,7 +116,6 @@ class OrderController extends Controller
             ],
         );
         try {
-
             DB::beginTransaction();
             $order = Order::where('order_number', $order_number)->firstOrFail();
             $order->shipping->update(['awb' => $validated['awb']]);

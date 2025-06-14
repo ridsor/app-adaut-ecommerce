@@ -164,12 +164,7 @@ class OrderController extends Controller
     public function show(Request $request, $order_number)
     {
         $order = Order::with(['order_items', 'order_items.product', 'transaction', 'shipping', 'transaction.payment'])
-            ->withSum([
-                'order_items as total_price' => function ($query) {
-                    $query->select(DB::raw('SUM(order_items.quantity * products.price)'))
-                        ->join('products', 'order_items.product_id', '=', 'products.id');
-                }
-            ], '')->where('user_id', $request->user()->id)->where('order_number', $order_number)->first();
+            ->where('user_id', $request->user()->id)->where('order_number', $order_number)->first();
 
         if (!$order) {
             throw new ItemNotFoundException($order_number);

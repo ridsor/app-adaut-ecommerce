@@ -12,7 +12,7 @@
         </nav>
         <hr class="mt-0 mb-4" />
 
-        <form method="POST" action="{{ route('user.account.address.update') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('user.account.address.update') }}">
             @csrf
             @method('PATCH')
             <!-- Account details card-->

@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <x-header :title="$header_title ?? null" :url="$header_url ?? null" />
+    <x-header :title="$header_title ?? null" :url="request()->query('callbackUrl') ?? $header_url ?? null" />
     <main x-data class="overflow-hidden">
         <!-- Main page content-->
 
