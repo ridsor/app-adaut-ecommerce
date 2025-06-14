@@ -28,8 +28,8 @@
                                             <table cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td style="padding-right: 16px;">
-                                                        <img src="/assets/img/favicon.png" alt="logo" width="48"
-                                                            style="display:block" />
+                                                        <img src="{{ env('APP_URL') }}/assets/img/favicon.png"
+                                                            alt="logo" width="48" style="display:block" />
                                                     </td>
                                                     <td style="font-size:18px; font-weight:600; color:#ffffff;">Adaut
                                                     </td>
@@ -64,7 +64,7 @@
                                 <p style="margin:0 0 24px;">Klik tombol di bawah untuk melakukan pembayaran:</p>
 
                                 <p style="text-align:center;">
-                                    <a href="{{ route('user.order.show', ['order_number' => $order->order_number]) }}"
+                                    <a href="{{ $order->transaction->url }}"
                                         style="background-color:#2563eb; color:#ffffff; text-decoration:none; padding:12px 24px; border-radius:4px; display:inline-block; font-weight:600;">
                                         Bayar Sekarang
                                     </a>
