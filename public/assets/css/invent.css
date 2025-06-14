@@ -159,7 +159,12 @@ h6 {
 }
 
 .header .logo img {
-    max-height: 36px;
+    max-height: 50px;
+    margin-right: 8px;
+}
+
+.footer .logo img {
+    max-height: 50px;
     margin-right: 8px;
 }
 
@@ -177,12 +182,12 @@ h6 {
     padding-left: 3px;
 }
 
-.adaut .logo {
+.footer .logo {
     line-height: 1;
 }
 
-.adaut .logo img {
-    max-height: 36px;
+.footer .logo img {
+    max-height: 50px;
     margin-right: 8px;
 }
 
