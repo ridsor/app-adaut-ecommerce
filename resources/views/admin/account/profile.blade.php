@@ -36,10 +36,11 @@
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
                             <div class="d-flex justify-content-center mb-2">
-                                <div class="ratio ratio-1x1  overflow-hidden w-100" style="max-width: 200px">
+                                <div class="ratio ratio-1x1  overflow-hidden w-100 rounded-circle"
+                                    style="max-width: 200px; background-color: #f9f9f9">
                                     <div class="wrapper align-items-center d-flex justify-content-center">
-                                        <img class="img-account-profile rounded-circle w-100 h-100"
-                                            style="background-size: cover" :src="imageUrl" alt="" />
+                                        <img class="img-account-profile  w-100 h-100" style="object-fit: contain"
+                                            :src="imageUrl" alt="" />
                                     </div>
                                 </div>
                             </div>
