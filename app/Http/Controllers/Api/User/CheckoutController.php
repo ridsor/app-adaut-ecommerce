@@ -9,6 +9,7 @@ use App\Mail\UserOrderMail;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -133,7 +134,7 @@ class CheckoutController extends BaseController
           'line_items' => $line_items
         ],
         "payment" => [
-          "payment_due_date" => 1
+          "payment_due_date" => env('DOKU_PAYMENT_DUE_DATE', 30),
         ],
         'customer' => [
           'id' => $request->user()->id,
@@ -182,12 +183,14 @@ class CheckoutController extends BaseController
       if (!$doku->successful()) {
         throw new Exception("Gagal menghubungi Doku API: " . $doku->body());
       }
+      $doku_json = $doku->json();
+      $paymentUrl = $doku_json['response']['payment']['url'];
 
-      $paymentUrl = $doku->json()['response']['payment']['url'];
-
+      $expiredAt = Carbon::createFromFormat('YmdHis', $doku_json['response']['payment']['expired_date']);
       $order->transaction()->create([
         'invoice' => $invoice,
         'url' => $paymentUrl,
+        'expired_at' => $expiredAt
       ]);
 
       Mail::to($request->user())->queue(new UserOrderMail($order));

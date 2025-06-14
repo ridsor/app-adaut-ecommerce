@@ -12,7 +12,8 @@ class Transaction extends Model
     protected $fillable = [
         'status',
         'url',
-        'invoice'
+        'invoice',
+        'expired_at'
     ];
 
     public function order()

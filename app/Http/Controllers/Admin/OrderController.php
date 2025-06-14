@@ -116,7 +116,6 @@ class OrderController extends Controller
             ],
         );
         try {
-
             DB::beginTransaction();
             $order = Order::where('order_number', $order_number)->firstOrFail();
             $order->shipping->update(['awb' => $validated['awb']]);

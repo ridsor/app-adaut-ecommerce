@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('data:delete-soft-deletes')->weekly();
+Schedule::command('orders:check-expired')->everyMinute();
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());

@@ -99,12 +99,6 @@
                                                 </button>
                                             @break
 
-                                            @case('failed')
-                                                <button class="btn btn-primary">
-                                                    Beli Lagi
-                                                </button>
-                                            @break
-
                                             @case('completed')
                                                 <a href="{{ route('user.review.product.index', ['order_number' => $order->order_number]) }}"
                                                     class="btn btn-primary">

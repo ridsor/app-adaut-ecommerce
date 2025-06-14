@@ -59,7 +59,7 @@
                                     {{ $order->transaction->created_at->translatedFormat('d-m-Y H:i:s') }}.
                                     Mohon lakukan pembayaran sejumlah
                                     <strong>{{ Helper::formatCurrency($order->amount, 0, ',', '.') }}</strong> dalam
-                                    waktu kurang dari 1 jam.
+                                    waktu kurang dari {{ env('DOKU_PAYMENT_DUE_DATE', 30) }} menit.
                                 </p>
                                 <p style="margin:0 0 24px;">Klik tombol di bawah untuk melakukan pembayaran:</p>
 

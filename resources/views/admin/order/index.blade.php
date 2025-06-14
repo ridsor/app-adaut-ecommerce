@@ -208,7 +208,7 @@
                                                             class="btn btn-primary"
                                                             href="{{ route('admin.order.show', ['pesanan' => $order->order_number]) }}">Detail
                                                             Pesanan</a>
-                                                        @if ($order->status != 'failed' && $order->status != 'completed' && $order->status != 'unpaid')
+                                                        @if ($order->status != 'failed' && $order->status != 'completed')
                                                             <div class="dropdown" x-data="{ dropdown: false }">
                                                                 <button button @focus ="active=true"
                                                                     @blur="active = false"
@@ -223,7 +223,7 @@
                                                                     </div>
                                                                 </button>
                                                                 <ul class="dropdown-menu z-3">
-                                                                    @if ($order->status != 'submitted')
+                                                                    @if ($order->status == 'packed')
                                                                         <li>
                                                                             <button class="dropdown-item" type="button"
                                                                                 data-bs-toggle="modal"
@@ -234,7 +234,7 @@
                                                                                 Pengiriman</button>
                                                                         </li>
                                                                     @endif
-                                                                    @if ($order->status != 'packed')
+                                                                    @if ($order->status == 'submitted')
                                                                         <li>
                                                                             <button class="dropdown-item"
                                                                                 @click.stop="active = true; handleOrderPacked('{{ $order->order_number }}')"
@@ -243,13 +243,16 @@
                                                                                 Kemasan</button>
                                                                         </li>
                                                                     @endif
-                                                                    <li>
-                                                                        <button @focus="active = true"
-                                                                            @blur="active = false"
-                                                                            @click.stop="active = true; handleOrderCanceled('{{ $order->order_number }}')"
-                                                                            class="dropdown-item" href="#">Batalkan
-                                                                            Pesanan</button>
-                                                                    </li>
+                                                                    @if ($order->status == 'unpaid' || $order->status == 'packed')
+                                                                        <li>
+                                                                            <button @focus="active = true"
+                                                                                @blur="active = false"
+                                                                                @click.stop="active = true; handleOrderCanceled('{{ $order->order_number }}')"
+                                                                                class="dropdown-item"
+                                                                                href="#">Batalkan
+                                                                                Pesanan</button>
+                                                                        </li>
+                                                                    @endif
                                                                 </ul>
                                                             </div>
                                                         @endif
