@@ -28,7 +28,6 @@ class HomeController extends Controller
             ->limit(8)->get();
         $categories = Category::select(['name', 'id', 'slug', 'icon'])->withCount('products')->get();
         $banners = Banner::select('title', 'description', 'button_text', 'button_link', 'image')->latest()->get();
-        $shop = User::where('role', 'admin')->first();
 
         return view('home', [
             'bestsellers' => $bestsellers,
@@ -36,7 +35,6 @@ class HomeController extends Controller
             'categories' => $categories,
             'title' => 'Home',
             'banners' => $banners,
-            'shop' => $shop
         ]);
     }
 }
