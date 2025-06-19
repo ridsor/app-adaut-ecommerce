@@ -1,8 +1,3 @@
-@php
-    use App\Helpers\OrderHelper;
-    use App\Helpers\Helper;
-@endphp
-
 @extends('layouts.user.app')
 
 @section('content')
@@ -34,87 +29,7 @@
             <div class="order-list d-flex flex-column gap-2">
                 @if (count($orders) > 0)
                     @foreach ($orders as $order)
-                        <div class="order-item text-dark" style="cursor: pointer" role="link" tabindex="0"
-                            aria-label="order item"
-                            @click="window.location.href='{{ route('user.order.show', ['order_number' => $order->order_number]) }}'"
-                            @keydown.enter="window.location.href='{{ route('user.order.show', ['order_number' => $order->order_number]) }}'"
-                            @keydown.space.prevent="window.location.href='{{ route('user.order.show', ['order_number' => $order->order_number]) }}'">
-                            <div class="card rounded-0">
-                                <div class="card-body p-2">
-                                    <div class="d-flex justify-content-end mb-2">
-                                        <span
-                                            class="badge bg-{{ OrderHelper::getStatusClass($order->status) }}">{{ OrderHelper::getStatusLabel($order->status) }}</span>
-                                    </div>
-                                    <div class="order-item d-flex flex-column gap-2">
-                                        @foreach ($order->order_items as $item)
-                                            <div class="d-flex gap-2">
-                                                <div>
-                                                    <div class="product-image ratio ratio-1x1 overflow-hidden"
-                                                        style="width: 80px">
-                                                        <img src="{{ asset('storage/' . $item->product->image) }}"
-                                                            alt="" style="background-position: center"
-                                                            class="h-100 object-fit-contain" />
-                                                    </div>
-                                                </div>
-                                                <div class="flex-grow-1 flex-column gap-1 d-flex ">
-                                                    <div class="order-title flex-grow-1">
-                                                        <span
-                                                            style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
-                                                            {{ $item->product->name }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="d-flex gap-1 justify-content-between">
-                                                        <div class="order-price text-primary">
-                                                            {{ Helper::formatCurrency($item->product->price) }}
-                                                        </div>
-                                                        <div class="order-quantity">x {{ $item->quantity }}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    <hr class="my-2" />
-                                    <div class="d-flex justify-content-between gap-2 align-items-center">
-                                        <span class="text-muted fs-responsive">
-                                            {{ count($order->order_items) }} Produk
-                                        </span>
-                                        <span>
-                                            Total Pesanan: <span
-                                                class="text-primary">{{ Helper::formatCurrency($order->amount) }}</span>
-                                        </span>
-                                    </div>
-                                    <div class="d-flex justify-content-end gap-2 mt-2 align-items-center flex-wrap">
-                                        @switch($order->status)
-                                            @case('unpaid')
-                                                <a class="btn btn-primary" href="{{ $order->transaction->url }}">
-                                                    Bayar Sekarang
-                                                </a>
-                                            @break
-
-                                            @case('submitted')
-                                                <button class="btn btn-primary"
-                                                    @click.stop="handleOrderSuccess('{{ $order->order_number }}')">
-                                                    Selesai
-                                                </button>
-                                            @break
-
-                                            @case('failed')
-                                                <button class="btn btn-primary">
-                                                    Beli Lagi
-                                                </button>
-                                            @break
-
-                                            @case('completed')
-                                                <button class="btn btn-primary">
-                                                    Nilai
-                                                </button>
-                                            @break
-                                        @endswitch
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <x-pages.user.order.order-item :order="$order" />
                     @endforeach
                 @else
                     <div class="text-center">
