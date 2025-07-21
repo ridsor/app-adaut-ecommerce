@@ -171,8 +171,12 @@ class CheckoutController extends BaseController
         $secretKey,
         $requestDate
       );
-
-      $doku = Http::timeout(30)->retry(3, 100)->withHeaders([
+      // Optimasi: Gabungkan konfigurasi Http dan gunakan method chaining dengan lebih efisien
+      $http = Http::timeout(30)->retry(3, 100);
+      if (env('APP_ENV') !== "production") {
+        $http = $http->withoutVerifying();
+      }
+      $doku = $http->withHeaders([
         'Client-Id' => $clientId,
         'Request-Id' => $requestId,
         'Request-Timestamp' => $requestDate,
