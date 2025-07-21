@@ -11,12 +11,14 @@ class RajaOngkirController extends BaseController
 {
     public function searchDestination(Request $request)
     {
-        $response = Http::withHeaders([
-            'key' => config('rajaongkir.api_key')
-        ])->get("https://rajaongkir.komerce.id/api/v1/destination/domestic-destination", [
+        $http = Http::withHeaders(['key' => config('rajaongkir.api_key')]);
+        if (env('APP_ENV') !== "production") {
+            $http = $http->withoutVerifying();
+        }
+        $response = $http->get("https://rajaongkir.komerce.id/api/v1/destination/domestic-destination", [
             'search' => $request->search,
             'limit' => 5,
-            "offset" => 0
+            'offset' => 0
         ]);
 
 
@@ -32,9 +34,11 @@ class RajaOngkirController extends BaseController
         $courierDefault = "jne:sicepat:ide:sap:jnt:ninja:tiki:lion:anteraja:pos:ncs:rex:rpx:sentral:star:wahana:dse";
         $priceDefault = "lowest";
 
-        $response = Http::withHeaders([
-            'key' => config('rajaongkir.api_key')
-        ])->asForm()->post("https://rajaongkir.komerce.id/api/v1/calculate/domestic-cost", [
+        $http = Http::withHeaders(['key' => config('rajaongkir.api_key')]);
+        if (env('APP_ENV') !== "production") {
+            $http = $http->withoutVerifying();
+        }
+        $response = $http->asForm()->post("https://rajaongkir.komerce.id/api/v1/calculate/domestic-cost", [
             "origin" => $request->origin,
             "destination" => $request->destination,
             "weight" => $request->weight,

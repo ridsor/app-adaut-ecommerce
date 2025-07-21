@@ -94,7 +94,7 @@
             </div>
         </div>
         <div class="container copyright text-center mt-4">
-            <p>© <span>Copyright</span> <strong class="px-1 sitename">Adaut</strong> <span>All Rights
+            <p>© <span>Copyright</span> +-<span>{{ date('Y') }}</span> <strong class="px-1 sitename">Adaut</strong> <span>All Rights
                     Reserved</span></p>
         </div>
     </div>
