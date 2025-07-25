@@ -41,7 +41,7 @@ class CheckoutController extends BaseController
         'items.*.quantity.required' => 'Kuantitas wajib diisi.',
         'items.*.quantity.integer' => 'Kuantitas harus berupa angka.',
         'items.*.quantity.min' => 'Kuantitas minimal adalah 1.',
-        'items.*.product_id.exists' => 'Produk yang dipilih tidak valid.',
+        'items.*.product_id.exists' => 'Produk yang dipilih tidak tersedia.',
       ]
     );
 
