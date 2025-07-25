@@ -6,13 +6,14 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class RajaOngkirController extends BaseController
 {
     public function searchDestination(Request $request)
     {
         $http = Http::withHeaders(['key' => config('rajaongkir.api_key')]);
-        if (env('APP_ENV') !== "production") {
+        if (env('APP_ENV') != "production") {
             $http = $http->withoutVerifying();
         }
         $response = $http->get("https://rajaongkir.komerce.id/api/v1/destination/domestic-destination", [

@@ -14,7 +14,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -24,34 +23,30 @@ class CheckoutController extends BaseController
 {
   public function productCheckout(Request $request)
   {
+    $validated = $request->validate(
+      [
+        'note' => 'nullable|string|max:255',
+        'shipping' => 'required|array',
+        'shipping.name' => 'required|string|max:255',
+        'shipping.code' => 'required|string|max:50',
+        'shipping.description' => 'nullable|string|max:255',
+        'shipping.cost' => 'required|numeric|min:0',
+        'shipping.etd' => 'nullable|string|max:50',
+        'items' => 'required|array|min:1',
+        'items.*.product_id' => ['required', Rule::exists('products', 'id')->whereNull('deleted_at')],
+        'items.*.quantity' => 'required|integer|min:1',
+      ],
+      [
+        'items.*.product_id.required' => 'Item ID wajib diisi.',
+        'items.*.quantity.required' => 'Kuantitas wajib diisi.',
+        'items.*.quantity.integer' => 'Kuantitas harus berupa angka.',
+        'items.*.quantity.min' => 'Kuantitas minimal adalah 1.',
+        'items.*.product_id.exists' => 'Produk yang dipilih tidak valid.',
+      ]
+    );
+
     try {
-      $validator = Validator::make(
-        $request->all(),
-        [
-          'note' => 'nullable|string|max:255',
-          'shipping.name' => 'required|string|max:255',
-          'shipping.code' => 'required|string|max:50',
-          'shipping.description' => 'nullable|string|max:255',
-          'shipping.cost' => 'required|numeric|min:0',
-          'shipping.etd' => 'nullable|string|max:50',
-          'items' => 'required|array',
-          'items.*.product_id' => ['required', Rule::exists('products', 'id')->whereNull('deleted_at')],
-          'items.*.quantity' => 'required|integer|min:1',
-        ],
-        [
-          'items.*.product_id.required' => 'Item ID wajib diisi.',
-          'items.*.quantity.required' => 'Kuantitas wajib diisi.',
-          'items.*.quantity.integer' => 'Kuantitas harus berupa angka.',
-          'items.*.quantity.min' => 'Kuantitas minimal adalah 1.',
-        ]
-      );
-      if ($validator->fails()) {
-        return $this->sendError(error: 'Validasi gagal', errorMessages: $validator->errors(), code: 500);
-      }
-
       DB::beginTransaction();
-
-      $validated = $validator->validated();
 
       $amount = 0;
       $total_weight = 0;
