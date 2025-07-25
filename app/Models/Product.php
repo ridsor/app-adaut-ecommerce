@@ -80,7 +80,7 @@ class Product extends Model
     public function decreaseStock($quantity)
     {
         if ($this->stock < $quantity) {
-            throw new CustomException("Stok tidak cukup untuk produk ini");
+            throw new CustomException("Stok produk yang dipilih tidak mencukupi.");
         }
 
         $this->stock -= $quantity;
