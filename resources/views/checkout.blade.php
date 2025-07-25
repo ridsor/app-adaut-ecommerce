@@ -251,157 +251,113 @@
         })
     </script>
     <script>
-        document.addEventListener('alpine:init', () => {
-            window.Alpine.data('checkout', () => ({
-                isSubmit: false,
-                async init() {
-                    try {
-                        await this.shipping.loadMethods();
-                    } catch (e) {
-                        console.error('Error shipping methods:', e.message);
-                    } finally {
-                        this.$refs.loading.style.display = 'none'
-                    }
-                },
-                data: {
-                    note: undefined,
-                },
-                async handlePayment() {
-                    if (!@json($user->address)) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Silakan lengkapi alamat pengiriman terlebih dahulu!',
-                        });
-                        return;
-                    }
-                    if (!Alpine.store('cart').selected.length) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Silahkan tambahkan produk ke keranjang terlebih dahulu!',
-                        });
-                        return;
-                    }
-                    if (!this.shipping.selected) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Silakan pilih metode pengiriman terlebih dahulu!',
-                        });
-                        return;
-                    }
-                    const orderData = {
-                        note: this.data.note ?? null,
-                        shipping: this.shipping.selected,
-                        items: Alpine.store('cart').selected.map(item => ({
-                            product_id: item.product_id,
-                            quantity: item.quantity
-                        }))
-                    };
+      document.addEventListener('alpine:init', () => {
+        window.Alpine.data('checkout', () => ({
+          isSubmit: false,
+          async init() {
+            try {
+              await this.shipping.loadMethods();
+            } catch (e) {
+              console.error('Error loading shipping methods:', e.message);
+            } finally {
+              this.$refs.loading.style.display = 'none';
+            }
+          },
+          data: {
+            note: undefined,
+          },
+          async handlePayment() {
+            if (!@json($user->address)) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Silakan lengkapi alamat pengiriman terlebih dahulu!',
+              });
+              return;
+            }
+            if (!Alpine.store('cart').selected.length) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Silahkan tambahkan produk ke keranjang terlebih dahulu!',
+              });
+              return;
+            }
+            if (!this.shipping.selected) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Silakan pilih metode pengiriman terlebih dahulu!',
+              });
+              return;
+            }
+            const orderData = {
+              note: this.data.note ?? null,
+              shipping: this.shipping.selected,
+              items: Alpine.store('cart').selected.map(item => ({
+                product_id: item.product_id,
+                quantity: item.quantity
+              }))
+            };
 
-                    try {
-                        this.isSubmit = true
-                        this.$refs.loading.style.display = 'flex'
+            try {
+              this.isSubmit = true;
+              this.$refs.loading.style.display = 'flex';
 
-                        const response = await axios.post(
-                            '{{ route('api.product.checkout.store') }}',
-                            orderData, {
-                                headers: {
-                                    Authorization: `Bearer {{ Session::get('token') }}`,
-                                    Accept: 'application/json'
-                                }
-                            });
-
-                        console.log('here')
-                        window.location.href = response.data.data;
-                        this.shipping.selected = null;
-                        this.note = undefined;
-                        Alpine.store('cart').remove(Alpine.store('cart').selected);
-                        Alpine.store('cart').selected = [];
-                    } catch (e) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Gagal membuat pesanan',
-                            text: e.response.data.message,
-                        });
-                        this.isSubmit = false;
-                        this.$refs.loading.style.display = 'none'
-                        console.error('Error payment: ', e.message)
-                    }
-
-                },
-                shipping: {
-                    methods: [],
-                    selected: null,
-                    async loadMethods() {
-                        const response = await axios.post(
-                            '{{ route('api.address.domestic-cost') }}', {
-                                origin: '{{ $origin }}',
-                                destination: '{{ $user->address?->destination_id }}',
-                                weight: Alpine.store('cart').selected.reduce((total, item) =>
-                                    total + (
-                                        item.weight * item.quantity), 0),
-                            }, {
-                                headers: {
-                                    Authorization: `Bearer {{ Session::get('token') }}`,
-                                    Accept: 'application/json'
-                                }
-                            })
-                        this.methods = response.data.data;
-                    },
-                    select(method) {
-                        this.selected = method;
-                    }
-                  })
-                .catch(error => {
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal membuat pesanan',
-                    text: error.response.data.message,
-                  });
-                  this.isSubmit = false;
-                  this.$refs.loading.style.display = 'none'
+              const response = await axios.post(
+                '{{ route('api.product.checkout.store') }}',
+                orderData, {
+                  headers: {
+                    Authorization: `Bearer {{ Session::get('token') }}`,
+                    Accept: 'application/json'
+                  }
                 });
+
               window.location.href = response.data.data;
               this.shipping.selected = null;
-              this.note = undefined;
+              this.data.note = undefined;
               Alpine.store('cart').remove(Alpine.store('cart').selected);
               Alpine.store('cart').selected = [];
-          } catch (e) {
-            console.error('Error payment: ',e.message)
-          }
-
-        },
-        shipping: {
-          methods: [],
-          selected: null,
-          async loadMethods() {
-            const response = await axios.post(
-              '{{ route('api.address.domestic-cost') }}', {
-                origin: '{{ $origin }}',
-                destination: '{{ $user->address?->destination_id }}',
-                weight: Alpine.store('cart').selected.reduce((total, item) =>
-                  total + (
-                    item.weight * item.quantity), 0),
-              }, {
-                headers: {
-                  Authorization: `Bearer {{ Session::get('token') }}`,
-                  Accept: 'application/json'
-                }
-              })
-            this.methods = response.data.data;
+            } catch (e) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal membuat pesanan',
+                text: e.response?.data?.message || 'Terjadi kesalahan saat memproses pesanan.',
+              });
+              this.isSubmit = false;
+              this.$refs.loading.style.display = 'none';
+              console.error('Error during payment:', e.message);
+            }
           },
-          select(method) {
-            this.selected = method;
+          shipping: {
+            methods: [],
+            selected: null,
+            async loadMethods() {
+              try {
+                const response = await axios.post(
+                  '{{ route('api.address.domestic-cost') }}', {
+                    origin: '{{ $origin }}',
+                    destination: '{{ $user->address?->destination_id }}',
+                    weight: Alpine.store('cart').selected.reduce((total, item) =>
+                      total + (item.weight * item.quantity), 0),
+                  }, {
+                    headers: {
+                      Authorization: `Bearer {{ Session::get('token') }}`,
+                      Accept: 'application/json'
+                    }
+                  });
+                this.methods = response.data.data;
+              } catch (e) {
+                console.error('Error loading shipping methods:', e.message);
+              }
+            },
+            select(method) {
+              this.selected = method;
+            }
           }
-        },
-        selectShippingMethod(method) {
-          this.shipping.select(method);
-          $('#shippingModal').modal('hide');
-        }
-      }));
-    });
+        }));
+      });
+    </script>
   </script>
 @endpush
 </body>
