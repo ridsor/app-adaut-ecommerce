@@ -20,7 +20,7 @@
                     <div class="d-flex gap-2">
                         <div>
                             <div class="product-image ratio ratio-1x1 overflow-hidden" style="width: 80px">
-                                <img src="{{ asset('storage/' . $order->order_items[0]->product->image) }}"
+                                <img src="{{ asset('storage/' . $order->order_items[0]->product?->image) }}"
                                     alt="" style="background-position: center"
                                     class="h-100 object-fit-contain" />
                             </div>
