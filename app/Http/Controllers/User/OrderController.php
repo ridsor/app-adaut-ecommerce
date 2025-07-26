@@ -28,7 +28,7 @@ class OrderController extends Controller
                         $query->select(['order_id', 'url']);
                     },
                     'order_items.product' => function ($query) {
-                        $query->select(['name', 'price', 'id', 'image']);
+                        $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     }
                 ])
                 ->where('user_id', $request->user()->id)->latest()
@@ -53,7 +53,7 @@ class OrderController extends Controller
                         $query->select(['order_id', 'url']);
                     },
                     'order_items.product' => function ($query) {
-                        $query->select(['name', 'price', 'id', 'image']);
+                        $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     }
                 ])->where('user_id', $request->user()->id)->where('status', 'unpaid')->latest()
         )->paginate(10);
@@ -77,7 +77,7 @@ class OrderController extends Controller
                         $query->select(['order_id', 'url']);
                     },
                     'order_items.product' => function ($query) {
-                        $query->select(['name', 'price', 'id', 'image']);
+                        $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     }
                 ])->where('user_id', $request->user()->id)->where('status', 'packed')->latest()
         )->paginate(10);
@@ -101,7 +101,7 @@ class OrderController extends Controller
                         $query->select(['order_id', 'url']);
                     },
                     'order_items.product' => function ($query) {
-                        $query->select(['name', 'price', 'id', 'image']);
+                        $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     }
                 ])->where('user_id', $request->user()->id)->where('status', 'submitted')->latest()
         )->paginate(10);
@@ -125,7 +125,7 @@ class OrderController extends Controller
                         $query->select(['order_id', 'url']);
                     },
                     'order_items.product' => function ($query) {
-                        $query->select(['name', 'price', 'id', 'image']);
+                        $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     }
                 ])->where('user_id', $request->user()->id)->where('status', 'completed')->latest()
         )->paginate(10);
@@ -149,7 +149,7 @@ class OrderController extends Controller
                         $query->select(['order_id', 'url']);
                     },
                     'order_items.product' => function ($query) {
-                        $query->select(['name', 'price', 'id', 'image']);
+                        $query->withTrashed()->select(['name', 'price', 'id', 'image']);
                     }
                 ])->where('user_id', $request->user()->id)->where('status', 'failed')->latest()
         )->paginate(10);
@@ -163,7 +163,13 @@ class OrderController extends Controller
 
     public function show(Request $request, $order_number)
     {
-        $order = Order::with(['order_items', 'order_items.product', 'transaction', 'shipping', 'transaction.payment'])
+        $order = Order::with([
+            'order_items',
+            'order_items.product' => fn($query) => $query->withTrashed()->select('id', 'name', 'price', 'image'),
+            'transaction',
+            'shipping',
+            'transaction.payment'
+        ])
             ->where('user_id', $request->user()->id)->where('order_number', $order_number)->first();
 
         if (!$order) {
