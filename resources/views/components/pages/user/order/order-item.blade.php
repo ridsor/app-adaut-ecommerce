@@ -29,12 +29,12 @@
                             <div class="order-title flex-grow-1">
                                 <span
                                     style="-webkit-line-clamp: 2;  -webkit-box-orient: vertical; display: -webkit-box; text-overflow: ellipsis; overflow: hidden">
-                                    {{ $order->order_items[0]->product->name }}
+                                    {{ $order->order_items[0]->product?->name }}
                                 </span>
                             </div>
                             <div class="d-flex gap-1 justify-content-between">
                                 <div class="order-price text-primary">
-                                    {{ Helper::formatCurrency($order->order_items[0]->product->price) }}
+                                    {{ Helper::formatCurrency($order->order_items[0]->product?->price) }}
                                 </div>
                                 <div class="order-quantity">x
                                     {{ $order->order_items[0]->quantity }}</div>
